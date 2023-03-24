@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.33027.164
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GivMED", "GivMED\GivMED.csproj", "{B4E7AE11-4D0E-4116-831B-CBDEE260CC27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiveMED.Api", "GiveMED.Api\GiveMED.Api.csproj", "{84AE3674-A139-4E1D-A253-335D06125A61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiveMED.Api", "GiveMED.Api\GiveMED.Api.csproj", "{84AE3674-A139-4E1D-A253-335D06125A61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

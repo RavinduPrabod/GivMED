@@ -1,5 +1,7 @@
-﻿using System;
+﻿using GivMED.Common;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Optimization;
@@ -13,9 +15,10 @@ namespace GivMED
     {
         void Application_Start(object sender, EventArgs e)
         {
-            // Code that runs on application startup
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //RouteConfig.RegisterRoutes(RouteTable.Routes);
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //string Constr = ConfigurationManager.ConnectionStrings["BloodDBConn"].ConnectionString;
+            GlobalData.BaseUri = ConfigurationManager.AppSettings["BaseUri"].ToString();
         }
     }
 }
