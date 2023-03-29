@@ -13,8 +13,9 @@ namespace GiveMED.Api.Data
         {
 
         }
-        public DbSet<User> Users { get; set; }
-        public DbSet<HospitalMaster> HospitalMasters { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<HospitalMaster> HospitalMaster { get; set; }
+        public DbSet<FundraiserMaster> FundraiserMaster { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,8 @@ namespace GiveMED.Api.Data
             modelBuilder.Entity<User>().HasKey(c => new { c.UserName });
 
             modelBuilder.Entity<HospitalMaster>().HasKey(c => new { c.HospitalID });
+
+            modelBuilder.Entity<FundraiserMaster>().HasKey(c => new { c.FundraiserID });
 
             #endregion KeyFields
 

@@ -10,7 +10,7 @@
 
 namespace GivMED.Pages.Web
 {
-    public partial class WebHome
+    public partial class validation
     {
     }
 }

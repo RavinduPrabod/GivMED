@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace GiveMED.Api.Models
 {
-    [Table("HospitalMaster")]
-    public class HospitalMaster
+    [Table("FundraiserMaster")]
+    public class FundraiserMaster
     {
-        [MaxLength(50)]
         [Required]
-        public string HospitalID { get; set; }
+        [MaxLength(50)]
+        public string FundraiserID { get; set; }
 
         [Required]
         [MaxLength(200)]
-        public string HospitalName { get; set; }
+        public string FundraiserName { get; set; }
 
         [Required]
         [MaxLength(200)]
@@ -55,20 +55,14 @@ namespace GiveMED.Api.Models
         public string Designation { get; set; }
 
         [Required]
-        public int TypeofHosptal { get; set; }
-
-        [MaxLength(50)]
-        [Required]
-        public string RegistrationNo { get; set; }
+        public int OrganizationType { get; set; }
 
         [Required]
-        public int YearEstablish { get; set; }
+        public int RegType { get; set; }
 
         [Required]
-        public int NoOfBeds { get; set; }
-
-        [MaxLength(50)]
-        public string WebURL { get; set; }
+        [MaxLength(200)]
+        public string Description { get; set; }
 
         public DateTime? CreateDateTime { get; set; }
 

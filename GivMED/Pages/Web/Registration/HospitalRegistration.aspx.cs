@@ -24,18 +24,18 @@ namespace GivMED.Pages.Web.Registration
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            WebApiResponse response = new WebApiResponse();
-            response = oRegistrationService.PostHospital(Submit());
+            //WebApiResponse response = new WebApiResponse();
+            //response = oRegistrationService.PostHospital(Submit());
 
-            if (response.StatusCode == (int)StatusCode.NoContent)
-            {
-                ClearControls();
-                ShowSuccessMessage(ResponseMessages.InsertSuccess);
-            }
-            else
-            {
-                ShowErrorMessage(ResponseMessages.Error);
-            }
+            //if (response.StatusCode == (int)StatusCode.NoContent)
+            //{
+            //    ClearControls();
+            //    ShowSuccessMessage(ResponseMessages.InsertSuccess);
+            //}
+            //else
+            //{
+            //    ShowErrorMessage(ResponseMessages.Error);
+            //}
         }
 
         private void ShowSuccessMessage(string msg)
@@ -54,44 +54,44 @@ namespace GivMED.Pages.Web.Registration
 
         }
 
-        private HospitalMaster Submit()
-        {
-            HospitalMaster oData = new HospitalMaster();
-            oData.HospitalID = "H01";
-            oData.HospitalName = txtNameofHospital.Text.ToString();
-            oData.Address = txtAddress.Text.ToString();
-            oData.Telephone = txtPhoneNumber.Text.ToString();
-            oData.City = txtcity.Text.ToString();
-            oData.State = ddlState.SelectedItem.Text.ToString();
-            oData.ZipCode = txtzip.Text.ToString();
-            oData.Email = txtEmailAddress.Text.ToString();
-            oData.ContactPerson = txtContactPerson.Text.ToString();
-            oData.Designation = txtDesignation.Text.ToString();
-            oData.TypeofHosptal = Convert.ToInt32(ddltype.SelectedItem.Value);
-            oData.RegistrationNo = txtRegistrationNumber.Text.ToString();
-            oData.YearEstablish = Convert.ToInt32(txtYear.Text);
-            oData.NoOfBeds = Convert.ToInt32(txtNoofbeds.Text);
-            oData.WebURL = txtWebURL.Text.ToString();
-            return oData;
-        }
+        //private HospitalMaster Submit()
+        //{
+        //    HospitalMaster oData = new HospitalMaster();
+        //    oData.HospitalID = "H01";
+        //    oData.HospitalName = txtNameofHospital.Text.ToString();
+        //    oData.Address = txtAddress.Text.ToString();
+        //    oData.Telephone = txtPhoneNumber.Text.ToString();
+        //    oData.City = txtcity.Text.ToString();
+        //    oData.State = ddlState.SelectedItem.Text.ToString();
+        //    oData.ZipCode = txtzip.Text.ToString();
+        //    oData.Email = txtEmailAddress.Text.ToString();
+        //    oData.ContactPerson = txtContactPerson.Text.ToString();
+        //    oData.Designation = txtDesignation.Text.ToString();
+        //    oData.TypeofHosptal = Convert.ToInt32(ddltype.SelectedItem.Value);
+        //    oData.RegistrationNo = txtRegistrationNumber.Text.ToString();
+        //    oData.YearEstablish = Convert.ToInt32(txtYear.Text);
+        //    oData.NoOfBeds = Convert.ToInt32(txtNoofbeds.Text);
+        //    oData.WebURL = txtWebURL.Text.ToString();
+        //    return oData;
+        //}
 
-        private void ClearControls()
-        {
-            txtNameofHospital.Text = string.Empty;
-            txtAddress.Text = string.Empty;
-            txtPhoneNumber.Text = string.Empty;
-            txtcity.Text = string.Empty;
-            ddlState.SelectedIndex = 0;
-            txtzip.Text = string.Empty;
-            txtEmailAddress.Text = string.Empty;
-            txtContactPerson.Text = string.Empty;
-            txtDesignation.Text = string.Empty;
-            ddltype.SelectedIndex = 0;
-            txtRegistrationNumber.Text = string.Empty;
-            txtYear.Text = string.Empty;
-            txtNoofbeds.Text = string.Empty;
-            txtWebURL.Text = string.Empty;
-        }
+        //private void ClearControls()
+        //{
+        //    txtNameofHospital.Text = string.Empty;
+        //    txtAddress.Text = string.Empty;
+        //    txtPhoneNumber.Text = string.Empty;
+        //    txtcity.Text = string.Empty;
+        //    ddlState.SelectedIndex = 0;
+        //    txtzip.Text = string.Empty;
+        //    txtEmailAddress.Text = string.Empty;
+        //    txtContactPerson.Text = string.Empty;
+        //    txtDesignation.Text = string.Empty;
+        //    ddltype.SelectedIndex = 0;
+        //    txtRegistrationNumber.Text = string.Empty;
+        //    txtYear.Text = string.Empty;
+        //    txtNoofbeds.Text = string.Empty;
+        //    txtWebURL.Text = string.Empty;
+        //}
 
         #endregion Methdos
     }

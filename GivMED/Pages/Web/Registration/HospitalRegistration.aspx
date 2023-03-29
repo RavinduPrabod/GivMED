@@ -1,9 +1,52 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Web.Master" AutoEventWireup="true" CodeBehind="HospitalRegistration.aspx.cs" Inherits="GivMED.Pages.Web.Registration.HospitalRegistration" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="webbody" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        .carousel-item {
+            height: 100vh;
+            min-height: 350px;
+            background: no-repeat center center scroll;
+            background-size: cover;
+        }
+    </style>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
-            <div class="card card-outline">
+            <div class="card" style="card card-primary card-outline">
+                <div class="card" style="width: 100%; height: 600px; overflow: hidden;">
+                    <!-- /.card-header -->
+                    <div class="card-body d-flex justify-content-center">
+                        <div id="carouselExampleIndicators" class="carousel slide" style="width: 100%;">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" src="https://placehold.it/900x500/39CCCC/ffffff&text=I+Love+Bootstrap" alt="First slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="https://placehold.it/900x500/3c8dbc/ffffff&text=I+Love+Bootstrap" alt="Second slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="https://placehold.it/900x500/f39c12/ffffff&text=I+Love+Bootstrap" alt="Third slide">
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                <span class="carousel-control-custom-icon" aria-hidden="false">
+                                    <i class="fas fa-chevron-left"></i>
+                                </span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                <span class="carousel-control-custom-icon" aria-hidden="true">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <%-- <div class="card card-outline">
                 <div class="card-header">
                     <div class="form-group row">
                         <div class="section-title">
@@ -49,13 +92,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <asp:Label ID="lblcity" runat="server" Text="City:"></asp:Label>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <asp:Label ID="lblState" runat="server" Text="State/Province:"></asp:Label>
                                         </div>
-                                        <span class="col-sm-1"></span>
+                                        <div class="col-sm-3">
+                                            <asp:Label ID="lblCountry" runat="server" Text="Country:"></asp:Label>
+                                        </div>
                                         <div class="col-sm-3">
                                             <asp:Label ID="lblZip" runat="server" Text="Zip/Postal Code:"></asp:Label>
                                         </div>
@@ -64,36 +109,40 @@
                                         <div class="col-sm-3">
                                             <asp:TextBox ID="txtcity" runat="server" CssClass="form-control"></asp:TextBox>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <asp:DropDownList ID="ddlState" CssClass="form-control" runat="server">
                                                 <asp:ListItem Value="Colombo">Colombo</asp:ListItem>
-                                                <asp:ListItem>Gampaha</asp:ListItem>
-                                                <asp:ListItem Value="Kalutara"></asp:ListItem>
-                                                <asp:ListItem>Kandy</asp:ListItem>
-                                                <asp:ListItem>Matale</asp:ListItem>
-                                                <asp:ListItem>Nuwara Eliya</asp:ListItem>
-                                                <asp:ListItem>Galle</asp:ListItem>
-                                                <asp:ListItem>Matara</asp:ListItem>
-                                                <asp:ListItem>Hambantota</asp:ListItem>
-                                                <asp:ListItem>Jaffna</asp:ListItem>
-                                                <asp:ListItem>Kilinochchi</asp:ListItem>
-                                                <asp:ListItem>Mannar</asp:ListItem>
-                                                <asp:ListItem>Vavuniya</asp:ListItem>
-                                                <asp:ListItem>Mullaitivu</asp:ListItem>
-                                                <asp:ListItem>Batticaloa</asp:ListItem>
-                                                <asp:ListItem>Ampara</asp:ListItem>
-                                                <asp:ListItem>Trincomalee</asp:ListItem>
-                                                <asp:ListItem>Kurunegala</asp:ListItem>
-                                                <asp:ListItem>Puttalam</asp:ListItem>
-                                                <asp:ListItem>Anuradhapura</asp:ListItem>
-                                                <asp:ListItem>Polonnaruwa</asp:ListItem>
-                                                <asp:ListItem>Badulla</asp:ListItem>
-                                                <asp:ListItem>Moneragala</asp:ListItem>
-                                                <asp:ListItem>Ratnapura</asp:ListItem>
-                                                <asp:ListItem>Kegalle</asp:ListItem>
+                                                <asp:ListItem Value="Gampaha">Gampaha</asp:ListItem>
+                                                <asp:ListItem Value="Kalutara">Kalutara</asp:ListItem>
+                                                <asp:ListItem Value="Kandy">Kandy</asp:ListItem>
+                                                <asp:ListItem Value="Matale">Matale</asp:ListItem>
+                                                <asp:ListItem Value="Nuwara Eliya">Nuwara Eliya</asp:ListItem>
+                                                <asp:ListItem Value="Galle">Galle</asp:ListItem>
+                                                <asp:ListItem Value="Matara">Matara</asp:ListItem>
+                                                <asp:ListItem Value="Hambantota">Hambantota</asp:ListItem>
+                                                <asp:ListItem Value="Jaffna">Jaffna</asp:ListItem>
+                                                <asp:ListItem Value="Kilinochchi">Kilinochchi</asp:ListItem>
+                                                <asp:ListItem Value="Mannar">Mannar</asp:ListItem>
+                                                <asp:ListItem Value="Vavuniya">Vavuniya</asp:ListItem>
+                                                <asp:ListItem Value="Mullaitivu">Mullaitivu</asp:ListItem>
+                                                <asp:ListItem Value="Batticaloa">Batticaloa</asp:ListItem>
+                                                <asp:ListItem Value="Ampara">Ampara</asp:ListItem>
+                                                <asp:ListItem Value="Trincomalee">Trincomalee</asp:ListItem>
+                                                <asp:ListItem Value="Kurunegala">Kurunegala</asp:ListItem>
+                                                <asp:ListItem Value="Puttalam">Puttalam</asp:ListItem>
+                                                <asp:ListItem Value="Anuradhapura">Anuradhapura</asp:ListItem>
+                                                <asp:ListItem Value="Polonnaruwa">Polonnaruwa</asp:ListItem>
+                                                <asp:ListItem Value="Badulla">Badulla</asp:ListItem>
+                                                <asp:ListItem Value="Moneragala">Moneragala</asp:ListItem>
+                                                <asp:ListItem Value="Ratnapura">Ratnapura</asp:ListItem>
+                                                <asp:ListItem Value="Ratnapura">Kegalle</asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
-                                        <span class="col-sm-1"></span>
+                                        <div class="col-sm-3">
+                                            <asp:DropDownList ID="ddlCountry" CssClass="form-control" runat="server">
+                                                <asp:ListItem Value="Sri-Lanka">Sri-Lanka</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
                                         <div class="col-sm-3">
                                             <asp:TextBox ID="txtzip" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                         </div>
@@ -181,18 +230,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group mb-0">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="terms" class="custom-control-input" id="chkterms" onchange="toggleButton();">
-                            <label class="custom-control-label" for="exampleCheck1">By submitting this registration form, you agree to the following <a href="#" onclick="ShowTerms();">terms of service</a>.</label>
+                    <div class="form-group row">
+                        <div class="col-sm-8">
+                            <asp:CheckBox ID="chkTerms" runat="server" />
+                            <asp:Label runat="server" CssClass="labe">By submitting this registration form, you agree to the following <a href="#" onclick="ShowTerms();">terms of service</a>.</asp:Label>
+                        </div>
+                        <div class="col-sm-4">
                         </div>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:Button runat="server" ID="btnSubmit" CssClass="btn btn-primary" Text="Submit" OnClick="btnSubmit_Click" />
-                    <button type="button" class="btn btn-success swalDefaultSuccess">
-                        Launch Success Toast
-                    </button>
+                    <asp:Button runat="server" ID="btnSubmit" CssClass="btn btn-primary" Text="Register" OnClick="btnSubmit_Click" />
                 </div>
                 <div class="modal fade" id="modal-terms">
                     <div class="modal-dialog modal-lg">
@@ -207,21 +255,6 @@
                                 <p class="card-text">
                                     "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
                                 </p>
-                                <p class="card-text">
-                                    "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
-                                </p>
-                                <p class="card-text">
-                                    "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
-                                </p>
-                                <p class="card-text">
-                                    "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
-                                </p>
-                                <p class="card-text">
-                                    "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
-                                </p>
-                                <p class="card-text">
-                                    "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
-                                </p>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -229,30 +262,22 @@
                     <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
-            </div>
+            </div>--%>
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
+        $(document).ready(function () {
+            // Hide the previous button on load
+            $('.carousel-control-prev').hide();
 
-        function ShowTerms() {
-            $('.modal-backdrop').remove();
-            $('#modal-terms').modal('show');
-            return false;
-        };
-
-        function ShowTerms() {
-            $('.modal-backdrop').remove();
-            $('#modal-terms').modal('show');
-            return false;
-        };
-
-        function toggleButton() {
-            const checkbox = document.getElementById("chkterms");
-            const button = document.getElementById("<%= btnSubmit.ClientID %>");
-
-            // Set the disabled state of the button based on the checked state of the checkbox
-            button.disabled = !checkbox.checked;
-        };
-
+            // Show the previous button when moving to the second slide
+            $('#carouselExampleIndicators').on('slid.bs.carousel', function () {
+                if ($('.carousel-item.active').index() === 1) {
+                    $('.carousel-control-prev').show();
+                } else {
+                    $('.carousel-control-prev').hide();
+                }
+            });
+        });
     </script>
 </asp:Content>

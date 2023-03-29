@@ -19,9 +19,9 @@ namespace GiveMED.Api.Controllers
             _context = context;
         }
 
-        private bool CampNameExists(string name)
+        private bool HospitalExists(string name)
         {
-            return _context.HospitalMasters.Any(e => e.HospitalName == name);
+            return _context.HospitalMaster.Any(e => e.HospitalName == name);
         }
 
         [HttpPost]
@@ -38,7 +38,7 @@ namespace GiveMED.Api.Controllers
             //if (!ModelState.IsValid)
             //    return BadRequest(ModelState);
 
-            _context.HospitalMasters.Add(oData);
+            _context.HospitalMaster.Add(oData);
             await _context.SaveChangesAsync();
 
             return NoContent();

@@ -10,7 +10,7 @@
 
 namespace GivMED
 {
-    public partial class WebForm1
+    public partial class WebForm2
     {
     }
 }

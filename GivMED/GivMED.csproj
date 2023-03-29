@@ -161,6 +161,7 @@
     <Content Include="dist\css\alt\adminlte.pages.min.css" />
     <Content Include="dist\css\alt\adminlte.plugins.css" />
     <Content Include="dist\css\alt\adminlte.plugins.min.css" />
+    <Content Include="dist\css\validationEngine.jquery.css" />
     <Content Include="dist\img\AdminLTELogo.png" />
     <Content Include="dist\img\avatar.png" />
     <Content Include="dist\img\avatar2.png" />
@@ -175,7 +176,10 @@
     <Content Include="dist\img\credit\paypal.png" />
     <Content Include="dist\img\credit\paypal2.png" />
     <Content Include="dist\img\credit\visa.png" />
+    <Content Include="dist\img\d1.jpg" />
+    <Content Include="dist\img\d2.jpg" />
     <Content Include="dist\img\default-150x150.png" />
+    <Content Include="dist\img\Freg1.jpg" />
     <Content Include="dist\img\icons.png" />
     <Content Include="dist\img\photo1.png" />
     <Content Include="dist\img\photo2.png" />
@@ -186,6 +190,7 @@
     <Content Include="dist\img\prod-3.jpg" />
     <Content Include="dist\img\prod-4.jpg" />
     <Content Include="dist\img\prod-5.jpg" />
+    <Content Include="dist\img\Untitled design.png" />
     <Content Include="dist\img\user1-128x128.jpg" />
     <Content Include="dist\img\user2-160x160.jpg" />
     <Content Include="dist\img\user3-128x128.jpg" />
@@ -198,6 +203,8 @@
     <Content Include="dist\js\adminlte.min.js" />
     <Content Include="dist\js\common.js" />
     <Content Include="dist\js\demo.js" />
+    <Content Include="dist\js\jquery.validationEngine-en.js" />
+    <Content Include="dist\js\jquery.validationEngine.js" />
     <Content Include="dist\js\pages\dashboard.js" />
     <Content Include="dist\js\pages\dashboard2.js" />
     <Content Include="dist\js\pages\dashboard3.js" />
@@ -227,8 +234,11 @@
     <Content Include="dist\js\.eslintrc.json" />
     <Content Include="dist\js\adminlte.js.map" />
     <Content Include="dist\js\adminlte.min.js.map" />
+    <Content Include="Pages\Web\HomePage.aspx" />
+    <Content Include="Pages\Web\Registration\DonorRegistration.aspx" />
+    <Content Include="Pages\Web\Registration\FundraiserRegistration.aspx" />
     <Content Include="Pages\Web\Registration\HospitalRegistration.aspx" />
-    <Content Include="Pages\Web\WebHome.aspx" />
+    <Content Include="Pages\Web\validation.aspx" />
     <Content Include="plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css.map" />
     <Content Include="plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css.map" />
     <Content Include="plugins\bootstrap-colorpicker\js\bootstrap-colorpicker.js.map" />
@@ -260,6 +270,7 @@
     <Content Include="plugins\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="plugins\icheck-bootstrap\LICENSE" />
     <Content Include="plugins\ion-rangeslider\License.md" />
+    <Content Include="plugins\jquery\jquery-3.6.0.min.js" />
     <Content Include="plugins\jquery\jquery.min.map" />
     <Content Include="plugins\jquery\jquery.slim.min.map" />
     <Content Include="plugins\moment\locales.min.js.map" />
@@ -292,7 +303,6 @@
     <Content Include="plugins\summernote\summernote.js.map" />
     <Content Include="plugins\summernote\summernote.min.js.map" />
     <Content Include="plugins\toastr\toastr.js.map" />
-    <Content Include="WebForm1.aspx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css" />
@@ -2180,6 +2190,27 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\HospitalMaster.cs" />
+    <Compile Include="Pages\Web\HomePage.aspx.cs">
+      <DependentUpon>HomePage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Web\HomePage.aspx.designer.cs">
+      <DependentUpon>HomePage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Web\Registration\DonorRegistration.aspx.cs">
+      <DependentUpon>DonorRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Web\Registration\DonorRegistration.aspx.designer.cs">
+      <DependentUpon>DonorRegistration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Web\Registration\FundraiserRegistration.aspx.cs">
+      <DependentUpon>FundraiserRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Web\Registration\FundraiserRegistration.aspx.designer.cs">
+      <DependentUpon>FundraiserRegistration.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Web\Registration\HospitalRegistration.aspx.cs">
       <DependentUpon>HospitalRegistration.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2187,12 +2218,12 @@
     <Compile Include="Pages\Web\Registration\HospitalRegistration.aspx.designer.cs">
       <DependentUpon>HospitalRegistration.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Web\WebHome.aspx.cs">
-      <DependentUpon>WebHome.aspx</DependentUpon>
+    <Compile Include="Pages\Web\validation.aspx.cs">
+      <DependentUpon>validation.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\Web\WebHome.aspx.designer.cs">
-      <DependentUpon>WebHome.aspx</DependentUpon>
+    <Compile Include="Pages\Web\validation.aspx.designer.cs">
+      <DependentUpon>validation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\RegistrationService.cs" />
@@ -2224,19 +2255,11 @@
     <Compile Include="Web.Master.designer.cs">
       <DependentUpon>Web.Master</DependentUpon>
     </Compile>
-    <Compile Include="WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Pages\App\" />
     <Folder Include="Pages\Web\Login\" />
-    <Folder Include="Pages\Web\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

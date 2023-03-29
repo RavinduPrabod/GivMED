@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace GivMED.Pages.Web
+namespace GivMED.Pages.Web.Registration
 {
-    public partial class WebHome : System.Web.UI.Page
+    public partial class DonorRegistration : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
