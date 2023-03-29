@@ -13,7 +13,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
-            <div class="card" style="card card-primary card-outline">
+            <div class="card card-primary card-outline">
                 <div class="card" style="width: 100%; height: 600px; overflow: hidden;">
                     <!-- /.card-header -->
                     <div class="card-body d-flex justify-content-center">
