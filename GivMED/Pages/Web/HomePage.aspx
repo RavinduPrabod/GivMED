@@ -1,6 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Web.Master" AutoEventWireup="true" CodeBehind="HomePage.aspx.cs" Inherits="GivMED.Pages.Web.HomePage" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        .carousel-item {
+            height: 100vh;
+            min-height: 350px;
+            background: no-repeat center center scroll;
+            background-size: cover;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
