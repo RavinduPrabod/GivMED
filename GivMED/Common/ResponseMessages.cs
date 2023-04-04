@@ -23,10 +23,16 @@ namespace GivMED.Common
 
         public static string Error { get { return "Error Occured..Please Try Again"; } }
 
+        public static string PasswordNotMatch { get { return "Password Not Match"; } }
+
         public static string NewUser { get { return "New User Added.."; } }
 
         public static string AlreadyAssign { get { return "Already Assign"; } }
 
         public static string CampDeleteExist { get { return "Cannot Delete, Already Camp Have Donors"; } }
+
+        public static string EmailAlreadyExists { get { return "Email Already Exists"; } }
+
+        public static string Registerd { get { return "Successfully Registered!"; } }
     }
 }

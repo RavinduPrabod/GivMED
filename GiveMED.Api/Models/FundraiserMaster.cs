@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 
 namespace GiveMED.Api.Models
 {
-    [Table("FundraiserMaster")]
-    public class FundraiserMaster
+    [Table("DonorMaster")]
+    public class DonorMaster
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         [MaxLength(50)]
         public string FundraiserID { get; set; }
 
         [Required]
+        [MaxLength(50)]
+        public string UserName { get; set; }
+
+        [Required]
         [MaxLength(200)]
-        public string FundraiserName { get; set; }
+        public string DonorName { get; set; }
 
         [Required]
         [MaxLength(200)]
@@ -55,7 +60,7 @@ namespace GiveMED.Api.Models
         public string Designation { get; set; }
 
         [Required]
-        public int OrganizationType { get; set; }
+        public int OrgType { get; set; }
 
         [Required]
         public int RegType { get; set; }

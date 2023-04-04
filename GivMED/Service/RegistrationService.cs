@@ -7,6 +7,7 @@ using System.Web;
 using System.Net.Http;
 using System.Text;
 using GivMED.Models;
+using GivMED.Dto;
 
 namespace GivMED.Service
 {
@@ -21,6 +22,23 @@ namespace GivMED.Service
                 client.BaseAddress = new Uri(GlobalData.BaseUri);
                 //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
                 var json = JsonConvert.SerializeObject(oData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+            }
+            return webApiResponse;
+        }
+
+        public WebApiResponse CreateUser(UserDto oUserForRegisterDto)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "User/PostUser";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(oUserForRegisterDto);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = client.PostAsync(path, content).Result;

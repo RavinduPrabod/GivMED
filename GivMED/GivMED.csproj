@@ -234,6 +234,7 @@
     <Content Include="dist\js\.eslintrc.json" />
     <Content Include="dist\js\adminlte.js.map" />
     <Content Include="dist\js\adminlte.min.js.map" />
+    <Content Include="Pages\App\Profile\Profile.aspx" />
     <Content Include="Pages\Web\HomePage.aspx" />
     <Content Include="Pages\Web\Registration\DonorRegistration.aspx" />
     <Content Include="Pages\Web\Registration\FundraiserRegistration.aspx" />
@@ -2186,10 +2187,23 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="EmailService\EmailConfigurationService.cs" />
+    <Compile Include="EmailService\GiveMEDContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmailConfiguration.cs" />
     <Compile Include="Models\HospitalMaster.cs" />
+    <Compile Include="Models\UnsendEmailLog.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Pages\App\Profile\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\App\Profile\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Web\HomePage.aspx.cs">
       <DependentUpon>HomePage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2258,8 +2272,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Pages\App\" />
-    <Folder Include="Pages\Web\Login\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

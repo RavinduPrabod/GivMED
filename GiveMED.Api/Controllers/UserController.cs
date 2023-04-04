@@ -1,4 +1,5 @@
 ﻿using GiveMED.Api.Data;
+using GiveMED.Api.Dto;
 using GiveMED.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace GiveMED.Api.Controllers
 {
+    [Route("api/[controller]/[action]")]
+    [ApiController]
     public class UserController : Controller
     {
         private readonly DataContext _context;
@@ -24,6 +27,43 @@ namespace GiveMED.Api.Controllers
         {
             return _context.User.Any(e => e.UserName == UserName);
         }
+
+        [HttpPost]
+        [ActionName("PostUser")]
+        public async Task<IActionResult> PostUser([FromBody] UserDto oUserForRegisterDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (await _repo.UserExists(oUserForRegisterDto.UserName.ToLower()))
+                ModelState.AddModelError("Username", "Username already exists");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var userToCreate = new User
+            {
+                UserName = oUserForRegisterDto.UserName,
+                FirstName = oUserForRegisterDto.FirstName,
+                LastName = oUserForRegisterDto.LastName,
+                Type = oUserForRegisterDto.Type,
+                Status = oUserForRegisterDto.Status,
+                NoOfAttempts = oUserForRegisterDto.NoOfAttempts,
+                LastLoginDate = oUserForRegisterDto.LastLoginDate,
+                UserEmail = oUserForRegisterDto.Email,
+                CreatedBy = oUserForRegisterDto.CreatedBy,
+                CreatedDateTime = oUserForRegisterDto.CreatedDateTime,
+                CreatedWorkStation = oUserForRegisterDto.CreatedWorkStation,
+                ModifiedBy = oUserForRegisterDto.ModifiedBy,
+                ModifiedDateTime = oUserForRegisterDto.ModifiedDateTime,
+                ModifiedWorkStation = oUserForRegisterDto.ModifiedWorkStation
+            };
+
+            var createdUser = await _repo.Register(userToCreate, oUserForRegisterDto.Password);
+            return CreatedAtAction("GetUser", new { username = createdUser.UserName }, createdUser);
+        }
+
 
         [HttpGet]
         [ActionName("GetUsers")]

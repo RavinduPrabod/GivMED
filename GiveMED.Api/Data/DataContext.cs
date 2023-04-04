@@ -15,7 +15,10 @@ namespace GiveMED.Api.Data
         }
         public DbSet<User> User { get; set; }
         public DbSet<HospitalMaster> HospitalMaster { get; set; }
-        public DbSet<FundraiserMaster> FundraiserMaster { get; set; }
+        public DbSet<DonorMaster> FundraiserMaster { get; set; }
+        public DbSet<EmailConfiguration> EmailConfiguration { get; set; }
+        public DbSet<EmailUsers> EmailUsers { get; set; }
+        public DbSet<UnsendEmailLog> UnsendEmailLog { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,7 +28,13 @@ namespace GiveMED.Api.Data
 
             modelBuilder.Entity<HospitalMaster>().HasKey(c => new { c.HospitalID });
 
-            modelBuilder.Entity<FundraiserMaster>().HasKey(c => new { c.FundraiserID });
+            modelBuilder.Entity<DonorMaster>().HasKey(c => new { c.FundraiserID, c.UserName });
+
+            modelBuilder.Entity<EmailConfiguration>().HasKey(c => new { c.ConfigurationId });
+
+            modelBuilder.Entity<EmailUsers>().HasKey(c => new { c.UserId });
+
+            modelBuilder.Entity<UnsendEmailLog>().HasKey(c => new { c.UserId });
 
             #endregion KeyFields
 

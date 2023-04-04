@@ -33,67 +33,58 @@ namespace GivMED.Pages.Web.Registration
         protected global::System.Web.UI.WebControls.View View1;
 
         /// <summary>
-        /// txtOrganizationName control.
+        /// txtNameOrg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOrganizationName;
+        protected global::System.Web.UI.WebControls.TextBox txtNameOrg;
 
         /// <summary>
-        /// TextBox1 control.
+        /// txtEmailOrg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox txtEmailOrg;
 
         /// <summary>
-        /// TextBox2 control.
+        /// txtPwdOrg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        protected global::System.Web.UI.WebControls.TextBox txtPwdOrg;
 
         /// <summary>
-        /// TextBox3 control.
+        /// txtRePwdOrg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox txtRePwdOrg;
 
         /// <summary>
-        /// TextBox4 control.
+        /// chktermsOrg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox4;
+        protected global::System.Web.UI.WebControls.CheckBox chktermsOrg;
 
         /// <summary>
-        /// CheckBox1 control.
+        /// btnRegisterOrg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBox1;
-
-        /// <summary>
-        /// Button1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button btnRegisterOrg;
 
         /// <summary>
         /// Panel1 control.
@@ -105,58 +96,58 @@ namespace GivMED.Pages.Web.Registration
         protected global::System.Web.UI.WebControls.Panel Panel1;
 
         /// <summary>
-        /// txtname control.
+        /// txtNameInd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtname;
+        protected global::System.Web.UI.WebControls.TextBox txtNameInd;
 
         /// <summary>
-        /// txtEmail control.
+        /// txtEmailInd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
+        protected global::System.Web.UI.WebControls.TextBox txtEmailInd;
 
         /// <summary>
-        /// txtPassword control.
+        /// txtPwdInd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
+        protected global::System.Web.UI.WebControls.TextBox txtPwdInd;
 
         /// <summary>
-        /// txtConfirmPassword control.
+        /// txtRePwdInd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtConfirmPassword;
+        protected global::System.Web.UI.WebControls.TextBox txtRePwdInd;
 
         /// <summary>
-        /// agreeTerms control.
+        /// chkTermsInd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox agreeTerms;
+        protected global::System.Web.UI.WebControls.CheckBox chkTermsInd;
 
         /// <summary>
-        /// btnRegister control.
+        /// btnRegisterInd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRegister;
+        protected global::System.Web.UI.WebControls.Button btnRegisterInd;
 
         /// <summary>
         /// View2 control.
