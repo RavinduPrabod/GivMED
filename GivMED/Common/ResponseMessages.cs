@@ -25,6 +25,8 @@ namespace GivMED.Common
 
         public static string PasswordNotMatch { get { return "Password Not Match"; } }
 
+        public static string NewPasswordNotMatch { get { return "New Password & Confirm Password Not Match"; } }
+
         public static string NewUser { get { return "New User Added.."; } }
 
         public static string AlreadyAssign { get { return "Already Assign"; } }

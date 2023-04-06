@@ -24,6 +24,7 @@
 </head>
 <body>
     <form id="Loginform" runat="server">
+        <asp:ScriptManager ID="smBody" runat="server"></asp:ScriptManager>
         <asp:ContentPlaceHolder ID="Loginbody" runat="server">
         </asp:ContentPlaceHolder>
     </form>

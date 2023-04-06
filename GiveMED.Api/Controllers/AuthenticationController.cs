@@ -3,6 +3,7 @@ using GiveMED.Api.Dto;
 using GiveMED.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -114,14 +115,51 @@ namespace GiveMED.Api.Controllers
 
         [HttpPost]
         [ActionName("PasswordReset")]
-        public async Task<IActionResult> PasswordReset([FromBody] ChangePwdDto oChangePwdDto)
+        public async Task<User> PasswordReset([FromBody] ChangePwdDto oChangePwdDto)
         {
-            User oUser = await _repo.PasswordReset(oChangePwdDto.UserName, oChangePwdDto.Password, oChangePwdDto.NewPassword);
+            var user = await _context.User.FirstOrDefaultAsync(x => x.UserName == oChangePwdDto.UserName);
 
-            if (oUser == null)
-                return Unauthorized();
+            if (user == null)
+                return null;
 
-            return Ok(oUser);
+            if (!VerifyPasswordHash(oChangePwdDto.Password, user.PasswordHash, user.PasswordSalt))
+                return null;
+
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(oChangePwdDto.NewPassword, out passwordHash, out passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            user.Status = 1;
+            user.NoOfAttempts = 0;
+
+            _context.Entry(user).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return user;
+        }
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != passwordHash[i])
+                        return false;
+                }
+            }
+            return true;
         }
     }
 }

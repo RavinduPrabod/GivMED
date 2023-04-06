@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="GivMED.Pages.App.Profile.Profile" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
@@ -107,7 +108,7 @@
                     <div class="card">
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
-                                <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">settings</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#changepwd" data-toggle="tab">Security</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
                             </ul>
@@ -271,23 +272,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <ajaxtoolkit:tabcontainer runat="server" activetabindex="0">
-                                            <ajaxtoolkit:tabpanel runat="server" id="TabPanel1" headertext="Settings">
-                                                <contenttemplate>
-                                                    <asp:TextBox runat="server" CssClass="form-control" ID="txtCurPwd" OnTextChanged="txtCurPwd_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                </contenttemplate>
-                                            </ajaxtoolkit:tabpanel>
-                                            <ajaxtoolkit:tabpanel runat="server" id="TabPanel2" headertext="Security">
-                                                <contenttemplate>
-                                                    <!-- Security content here -->
-                                                </contenttemplate>
-                                            </ajaxtoolkit:tabpanel>
-                                            <ajaxtoolkit:tabpanel runat="server" id="timeline" headertext="Timeline">
-                                                <contenttemplate>
-                                                    <!-- Timeline content here -->
-                                                </contenttemplate>
-                                            </ajaxtoolkit:tabpanel>
-                                        </ajaxtoolkit:tabcontainer>
+                                        <label for="inputName" class="col-sm-3 col-form-label">Current Password</label>
+                                        <div class="col-sm-4">
+                                            <asp:TextBox runat="server" CssClass="form-control" ID="txtCurPwd" OnTextChanged="txtCurPwd_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                        </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-3 col-form-label">New Password</label>
@@ -296,7 +284,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputName" class="col-sm-3 col-form-label">Confirm Password</label>
+                                        <label for="inputName" class="col-sm-3 col-form-label">Confirm New Password</label>
                                         <div class="col-sm-4">
                                             <asp:TextBox runat="server" CssClass="form-control" ID="txtReNewPwd" placeholder="Re Enter New Password" TextMode="Password"></asp:TextBox>
                                         </div>
@@ -304,7 +292,7 @@
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-4">
-                                            <asp:Button ID="btnUpdateSec" runat="server" Text="Update" CssClass="btn btn-primary" OnClick="btnUpdateSec_Click" />
+                                            <asp:Button ID="btnUpdateSec" runat="server" Text="Update" CssClass="btn btn-primary" OnClick="btnUpdateSec_Click" OnClientClick="return Validate2();" />
                                         </div>
                                     </div>
                                 </div>
@@ -349,6 +337,30 @@
                 }
             }
         });
+
+        $(document).ready(function () {
+            Validate2 = function () {
+                $('#<% = txtCurPwd.ClientID %>').addClass('validate[required]');
+                $('#<% = txtNewPwd.ClientID %>').addClass('validate[required]');
+                $('#<% = txtReNewPwd.ClientID %>').addClass('validate[required]');
+                
+                var valid = $("#form1").validationEngine('validate');
+                var vars = $("#form1").serialize();
+                if (valid == true) {
+                    $("#form1").validationEngine('detach');
+                } else {
+                    $("#form1").validationEngine('attach', { promptPosition: "inline", scroll: false });
+                    return false;
+                }
+            }
+        });
+
+        function hideShowTabs() {
+            $('.nav-tabs a[href="#settings"]').hide();
+            $('.tab-pane#settings').removeClass('active');
+            $('.nav-tabs a[href="#changepwd"]').tab('show');
+            $('.tab-pane#changepwd').addClass('active');
+        }
 
         //$(document).ready(function () {
         //    Validate = function () {

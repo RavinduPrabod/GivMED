@@ -124,7 +124,7 @@ namespace GivMED.Pages.App.Profile
 
             if (response.StatusCode == (int)StatusCode.Success)
             {
-                ShowSuccessMessage(ResponseMessages.InsertSuccess);
+                ShowSuccessMessage(ResponseMessages.UpdateSuccess);
             }
             else
             {
@@ -158,13 +158,14 @@ namespace GivMED.Pages.App.Profile
                     {
                         txtNewPwd.Enabled = true;
                         txtReNewPwd.Enabled = true;
+                        ScriptManager.RegisterStartupScript(this, GetType(), "HideSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').hide();" + "$('.tab-pane#settings').removeClass('active');" + "});</script>", false);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowChangePwdTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#changepwd\"]').tab('show');" + "$('.tab-pane#changepwd').addClass('active');" + "});</script>", false);
                     }
                     else
                     {
                         ShowErrorMessage(ResponseMessages.PasswordNotMatch);
                     }
                 }
-                ScriptManager.RegisterStartupScript(this, GetType(), "ActivatechangepwdTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#changepwd\"]').tab('show');" + "$('.tab-pane#changepwd').addClass('active');" + "});</script>", false);
             }
             catch (Exception ex)
             {
@@ -174,10 +175,80 @@ namespace GivMED.Pages.App.Profile
 
         protected void btnUpdateSec_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(txtSecEmail.Text))
+            {
+                txtSecEmail.Focus();
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(txtCurPwd.Text))
+                {
+                    txtCurPwd.Focus();
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(txtNewPwd.Text))
+                    {
+                        txtNewPwd.Focus();
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(txtReNewPwd.Text))
+                        {
+                            txtReNewPwd.Focus();
+                        }
+                        else
+                        {
+                            if (txtNewPwd.Text.Trim().Equals(txtReNewPwd.Text.Trim()))
+                            {
+                                ValidateLogin();
+                            }
+                            else
+                            {
+                                ShowErrorMessage(ResponseMessages.NewPasswordNotMatch);
+                            }
+                        }
+                    }
 
+                }
+            }
         }
 
-        
+        private void ValidateLogin()
+        {
+            try
+            {
+                ChangePwdDto oChangePwdDto = new ChangePwdDto
+                {
+                    UserName = txtSecEmail.Text.Trim(),
+                    Password = txtCurPwd.Text.Trim(),
+                    NewPassword = txtNewPwd.Text.Trim()
+                };
+                LoggedUserDto loggedUser = new LoggedUserDto();
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Authentication/PasswordReset";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+
+                    var json = JsonConvert.SerializeObject(oChangePwdDto);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = client.PostAsync(path, content).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Response.Redirect("~/Pages/Login.aspx");
+                    }
+                    else
+                    {
+                        ShowErrorMessage(ResponseMessages.LoginFail);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         #endregion Events
 
