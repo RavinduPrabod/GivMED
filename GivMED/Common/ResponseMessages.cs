@@ -33,6 +33,10 @@ namespace GivMED.Common
 
         public static string EmailAlreadyExists { get { return "Email Already Exists"; } }
 
-        public static string Registerd { get { return "Successfully Registered!"; } }
+        public static string Registerd { get { return "Successfully Registered"; } }
+
+        public static string LoginSuccess { get { return "Login Successfull"; } }
+
+        public static string LoginFail { get { return "Login Fail"; } }
     }
 }

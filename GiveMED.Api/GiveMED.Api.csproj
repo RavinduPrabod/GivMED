@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20230403171502_02.cs" />
+    <Compile Remove="Migrations\20230403171502_02.Designer.cs" />
+    <Compile Remove="Migrations\20230405120358_03.cs" />
+    <Compile Remove="Migrations\20230405120358_03.Designer.cs" />
+    <Compile Remove="Migrations\20230405120547_04.cs" />
+    <Compile Remove="Migrations\20230405120547_04.Designer.cs" />
+    <Compile Remove="Migrations\20230405120702_03.cs" />
+    <Compile Remove="Migrations\20230405120702_03.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EFCore.BulkExtensions" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />

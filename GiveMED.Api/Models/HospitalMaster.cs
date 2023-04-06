@@ -10,9 +10,12 @@ namespace GiveMED.Api.Models
     [Table("HospitalMaster")]
     public class HospitalMaster
     {
-        [MaxLength(50)]
         [Required]
-        public string HospitalID { get; set; }
+        public int HospitalID { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string UserName { get; set; }
 
         [Required]
         [MaxLength(200)]

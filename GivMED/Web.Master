@@ -15,6 +15,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
     <link href="dist/css/validationEngine.jquery.css" rel="stylesheet" />
+
     <!-- Font Awesome Icons -->
     <link href="plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
 
@@ -63,7 +64,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <a href="#" class="nav-link">Fundraising Guide</a>
                         </li>
                         <li class="nav-item">
-                            <button type="button" class="btn btn-danger">Login</button>
+                            <a href="/Pages/Login.aspx" class="btn btn-danger">Login Donor</a>
+                        </li>
+                         <li class="nav-item">
+                            <a href="/Pages/HLogin.aspx" class="btn btn-warning">Login Hospital</a>
                         </li>
                     </ul>
                 </div>

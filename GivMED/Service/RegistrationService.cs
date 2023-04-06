@@ -13,6 +13,42 @@ namespace GivMED.Service
 {
     public class RegistrationService
     {
+        public bool CheckHospitalMasterAvailability(string UserName)
+        {
+            bool result = false;
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Registration/CheckHospitalMasterAvailability/" + UserName;
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                HttpResponseMessage response = client.GetAsync(path).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var value = response.Content.ReadAsStringAsync().Result;
+                    result = JsonConvert.DeserializeObject<bool>(value);
+                }
+            }
+            return result;
+        }
+
+        public bool CheckDonorMasterAvailability(string UserName)
+        {
+            bool result = false;
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Registration/CheckDonorMasterAvailability/" + UserName;
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                HttpResponseMessage response = client.GetAsync(path).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var value = response.Content.ReadAsStringAsync().Result;
+                    result = JsonConvert.DeserializeObject<bool>(value);
+                }
+            }
+            return result;
+        }
+
         public WebApiResponse PostHospital(HospitalMaster oData)
         {
             WebApiResponse webApiResponse = new WebApiResponse();

@@ -156,7 +156,7 @@
                                                 </div>
                                                 <!-- /.col -->
                                                 <div class="col-4">
-                                                    <asp:Button runat="server" ID="btnRegister" CssClass="btn btn-primary btn-block" Text="Register" OnClick="btnRegister_Click" />
+                                                    <asp:Button runat="server" ID="btnRegister" CssClass="btn btn-primary btn-block" Text="Register" />
                                                 </div>
                                                 <!-- /.col -->
                                             </div>

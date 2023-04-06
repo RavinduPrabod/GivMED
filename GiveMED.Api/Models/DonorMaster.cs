@@ -10,10 +10,7 @@ namespace GiveMED.Api.Models
     [Table("DonorMaster")]
     public class DonorMaster
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Required]
-        [MaxLength(50)]
-        public string FundraiserID { get; set; }
+        public int DonorID { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -21,7 +18,11 @@ namespace GiveMED.Api.Models
 
         [Required]
         [MaxLength(200)]
-        public string DonorName { get; set; }
+        public string DonorFirstName { get; set; }
+
+        [Required]
+        [MaxLength(200)]
+        public string DonorLastName { get; set; }
 
         [Required]
         [MaxLength(200)]
@@ -59,24 +60,23 @@ namespace GiveMED.Api.Models
         [MaxLength(50)]
         public string Designation { get; set; }
 
-        [Required]
         public int OrgType { get; set; }
 
         [Required]
-        public int RegType { get; set; }
+        public int DonorType { get; set; }
 
         [Required]
         [MaxLength(200)]
         public string Description { get; set; }
 
-        public DateTime? CreateDateTime { get; set; }
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDateTime { get; set; }
 
         [MaxLength(50)]
-        public string CreateUser { get; set; }
+        public string ModifiedBy { get; set; }
 
-        public DateTime? ModifieDateTime { get; set; }
-
-        [MaxLength(50)]
-        public string ModifiedUser { get; set; }
+        public DateTime? ModifiedDateTime { get; set; }
     }
 }

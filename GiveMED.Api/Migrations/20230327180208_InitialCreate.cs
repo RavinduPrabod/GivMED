@@ -8,34 +8,6 @@ namespace GiveMED.Api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "FundraiserMaster",
-                columns: table => new
-                {
-                    FundraiserID = table.Column<string>(maxLength: 50, nullable: false),
-                    FundraiserName = table.Column<string>(maxLength: 200, nullable: false),
-                    Address = table.Column<string>(maxLength: 200, nullable: false),
-                    Telephone = table.Column<string>(maxLength: 20, nullable: false),
-                    City = table.Column<string>(maxLength: 50, nullable: false),
-                    State = table.Column<string>(maxLength: 50, nullable: false),
-                    Country = table.Column<string>(maxLength: 50, nullable: false),
-                    ZipCode = table.Column<string>(maxLength: 50, nullable: false),
-                    Email = table.Column<string>(maxLength: 50, nullable: false),
-                    ContactPerson = table.Column<string>(maxLength: 50, nullable: false),
-                    Designation = table.Column<string>(maxLength: 50, nullable: false),
-                    OrganizationType = table.Column<int>(nullable: false),
-                    RegType = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(maxLength: 200, nullable: false),
-                    CreateDateTime = table.Column<DateTime>(nullable: true),
-                    CreateUser = table.Column<string>(maxLength: 50, nullable: true),
-                    ModifieDateTime = table.Column<DateTime>(nullable: true),
-                    ModifiedUser = table.Column<string>(maxLength: 50, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FundraiserMaster", x => x.FundraiserID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "HospitalMaster",
                 columns: table => new
                 {
@@ -94,9 +66,6 @@ namespace GiveMED.Api.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "FundraiserMaster");
-
             migrationBuilder.DropTable(
                 name: "HospitalMaster");
 

@@ -7,16 +7,14 @@ namespace GiveMED.Api.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "FundraiserMaster");
-
             migrationBuilder.CreateTable(
                 name: "DonorMaster",
                 columns: table => new
                 {
-                    FundraiserID = table.Column<string>(maxLength: 50, nullable: false),
+                    DonorID = table.Column<string>(maxLength: 50, nullable: false),
                     UserName = table.Column<string>(maxLength: 50, nullable: false),
-                    DonorName = table.Column<string>(maxLength: 200, nullable: false),
+                    DonorFirstName = table.Column<string>(maxLength: 200, nullable: false),
+                    DonorLastName = table.Column<string>(maxLength: 200, nullable: false),
                     Address = table.Column<string>(maxLength: 200, nullable: false),
                     Telephone = table.Column<string>(maxLength: 20, nullable: false),
                     City = table.Column<string>(maxLength: 50, nullable: false),
@@ -27,23 +25,41 @@ namespace GiveMED.Api.Migrations
                     ContactPerson = table.Column<string>(maxLength: 50, nullable: false),
                     Designation = table.Column<string>(maxLength: 50, nullable: false),
                     OrgType = table.Column<int>(nullable: false),
-                    RegType = table.Column<int>(nullable: false),
+                    DonorType = table.Column<int>(nullable: false),
                     Description = table.Column<string>(maxLength: 200, nullable: false),
-                    CreateDateTime = table.Column<DateTime>(nullable: true),
-                    CreateUser = table.Column<string>(maxLength: 50, nullable: true),
-                    ModifieDateTime = table.Column<DateTime>(nullable: true),
-                    ModifiedUser = table.Column<string>(maxLength: 50, nullable: true)
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
+                    ModifiedBy = table.Column<string>(maxLength: 50, nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DonorMaster", x => new { x.FundraiserID, x.UserName });
+                    table.PrimaryKey("PK_DonorMaster", x => new { x.DonorID, x.UserName });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LastSerialNo",
+                columns: table => new
+                {
+                    DonorType = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LastDonorID = table.Column<int>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
+                    ModifiedBy = table.Column<string>(maxLength: 50, nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LastSerialNo", x => x.DonorType);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.DropTable(
-                name: "DonorMaster");
+                name: "LastSerialNo");
 
             migrationBuilder.CreateTable(
                 name: "FundraiserMaster",

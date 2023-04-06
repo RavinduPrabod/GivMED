@@ -5,16 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace GivMED.Pages.Web.Registration
+namespace GivMED
 {
-    public partial class DonorRegistration : System.Web.UI.Page
+    public partial class Login : System.Web.UI.MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnRegister_Click(object sender, EventArgs e)
         {
 
         }

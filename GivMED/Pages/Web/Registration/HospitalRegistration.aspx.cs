@@ -41,6 +41,7 @@ namespace GivMED.Pages.Web.Registration
                     else
                     {
                         ShowErrorMessage(ResponseMessages.Error);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('next');", true);
                     }
                 }
                 catch (Exception ex)
@@ -72,7 +73,11 @@ namespace GivMED.Pages.Web.Registration
         #region Methdos
         private void PageLoad()
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('next');", true);
+            //LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+            if (Session["loggedUser"] != null)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "window.onload = function() { $('#carouselExampleIndicators').carousel('next'); }", true);
+            }
         }
 
         private UserDto UiToModelCreate()
@@ -81,7 +86,7 @@ namespace GivMED.Pages.Web.Registration
             oData.UserName = txtHospitalEmail.Text.Trim();
             oData.FirstName = txtNameofHospital.Text.Trim();
             oData.LastName = txtNameofHospital.Text.Trim();
-            oData.Type = 1;
+            oData.Type = 3;
             oData.Status = 1;
             oData.Password = txtPassword.Text.Trim();
             oData.Email = txtHospitalEmail.Text.ToString();
@@ -93,20 +98,25 @@ namespace GivMED.Pages.Web.Registration
             oData.ModifiedBy = "admin";
             oData.ModifiedDateTime = DateTime.Now;
             oData.ModifiedWorkStation = "laptop";
+            Session["loggedUser"] = oData;
             return oData;
+
         }
         private HospitalMaster Submit()
         {
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
             HospitalMaster oData = new HospitalMaster();
-            oData.HospitalID = "H01";
-            oData.HospitalName = txtNameofHospital.Text.ToString();
+            oData.HospitalID = 0;
+            oData.UserName = loggedUser.UserName;
+            oData.HospitalName = loggedUser.FirstName.ToString();
             oData.Address = txtAddress.Text.ToString();
             oData.Telephone = txtPhoneNumber.Text.ToString();
             oData.City = txtcity.Text.ToString();
             oData.Country = ddlCountry.SelectedItem.Text.ToString();
             oData.State = ddlState.SelectedItem.Text.ToString();
             oData.ZipCode = txtzip.Text.ToString();
-            oData.Email = txtHospitalEmail.Text.ToString();
+            oData.Email = loggedUser.UserName.ToString();
             oData.ContactPerson = txtContactPerson.Text.ToString();
             oData.Designation = txtDesignation.Text.ToString();
             oData.TypeofHosptal = Convert.ToInt32(ddltype.SelectedItem.Value);
@@ -115,6 +125,10 @@ namespace GivMED.Pages.Web.Registration
             oData.YearEstablish = Convert.ToInt32(txtYearsofEs.Text);
             oData.NoOfBeds = Convert.ToInt32(txtNoofbeds.Text);
             oData.WebURL = txtWebURL.Text.ToString();
+            oData.CreateUser = "admin";
+            oData.CreateDateTime = DateTime.Now;
+            oData.ModifiedUser = "admin";
+            oData.ModifieDateTime = DateTime.Now;
             return oData;
         }
 

@@ -4,14 +4,16 @@ using GiveMED.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiveMED.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230405121004_02")]
+    partial class _02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,8 +23,8 @@ namespace GiveMED.Api.Migrations
 
             modelBuilder.Entity("GiveMED.Api.Models.DonorMaster", b =>
                 {
-                    b.Property<int>("DonorID")
-                        .HasColumnType("int")
+                    b.Property<string>("DonorID")
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("UserName")
@@ -198,14 +200,7 @@ namespace GiveMED.Api.Migrations
 
             modelBuilder.Entity("GiveMED.Api.Models.HospitalMaster", b =>
                 {
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("HospitalID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RegistrationNo")
+                    b.Property<string>("HospitalID")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -261,6 +256,11 @@ namespace GiveMED.Api.Migrations
                     b.Property<int>("NoOfBeds")
                         .HasColumnType("int");
 
+                    b.Property<string>("RegistrationNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -286,7 +286,7 @@ namespace GiveMED.Api.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("UserName", "HospitalID", "RegistrationNo");
+                    b.HasKey("HospitalID");
 
                     b.ToTable("HospitalMaster");
                 });
@@ -318,31 +318,6 @@ namespace GiveMED.Api.Migrations
                     b.HasKey("DonorType");
 
                     b.ToTable("LastSerialNo");
-                });
-
-            modelBuilder.Entity("GiveMED.Api.Models.ProfileImages", b =>
-                {
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime?>("CreatedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("UserName");
-
-                    b.ToTable("ProfileImages");
                 });
 
             modelBuilder.Entity("GiveMED.Api.Models.UnsendEmailLog", b =>
