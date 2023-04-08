@@ -20,8 +20,12 @@ namespace GiveMED.Api.Data
         public DbSet<EmailUsers> EmailUsers { get; set; }
         public DbSet<UnsendEmailLog> UnsendEmailLog { get; set; }
         public DbSet<LastSerialNo> LastSerialNo { get; set; }
-
+        public DbSet<LastDocSerialNo> LastDocSerialNo { get; set; }
         public DbSet<ProfileImages> ProfileImages { get; set; }
+        public DbSet<ItemCatMaster> ItemCatMaster { get; set; }
+        public DbSet<ItemMaster> ItemMaster { get; set; }
+        public DbSet<SupplyRequestHeader> SupplyRequestHeader { get; set; }
+        public DbSet<SupplyRequestDetails> SupplyRequestDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,7 +45,17 @@ namespace GiveMED.Api.Data
 
             modelBuilder.Entity<LastSerialNo>().HasKey(c => new { c.DonorType});
 
+            modelBuilder.Entity<LastDocSerialNo>().HasKey(c => new { c.DocCode, c.LastTxnSerialNo });
+
             modelBuilder.Entity<ProfileImages>().HasKey(c => new { c.UserName });
+
+            modelBuilder.Entity<ItemCatMaster>().HasKey(c => new { c.ItemCatID });
+
+            modelBuilder.Entity<ItemMaster>().HasKey(c => new { c.ItemID });
+
+            modelBuilder.Entity<SupplyRequestHeader>().HasKey(c => new { c.HospitalID, c.SupplyID });
+
+            modelBuilder.Entity<SupplyRequestDetails>().HasKey(c => new { c.SupplyID, c.SupplyItemID });
 
             #endregion KeyFields
 

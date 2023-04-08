@@ -4,14 +4,16 @@ using GiveMED.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiveMED.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230407071940_07")]
+    partial class _07
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -290,30 +292,6 @@ namespace GiveMED.Api.Migrations
                     b.ToTable("HospitalMaster");
                 });
 
-            modelBuilder.Entity("GiveMED.Api.Models.ItemCatMaster", b =>
-                {
-                    b.Property<int>("ItemCatID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime?>("CreatedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ItemCatName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("ItemCatID");
-
-                    b.ToTable("ItemCatMaster");
-                });
-
             modelBuilder.Entity("GiveMED.Api.Models.ItemMaster", b =>
                 {
                     b.Property<int>("ItemID")
@@ -328,7 +306,7 @@ namespace GiveMED.Api.Migrations
                     b.Property<DateTime?>("CreatedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ItemCatID")
+                    b.Property<int>("ItemCat")
                         .HasColumnType("int");
 
                     b.Property<string>("ItemDescription")
@@ -350,31 +328,6 @@ namespace GiveMED.Api.Migrations
                     b.HasKey("ItemID");
 
                     b.ToTable("ItemMaster");
-                });
-
-            modelBuilder.Entity("GiveMED.Api.Models.LastDocSerialNo", b =>
-                {
-                    b.Property<string>("DocCode")
-                        .HasColumnType("nvarchar(3)")
-                        .HasMaxLength(3);
-
-                    b.Property<int>("LastTxnSerialNo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime?>("CreatedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("DocCode", "LastTxnSerialNo");
-
-                    b.ToTable("LastDocSerialNo");
                 });
 
             modelBuilder.Entity("GiveMED.Api.Models.LastSerialNo", b =>
@@ -433,8 +386,8 @@ namespace GiveMED.Api.Migrations
 
             modelBuilder.Entity("GiveMED.Api.Models.SupplyRequestDetails", b =>
                 {
-                    b.Property<string>("SupplyID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("SupplyID")
+                        .HasColumnType("int");
 
                     b.Property<int>("SupplyItemID")
                         .HasColumnType("int");
@@ -474,8 +427,8 @@ namespace GiveMED.Api.Migrations
                     b.Property<int>("HospitalID")
                         .HasColumnType("int");
 
-                    b.Property<string>("SupplyID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("SupplyID")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
@@ -502,6 +455,9 @@ namespace GiveMED.Api.Migrations
 
                     b.Property<int>("SupplyPriorityLevel")
                         .HasColumnType("int");
+
+                    b.Property<long>("SupplyQty")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("SupplyStatus")
                         .HasColumnType("int");

@@ -22,5 +22,22 @@ namespace GivMED.Common
             BadRequest = 400,
             Unauthorized = 401
         }
+
+        public enum RegType
+        {
+            Individual = 1,
+            Organization = 2,
+            Hospital = 3
+        }
+
+        public enum UserStatus
+        {
+            Active = 1,
+            Inactive = 2
+        }
+
+        //TransactionCode
+                            //SupplyNeed - SPN
+                            //Donation - DTN
     }
 }

@@ -40,5 +40,9 @@ namespace GivMED.Common
         public static string LoginSuccess { get { return "Login Successfull"; } }
 
         public static string LoginFail { get { return "Login Fail"; } }
+
+        public static string NoRecords { get { return "No records available."; } }
+
+        public static string SelectFirst { get { return "Please select first."; } }
     }
 }

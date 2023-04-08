@@ -164,6 +164,8 @@
     <Content Include="dist\css\alt\adminlte.pages.min.css" />
     <Content Include="dist\css\alt\adminlte.plugins.css" />
     <Content Include="dist\css\alt\adminlte.plugins.min.css" />
+    <Content Include="dist\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="dist\css\datepicker3.css" />
     <Content Include="dist\css\validationEngine.jquery.css" />
     <Content Include="dist\img\AdminLTELogo.png" />
     <Content Include="dist\img\avatar.png" />
@@ -182,6 +184,7 @@
     <Content Include="dist\img\d1.jpg" />
     <Content Include="dist\img\d2.jpg" />
     <Content Include="dist\img\default-150x150.png" />
+    <Content Include="dist\img\deleteb.png" />
     <Content Include="dist\img\Freg1.jpg" />
     <Content Include="dist\img\icons.png" />
     <Content Include="dist\img\photo1.png" />
@@ -193,6 +196,7 @@
     <Content Include="dist\img\prod-3.jpg" />
     <Content Include="dist\img\prod-4.jpg" />
     <Content Include="dist\img\prod-5.jpg" />
+    <Content Include="dist\img\remove.png" />
     <Content Include="dist\img\Untitled design.png" />
     <Content Include="dist\img\user.png" />
     <Content Include="dist\img\user1-128x128.jpg" />
@@ -205,6 +209,9 @@
     <Content Include="dist\img\user8-128x128.jpg" />
     <Content Include="dist\js\adminlte.js" />
     <Content Include="dist\js\adminlte.min.js" />
+    <Content Include="dist\js\bootstrap-datepicker.js" />
+    <Content Include="dist\js\bootstrap-datetimepicker.js" />
+    <Content Include="dist\js\bootstrap-datetimepicker.min.js" />
     <Content Include="dist\js\common.js" />
     <Content Include="dist\js\demo.js" />
     <Content Include="dist\js\jquery.validationEngine-en.js" />
@@ -2196,7 +2203,9 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Dto\ChangePwdDto.cs" />
+    <Compile Include="Dto\ComboDTO.cs" />
     <Compile Include="Dto\LoggedUserDto.cs" />
+    <Compile Include="Dto\SupplyNeedsDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Dto\UserForLoginDto.cs" />
     <Compile Include="EmailService\EmailConfigurationService.cs" />
@@ -2214,8 +2223,11 @@
     <Compile Include="Models\DonorMaster.cs" />
     <Compile Include="Models\EmailConfiguration.cs" />
     <Compile Include="Models\HospitalMaster.cs" />
+    <Compile Include="Models\ItemMaster.cs" />
     <Compile Include="Models\LastSerialNo.cs" />
     <Compile Include="Models\ProfileImages.cs" />
+    <Compile Include="Models\SupplyRequestDetails.cs" />
+    <Compile Include="Models\SupplyRequestHeader.cs" />
     <Compile Include="Models\UnsendEmailLog.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Pages\App\Hospital\SupplyNeeds.aspx.cs">
@@ -2282,8 +2294,10 @@
       <DependentUpon>validation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\CommonService.cs" />
     <Compile Include="Service\ProfileService.cs" />
     <Compile Include="Service\RegistrationService.cs" />
+    <Compile Include="Service\SupplyService.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -14,6 +14,8 @@ namespace GivMED
         {
             LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
+            pnlHospital.Visible = false;
+
             if (loggedUser.Type == 1)
             {
                 lblProfileName.Text = loggedUser.FirstName.ToString() + " " + loggedUser.LastName.ToString();
@@ -25,6 +27,7 @@ namespace GivMED
             if (loggedUser.Type == 3)
             {
                 lblProfileName.Text = loggedUser.FirstName.ToString();
+                pnlHospital.Visible = true;
             }
         }
     }
