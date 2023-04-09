@@ -33,6 +33,24 @@ namespace GivMED.Pages.App.Hospital
         protected global::System.Web.UI.WebControls.View View1;
 
         /// <summary>
+        /// btnCreate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCreate;
+
+        /// <summary>
+        /// gvSupplyNeeds control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvSupplyNeeds;
+
+        /// <summary>
         /// View2 control.
         /// </summary>
         /// <remarks>

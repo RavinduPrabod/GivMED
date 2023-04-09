@@ -10,10 +10,10 @@
                     <!-- Profile Image -->
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
-                            <h1 class="profile-username text-center">
-                                <asp:TextBox runat="server" CssClass="form-control" ID="txtName"></asp:TextBox>
+                            <h3 class="profile-username text-center">
+                                <asp:Label runat="server" ID="lblPdName" Text="Name" Font-Bold="true"></asp:Label></h3>
                             <p class="text-muted text-center">
-                                <asp:TextBox runat="server" CssClass="form-control" ID="txtInfo"></asp:TextBox>
+                                <asp:Label runat="server" ID="lblPdSubName" Text="SubName"></asp:Label>
                             </p>
                         </div>
                         <!-- /.card-body -->
@@ -81,7 +81,10 @@
                                             <div class="col-sm-3">
                                                 <asp:TextBox runat="server" CssClass="form-control" ID="txtTelephone"></asp:TextBox>
                                             </div>
-                                            <div class="col-sm-5">
+                                             <div class="col-sm-3">
+                                                <asp:TextBox runat="server" CssClass="form-control" ID="txtEmail" placeholder="Email" TextMode="Email"></asp:TextBox>
+                                            </div>
+                                            <div class="col-sm-4">
                                                 <asp:TextBox runat="server" CssClass="form-control" ID="txtURL" placeholder="Web URL"></asp:TextBox>
                                             </div>
                                         </div>
@@ -186,25 +189,25 @@
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-3 col-form-label">Current Password</label>
                                         <div class="col-sm-4">
-                                            <asp:TextBox runat="server" CssClass="form-control" ID="txtCurPwd" AutoPostBack="true" OnTextChanged="txtCurPwd_TextChanged"></asp:TextBox>
+                                            <asp:TextBox runat="server" CssClass="form-control" ID="txtCurPwd" AutoPostBack="true" OnTextChanged="txtCurPwd_TextChanged" AutoCompleteType="Disabled"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-3 col-form-label">New Password</label>
                                         <div class="col-sm-4">
-                                            <asp:TextBox runat="server" CssClass="form-control" ID="txtNewPwd" placeholder="Enter New Password" TextMode="Password"></asp:TextBox>
+                                            <asp:TextBox runat="server" CssClass="form-control" ID="txtNewPwd" placeholder="Enter New Password" TextMode="Password" AutoCompleteType="Disabled"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-3 col-form-label">Confirm New Password</label>
                                         <div class="col-sm-4">
-                                            <asp:TextBox runat="server" CssClass="form-control" ID="txtReNewPwd" placeholder="Re Enter New Password" TextMode="Password"></asp:TextBox>
+                                            <asp:TextBox runat="server" CssClass="form-control" ID="txtReNewPwd" placeholder="Re Enter New Password" TextMode="Password" AutoCompleteType="Disabled"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-4">
-                                            <asp:Button ID="btnUpdateSec" runat="server" Text="Update" CssClass="btn btn-primary" OnClientClick="return Validate2();" OnClick="btnUpdateSec_Click"/>
+                                            <asp:Button ID="btnUpdateSec" runat="server" Text="Update" CssClass="btn btn-primary" OnClientClick="return Validate2();" OnClick="btnUpdateSec_Click" />
                                         </div>
                                     </div>
                                 </div>
@@ -249,8 +252,8 @@
         $(document).ready(function () {
             Validate2 = function () {
                 $('#<% = txtCurPwd.ClientID %>').addClass('validate[required]');
-                $('#<% = txtNewPwd.ClientID %>').addClass('validate[required]');
-                $('#<% = txtReNewPwd.ClientID %>').addClass('validate[required]');
+<%--                $('#<% = txtNewPwd.ClientID %>').addClass('validate[required]');
+                $('#<% = txtReNewPwd.ClientID %>').addClass('validate[required]');--%>
 
                 var valid = $("#form1").validationEngine('validate');
                 var vars = $("#form1").serialize();

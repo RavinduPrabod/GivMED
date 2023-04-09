@@ -83,5 +83,59 @@ namespace GivMED.Service
             }
             return webApiResponse;
         }
+
+        public List<SupplyRequestHeader> GetSupplyNeedHeaderlist()
+        {
+            try
+            {
+                List<SupplyRequestHeader> record = new List<SupplyRequestHeader>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetSupplyNeedHeaderlist";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<SupplyRequestHeader>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public SupplyNeedsDto GetSupplyNeedsForID(string SupplyID)
+        {
+            try
+            {
+                SupplyNeedsDto record = new SupplyNeedsDto();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetSupplyNeedsForID/" + SupplyID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<SupplyNeedsDto>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

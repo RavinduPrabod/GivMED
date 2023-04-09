@@ -21,13 +21,15 @@ namespace GivMED.Common
 
         public static string PasswordResetSuccess { get { return "Password Successfully Resetted."; } }
 
+        public static string PasswordIsCorrect { get { return "Password Is Correct."; } }
+
         public static string AlreadyExists { get { return "Record Already Exists, Please Add Another Record"; } }
 
         public static string Error { get { return "Error Occured..Please Try Again"; } }
 
         public static string PasswordNotMatch { get { return "Password Not Match"; } }
 
-        public static string NewPasswordNotMatch { get { return "New Password & Confirm Password Not Match"; } }
+        public static string NewPasswordNotMatch { get { return "New Password Not Match"; } }
 
         public static string NewUser { get { return "New User Added.."; } }
 

@@ -6,7 +6,103 @@
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
             <asp:MultiView ID="mvSupply" runat="server">
-                <asp:View ID="View1" runat="server"></asp:View>
+                <asp:View ID="View1" runat="server">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Supply Needs Publications</h3>
+                                    <div class="col-md-4">
+                                        <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-primary" Text="Create New" OnClick="btnCreate_Click" />
+                                        </div>
+                                    <div class="card-tools">
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <input type="text" name="table_search" id="table_search" class="form-control float-right" placeholder="Search">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-default">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ./card-header -->
+                                <div class="card-body table-responsive p-0">
+                                    <asp:GridView ID="gvSupplyNeeds" runat="server" AutoGenerateColumns="False" CssClass="table table-striped projects table-bordered table-hover text-nowrap" AllowPaging="true" PageSize="10" OnRowDataBound="gvSupplyNeeds_RowDataBound" OnRowCommand="gvSupplyNeeds_RowCommand" OnPageIndexChanging="gvSupplyNeeds_PageIndexChanging">
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="#">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSupplyID" runat="server" Text='<%# Bind("SupplyID") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="2%" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Description">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSupplyNarration" runat="server" Text='<%# Bind("SupplyNarration") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="20%" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Last Publish Date">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSupplyCreateDate" runat="server" Text='<%# Bind("SupplyCreateDate", "{0:d}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="10%" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Expire Date">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSupplyExpireDate" runat="server" Text='<%# Bind("SupplyExpireDate", "{0:d}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="10%" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Priority Level">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSupplyPriorityLevel" runat="server"></asp:Label>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="10%" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Status">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSupplyStatus" runat="server"></asp:Label>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="8%" />
+                                            </asp:TemplateField>
+                                            <%--<asp:TemplateField HeaderText="Item Cat ID" ItemStyle-CssClass="project_progress">
+                                                <ItemTemplate>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-green" role="progressbar"
+                                                            aria-valuemin="0" aria-valuemax="100"
+                                                            style='<%# "width:" + Eval("SupplyStatus") + "%;" %>'>
+                                                            <%# Eval("SupplyStatus") + "%" %>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="10%" />
+                                            </asp:TemplateField>--%>
+                                            <asp:TemplateField>
+                                                <ItemTemplate>
+                                                    <div class="project-actions text-center">
+                                                        <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" CausesValidation="false" CommandName="ViewData" ommandArgument="<%# Container.DisplayIndex %>">
+                                                            <i class="fas fa-eye"></i>
+                                                        </asp:LinkButton>
+                                                        <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" Text="Edit" CausesValidation="false" CommandName="EditData" ommandArgument="<%# Container.DisplayIndex %>">
+                                                            <i class="fas fa-pencil-alt"></i>
+                                                        </asp:LinkButton>
+                                                        <asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" Text="Delete" CausesValidation="false" CommandName="DeleteData" ommandArgument="<%# Container.DisplayIndex %>">
+                                                            <i class="fas fa-trash"></i>
+                                                        </asp:LinkButton>
+                                                    </div>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="10%" />
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                </asp:View>
                 <asp:View ID="View2" runat="server">
                     <div class="card card-info">
                         <div class="card-header">
@@ -184,6 +280,27 @@
                             }
                         });
                     }
+                });
+            });
+
+            $(function () {
+                // Toggle expandable content
+                $('.expandable-trigger').click(function (e) {
+                    e.preventDefault();
+                    var $content = $(this).siblings('.expandable-content');
+                    $content.slideToggle();
+                    $(this).text(function () {
+                        return $content.is(':visible') ? 'Hide Reason' : 'Show Reason';
+                    });
+                });
+            });
+
+            $(document).ready(function () {
+                $('#table_search').keyup(function () {
+                    var searchValue = $(this).val().toLowerCase();
+                    $('#gvSupplyNeeds tbody tr').filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
+                    });
                 });
             });
         }

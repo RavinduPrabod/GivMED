@@ -15,22 +15,22 @@ namespace GivMED.Pages.App.Profile
     {
 
         /// <summary>
-        /// txtName control.
+        /// lblPdName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtName;
+        protected global::System.Web.UI.WebControls.Label lblPdName;
 
         /// <summary>
-        /// txtInfo control.
+        /// lblPdSubName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtInfo;
+        protected global::System.Web.UI.WebControls.Label lblPdSubName;
 
         /// <summary>
         /// lblUsername control.
@@ -85,6 +85,15 @@ namespace GivMED.Pages.App.Profile
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTelephone;
+
+        /// <summary>
+        /// txtEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEmail;
 
         /// <summary>
         /// txtURL control.

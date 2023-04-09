@@ -27,15 +27,20 @@ namespace GivMED.Pages.App.Profile
                 Session["HospitalID"] = null;
 
                 ClearAllTextBoxes(this);
+                txtNewPwd.Enabled = false;
+                txtReNewPwd.Enabled = false;
+                txtCurPwd.Text = string.Empty;
 
-                txtName.Text = loggedUser.FirstName.ToString();
-                txtInfo.Text = loggedUser.FirstName.ToString();
+                lblPdName.Text = loggedUser.FirstName.ToString();
+                //lblPdSubName.Text = loggedUser.FirstName.ToString();
+                txtSecEmail.Text = loggedUser.UserName.ToString();
 
                 HospitalMaster odata = oProfileService.GetHospitalMaster(loggedUser.UserName);
                 Session["HospitalID"] = odata.HospitalID;
+                lblUsername.Text = loggedUser.UserName.ToString();
                 txtHRegNo.Text = odata.RegistrationNo.ToString();
                 txtYear.Text = odata.YearEstablish.ToString();
-                ddltype.SelectedItem.Value = odata.TypeofHosptal.ToString();
+                ddltype.SelectedValue = odata.TypeofHosptal.ToString();
                 txtNoofBeds.Text = odata.NoOfBeds.ToString();
                 txtCity.Text = odata.City.ToString();
                 ddlState.SelectedValue = odata.State.ToString();
@@ -43,6 +48,7 @@ namespace GivMED.Pages.App.Profile
                 txtZipCode.Text = odata.ZipCode.ToString();
                 txtAddress.Text = odata.Address.ToString();
                 txtURL.Text = odata.WebURL.ToString();
+                txtEmail.Text = odata.Email.ToString();
                 txtTelephone.Text = odata.Telephone.ToString();
                 txtAuthName.Text = odata.ContactPerson.ToString();
                 txtDesignation.Text = odata.Designation.ToString();
@@ -95,12 +101,19 @@ namespace GivMED.Pages.App.Profile
                     {
                         txtNewPwd.Enabled = true;
                         txtReNewPwd.Enabled = true;
+                        ShowSuccessMessage(ResponseMessages.PasswordIsCorrect);
                         ScriptManager.RegisterStartupScript(this, GetType(), "HideSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').hide();" + "$('.tab-pane#settings').removeClass('active');" + "});</script>", false);
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowChangePwdTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#changepwd\"]').tab('show');" + "$('.tab-pane#changepwd').addClass('active');" + "});</script>", false);
                     }
                     else
                     {
+                        txtCurPwd.Text = string.Empty;
+                        txtNewPwd.Enabled = false;
+                        txtReNewPwd.Enabled = false;
                         ShowErrorMessage(ResponseMessages.PasswordNotMatch);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "HideSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').hide();" + "$('.tab-pane#settings').removeClass('active');" + "});</script>", false);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowChangePwdTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#changepwd\"]').tab('show');" + "$('.tab-pane#changepwd').addClass('active');" + "});</script>", false);
+
                     }
                 }
             }
@@ -133,8 +146,9 @@ namespace GivMED.Pages.App.Profile
             HospitalMaster oData = new HospitalMaster();
 
             oData.HospitalID = Convert.ToInt32(Session["HospitalID"]);
-            oData.UserName = lblUsername.Text.Trim();
-            oData.HospitalName = txtName.Text.Trim();
+            oData.UserName = loggedUser.UserName.ToString();
+            oData.RegistrationNo = txtHRegNo.Text.ToString();
+            oData.HospitalName = lblPdName.Text.Trim();
             oData.City = txtCity.Text.ToString();
             oData.Address = txtAddress.Text.Trim().ToString();
             oData.Telephone = txtTelephone.Text.Trim().ToString();
@@ -146,6 +160,7 @@ namespace GivMED.Pages.App.Profile
             oData.TypeofHosptal = Convert.ToInt32(ddltype.SelectedItem.Value);
             oData.NoOfBeds = Convert.ToInt32(txtNoofBeds.Text);
             oData.WebURL = txtURL.Text.ToString();
+            oData.Email = txtEmail.Text.ToString();
             oData.ContactPerson = txtAuthName.Text.ToString();
             oData.Designation = txtDesignation.Text.ToString();
             oData.MobileNo = txtphoneNo.Text.ToString();
@@ -185,8 +200,11 @@ namespace GivMED.Pages.App.Profile
                             }
                             else
                             {
-                                ShowErrorMessage(ResponseMessages.NewPasswordNotMatch);
+                                ////txtNewPwd.Text = string.Empty;
+                                ////txtReNewPwd.Text = string.Empty;
+                                //ShowErrorMessage(ResponseMessages.NewPasswordNotMatch);
                             }
+                            
                         }
                     }
 
@@ -216,7 +234,10 @@ namespace GivMED.Pages.App.Profile
                     HttpResponseMessage response = client.PostAsync(path, content).Result;
                     if (response.IsSuccessStatusCode)
                     {
-                        Response.Redirect("~/Pages/Login.aspx");
+                        ShowSuccessMessage(ResponseMessages.PasswordResetSuccess);
+                        txtCurPwd.Text = string.Empty;
+                        txtNewPwd.Text = string.Empty;
+                        txtReNewPwd.Text = string.Empty;
                     }
                     else
                     {

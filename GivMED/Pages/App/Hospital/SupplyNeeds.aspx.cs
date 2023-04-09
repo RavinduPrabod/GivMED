@@ -4,6 +4,7 @@ using GivMED.Models;
 using GivMED.Service;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -22,7 +23,27 @@ namespace GivMED.Pages.App.Hospital
         {
             if (!this.IsPostBack)
             {
-                mvSupply.ActiveViewIndex = 1;
+                mvSupply.ActiveViewIndex = 0;
+
+                //DataTable dt = new DataTable();
+                //dt.Columns.Add("#", typeof(int));
+                //dt.Columns.Add("User", typeof(string));
+                //dt.Columns.Add("Date", typeof(DateTime));
+                //dt.Columns.Add("Status", typeof(string));
+                //dt.Columns.Add("Reason", typeof(string));
+
+                //// Add some sample data to the table
+                //dt.Rows.Add(183, "John Doe", new DateTime(2014, 11, 7), "Approved", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
+                //dt.Rows.Add(219, "Alexander Pierce", new DateTime(2014, 11, 7), "Pending", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
+                //dt.Rows.Add(657, "Alexander Pierce", new DateTime(2014, 11, 7), "Approved", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
+                //dt.Rows.Add(175, "Mike Doe", new DateTime(2014, 11, 7), "Denied", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
+                //dt.Rows.Add(134, "Jim Doe", new DateTime(2014, 11, 7), "Approved", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
+
+                //// Bind the GridView to the data source
+                //GridView1.DataSource = dt;
+                //GridView1.DataBind();
+
+                LoadGridView();
 
                 ddlSupplyType.DataSource = oCommonService.GetItemCat();
                 ddlSupplyType.DataValueField = "DataValueField";
@@ -34,6 +55,10 @@ namespace GivMED.Pages.App.Hospital
                 btnPublish.Visible = false;
                 txtExpireDate.Visible = false;
                 checboxcontrol(true);
+
+                Session["SupplyList"] = null;
+                Session["SeletedCatinBulk"] = null;
+                Session["SearchList"] = null;
             }
 
         }
@@ -43,7 +68,7 @@ namespace GivMED.Pages.App.Hospital
             if(ddlSupplyType.SelectedItem.Value != "")
             {
                 Session["SearchList"] = null;
-                Session["SeletedCatinBulk"] = null;
+                
                 List<ItemMaster> SeletedCatinBulk = ((List<ItemMaster>)Session["Itembulk"]).Where(x => x.ItemCatID == Convert.ToInt32(ddlSupplyType.SelectedItem.Value)).ToList();
 
                 List<ComboDTO> lstItemList = new List<ComboDTO>();
@@ -244,26 +269,44 @@ namespace GivMED.Pages.App.Hospital
 
         protected void btnAddtoList_Click(object sender, EventArgs e)
         {
-            Session["SupplyList"] = null;
-            List<SupplyRequestDetails> oSupplyRequestDetails = new List<SupplyRequestDetails>();
+            List<SupplyRequestDetails> oSupplyRequestDetails = Session["SupplyList"] != null ? (List<SupplyRequestDetails>)Session["SupplyList"] : new List<SupplyRequestDetails>();
 
             if (lstSelection.Items.Count > 0)
             {
                 for(int i=0; lstSelection.Items.Count> i; i++)
                 {
                     SupplyRequestDetails odata = new SupplyRequestDetails();
-                    odata.SupplyItemID = Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[0]);
-                    odata.SupplyItemCat = Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[1]);
-                    odata.SupplyItemName = lstSelection.Items[i].Text.ToString();
-                    oSupplyRequestDetails.Add(odata);
+                    if (oSupplyRequestDetails.Count > 0)
+                    {
+                        if(oSupplyRequestDetails.Where(x=>x.SupplyItemID == Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[0])).Any())
+                        {
+                            odata.SupplyItemID = Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[0]);
+                            odata.SupplyItemCat = Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[1]);
+                            odata.SupplyItemName = lstSelection.Items[i].Text.ToString();
+                            oSupplyRequestDetails.Add(odata);
+                        }
+                        else
+                        {
+                            ShowErrorMessage(ResponseMessages.AlreadyExists);
+                        }
+                    }
+                    else
+                    {
+                        odata.SupplyItemID = Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[0]);
+                        odata.SupplyItemCat = Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[1]);
+                        odata.SupplyItemName = lstSelection.Items[i].Text.ToString();
+                        oSupplyRequestDetails.Add(odata);
+                    }
                 }
 
                 gvSupplyList.DataSource = oSupplyRequestDetails;
                 gvSupplyList.DataBind();
+
                 Session["SupplyList"] = oSupplyRequestDetails;
+
                 btnPublish.Visible = true;
                 txtExpireDate.Visible = true;
-                checboxcontrol(false);
+                //checboxcontrol(false);
             }
             else
             {
@@ -289,6 +332,20 @@ namespace GivMED.Pages.App.Hospital
             {
                 throw ex;
             }
+        }
+
+        private void LoadGridView()
+        {
+            List<SupplyRequestHeader> olist = new List<SupplyRequestHeader>();
+            olist = oSupplyService.GetSupplyNeedHeaderlist();
+
+            //olist.ForEach(x => x.SupplyStatus = 50);
+
+            gvSupplyNeeds.DataSource = olist;
+            gvSupplyNeeds.DataBind();
+
+            //progressBar.Style["width"] = $"{dataValue}%";
+            //progressBar.Text = $"<span class='sr-only'>{dataValue}% Complete</span>";
         }
 
         private void Delete()
@@ -403,6 +460,127 @@ namespace GivMED.Pages.App.Hospital
             chkHigh.Enabled = result;
             chkNormal.Enabled = result;
             chkLow.Enabled = result;
+        }
+
+        protected void gvSupplyNeeds_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Label lblSupplyStatus = (Label)e.Row.FindControl("lblSupplyStatus");
+                string supplyStatus = DataBinder.Eval(e.Row.DataItem, "SupplyStatus").ToString();
+                switch (supplyStatus)
+                {
+                    case "1":
+                        lblSupplyStatus.Text = "Processing";
+                        lblSupplyStatus.CssClass = "badge badge-warning";
+                        break;
+                    case "2":
+                        lblSupplyStatus.Text = "Complete";
+                        lblSupplyStatus.CssClass = "badge badge-success";
+                        break;
+                }
+
+                Label lblSupplyPriorityLevel = (Label)e.Row.FindControl("lblSupplyPriorityLevel");
+                string SupplyPriorityLevel = DataBinder.Eval(e.Row.DataItem, "SupplyPriorityLevel").ToString();
+                switch (SupplyPriorityLevel)
+                {
+                    case "1":
+                        lblSupplyPriorityLevel.Text = "High";
+                        lblSupplyPriorityLevel.CssClass = "badge badge-danger";
+                        break;
+                    case "2":
+                        lblSupplyPriorityLevel.Text = "Normal";
+                        lblSupplyPriorityLevel.CssClass = "badge badge-primary";
+                        break;
+
+                    case "3":
+                        lblSupplyPriorityLevel.Text = "Low";
+                        lblSupplyPriorityLevel.CssClass = "badge badge-dark";
+                        break;
+                }
+            }
+        }
+
+        protected void gvSupplyNeeds_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            try
+            {
+                switch (e.CommandName)
+                {
+                    case "ViewData":
+                        ViewState["index"] = e.CommandArgument.ToString();
+                        ViewRecord();
+                        break;
+
+                    case "EditData":
+                        ViewState["index"] = e.CommandArgument.ToString();
+                        ViewRecord();
+                        break;
+
+                    case "DeleteData":
+                        ViewState["index"] = e.CommandArgument.ToString();
+                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDeleteConfirmation();", true);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void ViewRecord()
+        {
+            try
+            {
+                GridViewRow oGridViewRow = gvSupplyNeeds.Rows[Convert.ToInt32(ViewState["index"])];
+                string SupplyID = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
+
+                SupplyNeedsDto record = oSupplyService.GetSupplyNeedsForID(SupplyID);
+
+                if(record.SupplyRequestHeader.SupplyPriorityLevel == 1)
+                {
+                    chkHigh.Checked = true;
+                }
+                else if(record.SupplyRequestHeader.SupplyPriorityLevel == 2)
+                {
+                    chkNormal.Checked = true;
+                }
+                else if(record.SupplyRequestHeader.SupplyPriorityLevel == 3)
+                {
+                    chkLow.Checked = true;
+                }
+
+                txtExpireDate.Text = record.SupplyRequestHeader.SupplyExpireDate.ToString();
+
+                gvSupplyList.DataSource = record.SupplyRequestDetails;
+                gvSupplyList.DataBind();
+
+                Session["SupplyList"] = record.SupplyRequestDetails;
+
+                btnPublish.Visible = true;
+                txtExpireDate.Visible = true;
+
+                mvSupply.ActiveViewIndex = 1;
+                //ddlType.SelectedValue = record.Type.ToString();
+                //txtInstructionName.Text = record.InstructionName.ToString();
+                //txtDescription.Text = record.Instruction.ToString();
+                //mvInstructions.ActiveViewIndex = 1;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        protected void gvSupplyNeeds_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+
+        }
+
+        protected void btnCreate_Click(object sender, EventArgs e)
+        {
+            mvSupply.ActiveViewIndex = 1;
         }
     }
 }

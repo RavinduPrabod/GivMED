@@ -22,6 +22,24 @@ namespace GiveMED.Api.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetSupplyNeedHeaderlist")]
+        public List<SupplyRequestHeader> GetSupplyNeedHeaderlist()
+        {
+            return _context.SupplyRequestHeader.ToList();
+        }
+
+        [HttpGet("{SupplyID}")]
+        [ActionName("GetSupplyNeedsForID")]
+        public SupplyNeedsDto GetSupplyNeedsForID(string SupplyID)
+        {
+            SupplyNeedsDto oSupplyNeedsDto = new SupplyNeedsDto();
+            oSupplyNeedsDto.SupplyRequestHeader = _context.SupplyRequestHeader.Where(x => x.SupplyID == SupplyID).FirstOrDefault();
+            oSupplyNeedsDto.SupplyRequestDetails = _context.SupplyRequestDetails.Where(x => x.SupplyID == SupplyID).ToList();
+
+            return oSupplyNeedsDto;
+        }
+
+        [HttpGet]
         [ActionName("GetItemCat")]
         public List<ComboDTO> GetItemCat()
         {

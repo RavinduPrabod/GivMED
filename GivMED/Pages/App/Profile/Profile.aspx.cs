@@ -158,12 +158,19 @@ namespace GivMED.Pages.App.Profile
                     {
                         txtNewPwd.Enabled = true;
                         txtReNewPwd.Enabled = true;
+                        ShowSuccessMessage(ResponseMessages.PasswordIsCorrect);
                         ScriptManager.RegisterStartupScript(this, GetType(), "HideSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').hide();" + "$('.tab-pane#settings').removeClass('active');" + "});</script>", false);
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowChangePwdTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#changepwd\"]').tab('show');" + "$('.tab-pane#changepwd').addClass('active');" + "});</script>", false);
                     }
                     else
                     {
+                        txtCurPwd.Text = string.Empty;
+                        txtNewPwd.Enabled = false;
+                        txtReNewPwd.Enabled = false;
                         ShowErrorMessage(ResponseMessages.PasswordNotMatch);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "HideSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').hide();" + "$('.tab-pane#settings').removeClass('active');" + "});</script>", false);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowChangePwdTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#changepwd\"]').tab('show');" + "$('.tab-pane#changepwd').addClass('active');" + "});</script>", false);
+
                     }
                 }
             }
@@ -236,7 +243,10 @@ namespace GivMED.Pages.App.Profile
                     HttpResponseMessage response = client.PostAsync(path, content).Result;
                     if (response.IsSuccessStatusCode)
                     {
-                        Response.Redirect("~/Pages/Login.aspx");
+                        ShowSuccessMessage(ResponseMessages.PasswordResetSuccess);
+                        txtCurPwd.Text = string.Empty;
+                        txtNewPwd.Text = string.Empty;
+                        txtReNewPwd.Text = string.Empty;
                     }
                     else
                     {
