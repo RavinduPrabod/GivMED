@@ -72,7 +72,7 @@ namespace GivMED.Service
             WebApiResponse webApiResponse = new WebApiResponse();
             using (HttpClient client = new HttpClient())
             {
-                string path = "Registration/PostDonor";
+                string path = "Supply/PostSupplyNeed";
                 client.BaseAddress = new Uri(GlobalData.BaseUri);
                 //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
                 var json = JsonConvert.SerializeObject(oData);

@@ -45,7 +45,7 @@ namespace GiveMED.Api.Data
 
             modelBuilder.Entity<LastSerialNo>().HasKey(c => new { c.DonorType});
 
-            modelBuilder.Entity<LastDocSerialNo>().HasKey(c => new { c.DocCode, c.LastTxnSerialNo });
+            modelBuilder.Entity<LastDocSerialNo>().HasKey(c => new { c.DocCode });
 
             modelBuilder.Entity<ProfileImages>().HasKey(c => new { c.UserName });
 

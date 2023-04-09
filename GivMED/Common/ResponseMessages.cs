@@ -9,6 +9,8 @@ namespace GivMED.Common
     {
         public static string InsertSuccess { get { return "Record Successfully Inserted."; } }
 
+        public static string SuccessfullyPulished { get { return "Record Successfully Pulished."; } }
+
         public static string UpdateSuccess { get { return "Record Successfully Updated."; } }
 
         public static string DeleteSuccess { get { return "Record Successfully Deleted."; } }

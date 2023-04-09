@@ -8,6 +8,8 @@ namespace GiveMED.Api.Dto
 {
     public class SupplyNeedsDto
     {
+        public string UserName { get; set; }
+
         public SupplyRequestHeader SupplyRequestHeader { get; set; }
 
         public List<SupplyRequestDetails> SupplyRequestDetails { get; set; }

@@ -246,6 +246,7 @@
     <Content Include="dist\js\adminlte.js.map" />
     <Content Include="dist\js\adminlte.min.js.map" />
     <Content Include="Pages\App\Hospital\SupplyNeeds.aspx" />
+    <Content Include="Pages\App\Profile\HProfile.aspx" />
     <Content Include="Pages\App\Profile\Profile.aspx" />
     <Content Include="Pages\HLogin.aspx" />
     <Content Include="Pages\Login.aspx" />
@@ -2236,6 +2237,13 @@
     </Compile>
     <Compile Include="Pages\App\Hospital\SupplyNeeds.aspx.designer.cs">
       <DependentUpon>SupplyNeeds.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\App\Profile\HProfile.aspx.cs">
+      <DependentUpon>HProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\App\Profile\HProfile.aspx.designer.cs">
+      <DependentUpon>HProfile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\App\Profile\Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>

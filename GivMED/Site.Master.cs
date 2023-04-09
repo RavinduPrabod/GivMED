@@ -14,20 +14,31 @@ namespace GivMED
         {
             LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
-            pnlHospital.Visible = false;
+            //panel Donor
+            pnlHSidebar.Visible = false;
+            pnlHProf.Visible = false;
+
+            //panel Hospital
+            pnlDSidebar.Visible = false;
+            pnlDProf.Visible = false;
 
             if (loggedUser.Type == 1)
             {
-                lblProfileName.Text = loggedUser.FirstName.ToString() + " " + loggedUser.LastName.ToString();
+                lblDProfileName.Text = loggedUser.FirstName.ToString() + " " + loggedUser.LastName.ToString();
+                pnlDSidebar.Visible = true;
+                pnlDProf.Visible = true;
             }
             if (loggedUser.Type == 2)
             {
-                lblProfileName.Text = loggedUser.FirstName.ToString();
+                lblDProfileName.Text = loggedUser.FirstName.ToString();
+                pnlDSidebar.Visible = true;
+                pnlDProf.Visible = true;
             }
             if (loggedUser.Type == 3)
             {
-                lblProfileName.Text = loggedUser.FirstName.ToString();
-                pnlHospital.Visible = true;
+                lblHProfileName.Text = loggedUser.FirstName.ToString();
+                pnlHSidebar.Visible = true;
+                pnlHProf.Visible = true;
             }
         }
     }

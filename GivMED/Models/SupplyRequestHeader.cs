@@ -15,8 +15,6 @@ namespace GivMED.Models
 
         public DateTime? SupplyExpireDate { get; set; }
 
-        public long SupplyQty { get; set; }
-
         public string SupplyNarration { get; set; }
 
         public int SupplyPriorityLevel { get; set; }

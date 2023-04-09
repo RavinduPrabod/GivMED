@@ -29,6 +29,8 @@ namespace GivMED.Models
 
         public string Designation { get; set; }
 
+        public string MobileNo { get; set; }
+
         public int TypeofHosptal { get; set; }
 
         public string RegistrationNo { get; set; }

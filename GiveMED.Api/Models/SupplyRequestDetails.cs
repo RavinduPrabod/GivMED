@@ -14,7 +14,6 @@ namespace GiveMED.Api.Models
         public string SupplyID { get; set; }
 
         [Required]
-        [MaxLength(50)]
         public int SupplyItemID { get; set; }
 
         [Required]

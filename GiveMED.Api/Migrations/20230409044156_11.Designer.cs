@@ -4,14 +4,16 @@ using GiveMED.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiveMED.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230409044156_11")]
+    partial class _11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,11 +252,6 @@ namespace GiveMED.Api.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<string>("MobileNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
                     b.Property<DateTime?>("ModifieDateTime")
                         .HasColumnType("datetime2");
 
@@ -363,15 +360,15 @@ namespace GiveMED.Api.Migrations
                         .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
+                    b.Property<int>("LastTxnSerialNo")
+                        .HasColumnType("int");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<DateTime?>("CreatedDateTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("LastTxnSerialNo")
-                        .HasColumnType("int");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(50)")
@@ -380,7 +377,7 @@ namespace GiveMED.Api.Migrations
                     b.Property<DateTime?>("ModifiedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("DocCode");
+                    b.HasKey("DocCode", "LastTxnSerialNo");
 
                     b.ToTable("LastDocSerialNo");
                 });
@@ -445,7 +442,8 @@ namespace GiveMED.Api.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SupplyItemID")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasMaxLength(50);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
@@ -469,9 +467,6 @@ namespace GiveMED.Api.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<long>("SupplyItemQty")
-                        .HasColumnType("bigint");
-
                     b.HasKey("SupplyID", "SupplyItemID");
 
                     b.ToTable("SupplyRequestDetails");
@@ -483,7 +478,8 @@ namespace GiveMED.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SupplyID")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
@@ -506,8 +502,7 @@ namespace GiveMED.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SupplyNarration")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SupplyPriorityLevel")
                         .HasColumnType("int");

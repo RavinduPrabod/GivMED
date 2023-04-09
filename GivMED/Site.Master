@@ -194,17 +194,28 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <asp:Image runat="server" ID="imgSidePD" CssClass="img-circle elevation-2" ImageUrl="dist/img/user.png" />
+                <asp:Panel ID="pnlDProf" runat="server">
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <asp:Image runat="server" ID="imgSidePD" CssClass="img-circle elevation-2" ImageUrl="dist/img/user.png" />
+                        </div>
+                        <div class="info ml-3">
+                            <a href="/Pages/App/Profile/Profile.aspx" class="d-block">
+                                <asp:Label ID="lblDProfileName" runat="server" Text="" ForeColor="White"></asp:Label>
+                            </a>
+                        </div>
                     </div>
-                    <div class="info ml-3">
-                        <a href="/Pages/App/Profile/Profile.aspx" class="d-block">
-                            <asp:Label ID="lblProfileName" runat="server" Text="" ForeColor="White"></asp:Label>
-                        </a>
-                    </div>
-                </div>
+                </asp:Panel>
 
+                <asp:Panel ID="pnlHProf" runat="server">
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="info ml-3">
+                            <a href="/Pages/App/Profile/HProfile.aspx" class="d-block">
+                                <asp:Label ID="lblHProfileName" runat="server" Text="" ForeColor="White" Font-Bold="true"></asp:Label>
+                            </a>
+                        </div>
+                    </div>
+                </asp:Panel>
 
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
@@ -219,7 +230,9 @@
                 </div>
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <asp:Panel ID="pnlHospital" runat="server">
+                    <asp:Panel ID="pnlDSidebar" runat="server">
+                    </asp:Panel>
+                    <asp:Panel ID="pnlHSidebar" runat="server">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                             <li class="nav-item">

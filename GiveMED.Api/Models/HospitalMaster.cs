@@ -58,6 +58,10 @@ namespace GiveMED.Api.Models
         public string Designation { get; set; }
 
         [Required]
+        [MaxLength(20)]
+        public string MobileNo { get; set; }
+
+        [Required]
         public int TypeofHosptal { get; set; }
 
         [MaxLength(50)]

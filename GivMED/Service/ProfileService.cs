@@ -147,5 +147,49 @@ namespace GivMED.Service
                 throw;
             }
         }
+
+        public HospitalMaster GetHospitalMaster(string UserName)
+        {
+            try
+            {
+                HospitalMaster record = new HospitalMaster();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Registration/GetHospitalMaster/" + UserName;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<HospitalMaster>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public WebApiResponse PutHospital(HospitalMaster oData)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Registration/PutHospital";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(oData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PutAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+            }
+            return webApiResponse;
+        }
     }
 }

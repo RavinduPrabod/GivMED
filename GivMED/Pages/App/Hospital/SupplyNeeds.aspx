@@ -28,9 +28,9 @@
                                                     <asp:CheckBox runat="server" ID="chkNormal" CssClass="icheck-primary" Text="Normal" AutoPostBack="true" />
                                                 </div>
                                                 <div class="col-sm-4">
-                                                   <asp:CheckBox runat="server" ID="chkLow" CssClass="icheck-success" Text="Low" AutoPostBack="true" />
+                                                    <asp:CheckBox runat="server" ID="chkLow" CssClass="icheck-success" Text="Low" AutoPostBack="true" />
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@
                                 <div class="col-2">
                                 </div>
                                 <div class="col-2" style="text-align: right">
-                                    <asp:Button ID="btnAddtoList" runat="server" Text="Add to list" CssClass="btn btn-block bg-gradient-primary" OnClick="btnAddtoList_Click" />
+                                    <asp:Button ID="btnAddtoList" runat="server" Text="Add to list" CssClass="btn btn-block bg-gradient-primary" OnClick="btnAddtoList_Click" OnClientClick="return Validatecheck();" />
                                 </div>
                             </div>
                             <div class="row">
@@ -161,6 +161,7 @@
                         return false;
                     }
                 }
+
             });
 
             $("[id$=txtExpireDate]").datepicker({
@@ -186,27 +187,50 @@
                 });
             });
         }
-        //$(function () {
-        //    //Initialize Select2 Elements
-        //    $('.select2').select2()
+        function Validatecheck() {
+            var chkHigh = $('#<%= chkHigh.ClientID %>');
+            var chkLow = $('#<%= chkLow.ClientID %>');
+            var chkNormal = $('#<%= chkNormal.ClientID %>');
 
-        //    //Initialize Select2 Elements
-        //    $('.select2bs4').select2({
-        //        theme: 'bootstrap4'
-        //    })
+            // Add validation class only to unchecked checkboxes
+            if (!chkHigh.is(':checked') && !chkLow.is(':checked') && !chkNormal.is(':checked')) {
+                chkHigh.addClass('validate[required,custom[minCheckbox]]');
+                chkLow.addClass('validate[required,custom[minCheckbox]]');
+                chkNormal.addClass('validate[required,custom[minCheckbox]]');
+            }
 
-        //    //Bootstrap Duallistbox
-        //    $('.duallistbox').bootstrapDualListbox()
-        //})
+            var valid = $("#form1").validationEngine('validate');
 
-        //$(document).ready(function () {
-        //    $('#bootstrap-duallistbox-nonselected-list_').bootstrapDualListbox({
-        //        nonSelectedListLabel: 'Available options',
-        //        selectedListLabel: 'Selected options',
-        //        preserveSelectionOnMove: 'moved',
-        //        moveOnSelect: false
-        //    });
-        //});
+            // Hide validation when a checkbox is checked
+            chkHigh.change(function () {
+                if (chkHigh.is(':checked')) {
+                    chkLow.validationEngine('hide');
+                    chkNormal.validationEngine('hide');
+                }
+            });
+
+            chkLow.change(function () {
+                if (chkLow.is(':checked')) {
+                    chkHigh.validationEngine('hide');
+                    chkNormal.validationEngine('hide');
+                }
+            });
+
+            chkNormal.change(function () {
+                if (chkNormal.is(':checked')) {
+                    chkHigh.validationEngine('hide');
+                    chkLow.validationEngine('hide');
+                }
+            });
+
+            if (valid) {
+                $("#form1").validationEngine('detach');
+            } else {
+                $("#form1").validationEngine('attach', { promptPosition: "inline", scroll: false });
+            }
+
+            return valid;
+        }
 
     </script>
 </asp:Content>

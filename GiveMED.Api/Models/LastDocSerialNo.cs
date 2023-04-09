@@ -22,5 +22,7 @@ namespace GiveMED.Api.Models
 
         [MaxLength(50)]
         public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDateTime { get; set; }
     }
 }

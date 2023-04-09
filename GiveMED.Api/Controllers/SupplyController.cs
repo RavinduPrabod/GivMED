@@ -3,6 +3,7 @@ using GiveMED.Api.Dto;
 using GiveMED.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,43 @@ namespace GiveMED.Api.Controllers
                 comlist.Add(odata);
             }
             return comlist;
+        }
+
+        [HttpPost]
+        [ActionName("PostSupplyNeed")]
+        public async Task<IActionResult> PostSupplyNeed([FromBody] SupplyNeedsDto result)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                LastDocSerialNo record = _context.LastDocSerialNo.Where(x => x.DocCode == "SPN").FirstOrDefault();
+                record.DocCode = "SPN";
+                record.LastTxnSerialNo = record.LastTxnSerialNo + 1;
+                record.ModifiedBy = "admin";
+                record.ModifiedDateTime = DateTime.Now;
+
+                _context.Entry(record).State = EntityState.Modified;
+
+                result.SupplyRequestHeader.HospitalID = _context.HospitalMaster.Where(x => x.UserName == result.UserName).FirstOrDefault().HospitalID;
+                string NewSupplyID = record.DocCode + record.LastTxnSerialNo.ToString("D3");
+                result.SupplyRequestHeader.SupplyID = NewSupplyID;
+                result.SupplyRequestDetails.ForEach(x => x.SupplyID = NewSupplyID);
+
+                _context.SupplyRequestHeader.Add(result.SupplyRequestHeader);
+                _context.SupplyRequestDetails.AddRange(result.SupplyRequestDetails);
+
+                await _context.SaveChangesAsync();
+
+                return Ok(result); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
         }
     }
 }

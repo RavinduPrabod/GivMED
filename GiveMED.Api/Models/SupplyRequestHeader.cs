@@ -14,13 +14,13 @@ namespace GiveMED.Api.Models
         public int HospitalID { get; set; }
 
         [Required]
-        [MaxLength(50)]
         public string SupplyID { get; set; }
 
         public DateTime? SupplyCreateDate { get; set; }
 
         public DateTime? SupplyExpireDate { get; set; }
 
+        [MaxLength(200)]
         public string SupplyNarration { get; set; }
 
         [Required]

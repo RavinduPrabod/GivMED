@@ -24,6 +24,15 @@ namespace GivMED
         protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
 
         /// <summary>
+        /// pnlDProf control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlDProf;
+
+        /// <summary>
         /// imgSidePD control.
         /// </summary>
         /// <remarks>
@@ -33,22 +42,49 @@ namespace GivMED
         protected global::System.Web.UI.WebControls.Image imgSidePD;
 
         /// <summary>
-        /// lblProfileName control.
+        /// lblDProfileName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblProfileName;
+        protected global::System.Web.UI.WebControls.Label lblDProfileName;
 
         /// <summary>
-        /// pnlHospital control.
+        /// pnlHProf control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlHospital;
+        protected global::System.Web.UI.WebControls.Panel pnlHProf;
+
+        /// <summary>
+        /// lblHProfileName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblHProfileName;
+
+        /// <summary>
+        /// pnlDSidebar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlDSidebar;
+
+        /// <summary>
+        /// pnlHSidebar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlHSidebar;
 
         /// <summary>
         /// form1 control.

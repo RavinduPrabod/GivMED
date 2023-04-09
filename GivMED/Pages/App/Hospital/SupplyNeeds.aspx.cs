@@ -33,6 +33,7 @@ namespace GivMED.Pages.App.Hospital
                 Session["Itembulk"] = Itembulk;
                 btnPublish.Visible = false;
                 txtExpireDate.Visible = false;
+                checboxcontrol(true);
             }
 
         }
@@ -262,6 +263,7 @@ namespace GivMED.Pages.App.Hospital
                 Session["SupplyList"] = oSupplyRequestDetails;
                 btnPublish.Visible = true;
                 txtExpireDate.Visible = true;
+                checboxcontrol(false);
             }
             else
             {
@@ -301,6 +303,7 @@ namespace GivMED.Pages.App.Hospital
                 oRequestDetails.SupplyItemID = Convert.ToInt32((row.FindControl("lblSupplyItemID") as Label).Text);
                 oRequestDetails.SupplyItemName = (row.FindControl("lblSupplyItemName") as Label).Text.ToString();
                 oRequestDetails.SupplyItemQty = Convert.ToInt64((row.FindControl("txtQty") as TextBox).Text);
+
                 // Add the new SupplyRequestDetails object to the list
                 oSupplyRequestDetails.Add(oRequestDetails);
             }
@@ -315,11 +318,15 @@ namespace GivMED.Pages.App.Hospital
             {
                 gvSupplyList.DataSource = oSupplyRequestDetails;
                 gvSupplyList.DataBind();
+                Session["SeletedCatinBulk"] = oSupplyRequestDetails;
             }
             else
             {
                 gvSupplyList.DataSource = null;
                 gvSupplyList.DataBind();
+                btnPublish.Visible = false;
+                txtExpireDate.Visible = false;
+                checboxcontrol(true);
             }
         }
 
@@ -335,7 +342,8 @@ namespace GivMED.Pages.App.Hospital
 
             if (response.StatusCode == (int)StatusCode.Success)
             {
-                ShowSuccessMessage(ResponseMessages.UpdateSuccess);
+                ShowSuccessMessage(ResponseMessages.SuccessfullyPulished);
+                // need pop
             }
             else
             {
@@ -356,8 +364,45 @@ namespace GivMED.Pages.App.Hospital
             oHeader.SupplyNarration = txtSupplyNarration.Text;
             oHeader.SupplyPriorityLevel = (chkHigh.Checked == true) ? 1 : (chkNormal.Checked == true) ? 2 : (chkLow.Checked == true) ? 3 : 0;
             oHeader.SupplyType = 1;
+            oHeader.SupplyStatus = 1;
+            oHeader.CreatedBy = "admin";
+            oHeader.CreatedDateTime = DateTime.Now;
+            oHeader.ModifiedBy = "admin";
+            oHeader.ModifiedDateTime = DateTime.Now;
+
+
+            foreach (GridViewRow row in gvSupplyList.Rows)
+            {
+                // Extract data from each row and create a new SupplyRequestDetails object
+                SupplyRequestDetails oData = new SupplyRequestDetails();
+                oData.SupplyID = "SPN";
+                oData.SupplyItemID = Convert.ToInt32((row.FindControl("lblSupplyItemID") as Label).Text);
+                oData.SupplyItemCat = Convert.ToInt32((row.FindControl("lblSupplyItemCat") as Label).Text);
+                oData.SupplyItemName = (row.FindControl("lblSupplyItemName") as Label).Text.ToString();
+                oData.SupplyItemQty = Convert.ToInt64((row.FindControl("txtQty") as TextBox).Text);
+                oData.CreatedBy = "admin";
+                oData.CreatedDateTime = DateTime.Now;
+                oData.ModifiedBy = "admin";
+                oData.ModifiedDateTime = DateTime.Now;
+
+                // Add the new SupplyRequestDetails object to the list
+                oDetails.Add(oData);
+            }
+
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+            result.UserName = loggedUser.UserName.ToString();
+            result.SupplyRequestHeader = oHeader;
+            result.SupplyRequestDetails = oDetails;
 
             return result;
+        }
+
+        private void checboxcontrol(bool result)
+        {
+            chkHigh.Enabled = result;
+            chkNormal.Enabled = result;
+            chkLow.Enabled = result;
         }
     }
 }

@@ -64,7 +64,7 @@ namespace GivMED.Pages
                         if(oRegistrationService.CheckHospitalMasterAvailability(loggedUser.UserName) == true)
                         {
                             ShowSuccessMessage(ResponseMessages.LoginSuccess);
-                            Response.Redirect("~/Pages/App/Profile/Profile.aspx");
+                            Response.Redirect("~/Pages/App/Profile/HProfile.aspx");
                         }
                         else
                         {

@@ -145,6 +145,13 @@ namespace GiveMED.Api.Controllers
         {
             return _context.DonorMaster.Where(x => x.UserName == UserName).FirstOrDefault();
         }
+
+        [HttpGet("{UserName}")]
+        [ActionName("GetHospitalMaster")]
+        public HospitalMaster GetHospitalMaster(string UserName)
+        {
+            return _context.HospitalMaster.Where(x => x.UserName == UserName).FirstOrDefault();
+        }
         #endregion Donor
 
         #region Hospital
@@ -190,6 +197,35 @@ namespace GiveMED.Api.Controllers
             }
         }
 
+        [HttpPut]
+        [ActionName("PutHospital")]
+        public async Task<IActionResult> PutHospital([FromBody] HospitalMaster oData)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                //if (DocumentExists(oDocument.DocCode))
+                //    ModelState.AddModelError("DocCode", "DocCode already exists");
+
+                //if (!ModelState.IsValid)
+                //    return BadRequest(ModelState);
+
+                _context.Entry(oData).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(oData); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
+
+        }
+
         [HttpGet("{UserName}")]
         [ActionName("CheckHospitalMasterAvailability")]
         public bool CheckHospitalMasterAvailability(string UserName)
@@ -203,6 +239,7 @@ namespace GiveMED.Api.Controllers
         {
             return _context.DonorMaster.Where(x => x.UserName == UserName).Any();
         }
+
         #endregion Hospital
 
     }
