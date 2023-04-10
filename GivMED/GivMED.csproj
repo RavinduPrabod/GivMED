@@ -245,6 +245,7 @@
     <Content Include="dist\js\.eslintrc.json" />
     <Content Include="dist\js\adminlte.js.map" />
     <Content Include="dist\js\adminlte.min.js.map" />
+    <Content Include="Pages\App\Donor\Published_Needs.aspx" />
     <Content Include="Pages\App\Hospital\SupplyNeeds.aspx" />
     <Content Include="Pages\App\Profile\HProfile.aspx" />
     <Content Include="Pages\App\Profile\Profile.aspx" />
@@ -2206,6 +2207,7 @@
     <Compile Include="Dto\ChangePwdDto.cs" />
     <Compile Include="Dto\ComboDTO.cs" />
     <Compile Include="Dto\LoggedUserDto.cs" />
+    <Compile Include="Dto\PublishedNeedsGridDto.cs" />
     <Compile Include="Dto\SupplyNeedsDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Dto\UserForLoginDto.cs" />
@@ -2231,6 +2233,13 @@
     <Compile Include="Models\SupplyRequestHeader.cs" />
     <Compile Include="Models\UnsendEmailLog.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Pages\App\Donor\Published_Needs.aspx.cs">
+      <DependentUpon>Published_Needs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\App\Donor\Published_Needs.aspx.designer.cs">
+      <DependentUpon>Published_Needs.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\App\Hospital\SupplyNeeds.aspx.cs">
       <DependentUpon>SupplyNeeds.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2337,7 +2346,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Pages\App\Donor\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

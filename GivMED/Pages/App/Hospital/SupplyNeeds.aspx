@@ -12,12 +12,9 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Supply Needs Publications</h3>
-                                    <div class="col-md-4">
-                                        <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-primary" Text="Create New" OnClick="btnCreate_Click" />
-                                        </div>
                                     <div class="card-tools">
-                                        <div class="input-group input-group-sm" style="width: 150px;">
-                                            <input type="text" name="table_search" id="table_search" class="form-control float-right" placeholder="Search">
+                                        <div class="input-group input-group-sm" style="width: 300px;">
+                                            <asp:TextBox runat="server" CssClass="form-control float-right" ID="txtSearchList" placeholder="Search" TextMode="Search"></asp:TextBox>
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-default">
                                                     <i class="fas fa-search"></i>
@@ -28,6 +25,7 @@
                                 </div>
                                 <!-- ./card-header -->
                                 <div class="card-body table-responsive p-0">
+                                    <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-xs" Text="Create New publish" OnClick="btnCreate_Click" />
                                     <asp:GridView ID="gvSupplyNeeds" runat="server" AutoGenerateColumns="False" CssClass="table table-striped projects table-bordered table-hover text-nowrap" AllowPaging="true" PageSize="10" OnRowDataBound="gvSupplyNeeds_RowDataBound" OnRowCommand="gvSupplyNeeds_RowCommand" OnPageIndexChanging="gvSupplyNeeds_PageIndexChanging">
                                         <Columns>
                                             <asp:TemplateField HeaderText="#">
@@ -81,13 +79,13 @@
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <div class="project-actions text-center">
-                                                        <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" CausesValidation="false" CommandName="ViewData" ommandArgument="<%# Container.DisplayIndex %>">
+                                                        <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>">
                                                             <i class="fas fa-eye"></i>
                                                         </asp:LinkButton>
-                                                        <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" Text="Edit" CausesValidation="false" CommandName="EditData" ommandArgument="<%# Container.DisplayIndex %>">
+                                                        <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" Text="Edit" CausesValidation="false" CommandName="EditData" CommandArgument="<%# Container.DisplayIndex %>">
                                                             <i class="fas fa-pencil-alt"></i>
                                                         </asp:LinkButton>
-                                                        <asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" Text="Delete" CausesValidation="false" CommandName="DeleteData" ommandArgument="<%# Container.DisplayIndex %>">
+                                                        <asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" Text="Delete" CausesValidation="false" CommandName="DeleteData" CommandArgument="<%# Container.DisplayIndex %>">
                                                             <i class="fas fa-trash"></i>
                                                         </asp:LinkButton>
                                                     </div>
@@ -142,6 +140,12 @@
                                             <h3 class="card-title">Supply <b>List</b></h3>
                                         </div>
                                         <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-7"></div>
+                                                <div class="col-5">
+                                                    <label for="inputName" class="col-sm-12 col-form-label">Supply Category</label>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-7">
                                                     <asp:TextBox runat="server" CssClass="form-control" ID="txtSearch" placeholder="search" TextMode="Search" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true"></asp:TextBox>
@@ -235,6 +239,8 @@
                             </div>
                             <div class="row">
                                 <asp:Button ID="btnPublish" runat="server" Text="Publish" CssClass="btn btn-block bg-gradient-success" OnClientClick="return Validate();" OnClick="btnPublish_Click" />
+                                <asp:Button ID="btnRePublish" runat="server" Text="Re-Publish" CssClass="btn btn-block bg-gradient-warning" OnClientClick="return Validate();" OnClick="btnRePublish_Click" />
+
                             </div>
                         </div>
                     </div>

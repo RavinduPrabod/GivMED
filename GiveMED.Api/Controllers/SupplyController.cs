@@ -28,6 +28,18 @@ namespace GiveMED.Api.Controllers
             return _context.SupplyRequestHeader.ToList();
         }
 
+        [HttpGet]
+        [ActionName("GetSupplyNeedHeaderWithDetails")]
+        public SupplyNeedsDto GetSupplyNeedHeaderWithDetails()
+        {
+            SupplyNeedsDto oSupplyNeedsDto = new SupplyNeedsDto();
+            oSupplyNeedsDto.SupplyRequestHeaderList = _context.SupplyRequestHeader.ToList();
+            oSupplyNeedsDto.SupplyRequestDetails = _context.SupplyRequestDetails.ToList();
+
+            return oSupplyNeedsDto;
+        }
+
+
         [HttpGet("{SupplyID}")]
         [ActionName("GetSupplyNeedsForID")]
         public SupplyNeedsDto GetSupplyNeedsForID(string SupplyID)

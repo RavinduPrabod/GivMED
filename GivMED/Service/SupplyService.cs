@@ -111,6 +111,33 @@ namespace GivMED.Service
             }
         }
 
+        public SupplyNeedsDto GetSupplyNeedHeaderWithDetails()
+        {
+            try
+            {
+                SupplyNeedsDto record = new SupplyNeedsDto();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetSupplyNeedHeaderWithDetails";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<SupplyNeedsDto>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public SupplyNeedsDto GetSupplyNeedsForID(string SupplyID)
         {
             try

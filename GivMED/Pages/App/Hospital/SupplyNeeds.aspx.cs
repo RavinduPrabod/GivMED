@@ -59,6 +59,7 @@ namespace GivMED.Pages.App.Hospital
                 Session["SupplyList"] = null;
                 Session["SeletedCatinBulk"] = null;
                 Session["SearchList"] = null;
+                btnRePublish.Visible = false;
             }
 
         }
@@ -515,6 +516,7 @@ namespace GivMED.Pages.App.Hospital
                     case "EditData":
                         ViewState["index"] = e.CommandArgument.ToString();
                         ViewRecord();
+                        btnRePublish.Visible = true;
                         break;
 
                     case "DeleteData":
@@ -581,6 +583,11 @@ namespace GivMED.Pages.App.Hospital
         protected void btnCreate_Click(object sender, EventArgs e)
         {
             mvSupply.ActiveViewIndex = 1;
+        }
+
+        protected void btnRePublish_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

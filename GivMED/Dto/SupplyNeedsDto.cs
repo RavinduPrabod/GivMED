@@ -12,5 +12,7 @@ namespace GivMED.Dto
         public SupplyRequestHeader SupplyRequestHeader { get; set; }
 
         public List<SupplyRequestDetails> SupplyRequestDetails { get; set; }
+
+        public List<SupplyRequestHeader> SupplyRequestHeaderList { get; set; }
     }
 }
