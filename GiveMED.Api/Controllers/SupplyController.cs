@@ -41,7 +41,7 @@ namespace GiveMED.Api.Controllers
             comm.CommandText = "SELECT " +
                 "A.SupplyID, A.SupplyPriorityLevel, A.SupplyCreateDate,A.SupplyExpireDate, " +
                 "B.SupplyItemName, B.SupplyItemQty, " +
-                "C.HospitalName, C.State, " +
+                "C.HospitalName, C.HospitalID, C.State, " +
                 "D.DonatedQty " +
                 "FROM SupplyRequestHeader A " +
                 "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
@@ -59,6 +59,7 @@ namespace GiveMED.Api.Controllers
                 data.SupplyExpireDate = Convert.IsDBNull(reader["SupplyExpireDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyExpireDate"]);
                 data.SupplyItemName = Convert.IsDBNull(reader["SupplyItemName"]) ? "" : reader["SupplyItemName"].ToString();
                 data.HospitalName = Convert.IsDBNull(reader["HospitalName"]) ? "" : reader["HospitalName"].ToString();
+                data.HospitalID = Convert.IsDBNull(reader["HospitalID"]) ? 0 : Convert.ToInt32(reader["HospitalID"]);
                 data.State = Convert.IsDBNull(reader["State"]) ? "" : reader["State"].ToString();
                 data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
                 data.SupplyItemQty = Convert.IsDBNull(reader["SupplyItemQty"]) ? 0 : Convert.ToInt64(reader["SupplyItemQty"]);
@@ -118,6 +119,17 @@ namespace GiveMED.Api.Controllers
 
             return oSupplyNeedsDto;
         }
+
+        [HttpGet("{HospitalID}")]
+        [ActionName("GetHospitalMasterForID")]
+        public HospitalMaster GetHospitalMasterForID(int HospitalID)
+        {
+            HospitalMaster oHospitalMaster = new HospitalMaster();
+            oHospitalMaster = _context.HospitalMaster.Where(x => x.HospitalID == HospitalID).FirstOrDefault();
+
+            return oHospitalMaster;
+        }
+
 
         [HttpGet]
         [ActionName("GetItemCat")]

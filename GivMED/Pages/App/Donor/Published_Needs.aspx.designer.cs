@@ -177,13 +177,40 @@ namespace GivMED.Pages.App.Donor
         protected global::System.Web.UI.WebControls.Label lblHospitalName;
 
         /// <summary>
-        /// lblAbout control.
+        /// lblRegNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAbout;
+        protected global::System.Web.UI.WebControls.Label lblRegNo;
+
+        /// <summary>
+        /// lbltype control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbltype;
+
+        /// <summary>
+        /// lblYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblYear;
+
+        /// <summary>
+        /// lblNoofBeds control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoofBeds;
 
         /// <summary>
         /// lblAddress control.
@@ -211,6 +238,15 @@ namespace GivMED.Pages.App.Donor
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblEmail;
+
+        /// <summary>
+        /// lblWeb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblWeb;
 
         /// <summary>
         /// LinkButton1 control.

@@ -165,6 +165,33 @@ namespace GivMED.Service
             }
         }
 
+        public HospitalMaster GetHospitalMasterForID(int SupplyID)
+        {
+            try
+            {
+                HospitalMaster record = new HospitalMaster();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetHospitalMasterForID/" + SupplyID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<HospitalMaster>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<SupplyNeedGridDto> GetSupplyNeedGridForID(string SupplyID)
         {
             try

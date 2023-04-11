@@ -36,6 +36,18 @@ namespace GivMED.Common
             Inactive = 2
         }
 
+        public enum typeofhospital
+        {
+            General_hospital = 1,
+            Specialty_hospital = 2,
+            Teaching_hospital = 3,
+            Children_hospital = 4,
+            Rehabilitation_hospital = 4,
+            Rural_hospital = 5,
+            Community_hospital = 6,
+            Academic_medical_cente = 7
+        }
+
         //TransactionCode
                             //SupplyNeed - SPN
                             //Donation - DTN

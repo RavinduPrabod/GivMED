@@ -227,6 +227,7 @@
                                                                         <asp:Label ID="Label1" runat="server" Font-Size="Small" ForeColor="Blue" CssClass="label-icon-text"><i class="fas fa-shield-alt"></i>VERIFIED HOSPITAL
                                                                         </asp:Label>
                                                                         <br>
+                                                                        <asp:Label ID="lblHospitalID" Visible="false" runat="server" Text='<%# Bind("HospitalID") %>'></asp:Label>
                                                                         <asp:Label ID="lblState" Font-Size="Large" runat="server" Text='<%# Bind("State") %>'></asp:Label>,
                                                                         <asp:Label ID="lblHospitalName" Font-Size="Large" runat="server" Text='<%# Bind("HospitalName") %>'></asp:Label>
                                                                         <br>
@@ -295,7 +296,7 @@
                                 <div class="col-8">
                                     <div class="card bg-light">
                                         <div class="card-header text-muted border-bottom-0">
-                                            <asp:LinkButton ID="btnBackPage" runat="server" CssClass="btn btn-sm btn-secondary"><i class="fas fa-backward"></i> Back to Page
+                                            <asp:LinkButton ID="btnBackPage" runat="server" CssClass="btn btn-sm btn-secondary" OnClick="btnBackPage_Click"><i class="fas fa-backward"></i> Back to Page
                                             </asp:LinkButton>
                                         </div>
                                         <div class="card-body pt-0">
@@ -385,14 +386,32 @@
                                         <div class="card-body pt-0">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <h2 class="lead"><b>
-                                                        <asp:Label ID="lblHospitalName" runat="server" Text="Hospital Name"></asp:Label></b></h2>
-                                                    <p class="text-muted text-sm">
-                                                        <b>About: </b>
-                                                        <asp:Label ID="lblAbout" runat="server" Text=""></asp:Label>
-                                                    </p>
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <h2 class="lead"><b>
+                                                                <asp:Label ID="lblHospitalName" runat="server" Text="Hospital Name" Font-Underline="true" Font-Bold="true"></asp:Label></b></h2>
+                                                        </div>
+                                                    </div>
                                                     <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span>
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-registered"></i></span>
+                                                            <asp:Label ID="lblRegNo" runat="server" Text=""></asp:Label><br />
+                                                        </li>
+                                                         &nbsp
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-cat"></i></span>
+                                                            <asp:Label ID="lbltype" runat="server" Text=""></asp:Label><br />
+                                                        </li>
+                                                         &nbsp
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-times-circle"></i></span>
+                                                            <asp:Label ID="lblYear" runat="server" Text=""></asp:Label><br />
+                                                        </li>
+                                                         &nbsp
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-bed"></i></span>
+                                                            <asp:Label ID="lblNoofBeds" runat="server" Text=""></asp:Label><br />
+                                                        </li>
+                                                         &nbsp
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked-alt"></i></span>
                                                             <asp:Label ID="lblAddress" runat="server" Text="Address"></asp:Label><br />
                                                         </li>
                                                         &nbsp
@@ -402,6 +421,9 @@
                                                         &nbsp
                                                          <li class="small"><span class="fa-li"><i class="fas fa-lg fa-mail-bulk"></i></span>
                                                              <asp:Label ID="lblEmail" runat="server" Text="Email"></asp:Label></li>
+                                                         &nbsp
+                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-broadcast-tower"></i></span>
+                                                             <asp:Label ID="lblWeb" runat="server" Text="Web"></asp:Label></li>
                                                     </ul>
                                                 </div>
                                             </div>
