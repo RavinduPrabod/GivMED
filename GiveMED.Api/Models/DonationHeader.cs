@@ -1,31 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GiveMED.Api.Models
 {
-    [Table("SupplyRequestDetails")]
-    public class SupplyRequestDetails
+    public class DonationHeader
     {
+        [Required]
+        [MaxLength(50)]
+        public string DonationID { get; set; }
+
+        [Required]
+        public int DonorID { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string UserName { get; set; }
+
+        [Required]
+        public int HospitalID { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string SupplyID { get; set; }
 
-        [Required]
-        public int SupplyItemID { get; set; }
+        public int DonationStatus { get; set; }
 
-        [Required]
-        public int SupplyItemCat { get; set; }
+        public DateTime? DonationCreateDate { get; set; }
 
-        [Required]
-        [MaxLength(100)]
-        public string SupplyItemName { get; set; }
-
-        [Required]
-        public long SupplyItemQty { get; set; }
+        public DateTime? DonationDealDate { get; set; }
 
         [MaxLength(50)]
         public string CreatedBy { get; set; }

@@ -26,6 +26,8 @@ namespace GiveMED.Api.Data
         public DbSet<ItemMaster> ItemMaster { get; set; }
         public DbSet<SupplyRequestHeader> SupplyRequestHeader { get; set; }
         public DbSet<SupplyRequestDetails> SupplyRequestDetails { get; set; }
+        public DbSet<DonationHeader> DonationHeader { get; set; }
+        public DbSet<DonationDetails> DonationDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +58,10 @@ namespace GiveMED.Api.Data
             modelBuilder.Entity<SupplyRequestHeader>().HasKey(c => new { c.HospitalID, c.SupplyID });
 
             modelBuilder.Entity<SupplyRequestDetails>().HasKey(c => new { c.SupplyID, c.SupplyItemID });
+
+            modelBuilder.Entity<DonationHeader>().HasKey(c => new { c.DonationID, c.DonorID, c.UserName, c.SupplyID });
+
+            modelBuilder.Entity<DonationDetails>().HasKey(c => new { c.DonationID, c.SupplyID, c.ItemCategory, c.ItemID });
 
             #endregion KeyFields
 

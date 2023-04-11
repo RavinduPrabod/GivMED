@@ -111,11 +111,11 @@ namespace GivMED.Service
             }
         }
 
-        public SupplyNeedsDto GetSupplyNeedHeaderWithDetails()
+        public List<PublishedNeedsGridDto> GetSupplyNeedHeaderWithDetails()
         {
             try
             {
-                SupplyNeedsDto record = new SupplyNeedsDto();
+                List<PublishedNeedsGridDto> record = new List<PublishedNeedsGridDto>();
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -126,7 +126,7 @@ namespace GivMED.Service
                     if (response.IsSuccessStatusCode)
                     {
                         var value = response.Content.ReadAsStringAsync().Result;
-                        record = JsonConvert.DeserializeObject<SupplyNeedsDto>(value);
+                        record = JsonConvert.DeserializeObject<List<PublishedNeedsGridDto>>(value);
                     }
                 }
                 return record;
@@ -154,6 +154,33 @@ namespace GivMED.Service
                     {
                         var value = response.Content.ReadAsStringAsync().Result;
                         record = JsonConvert.DeserializeObject<SupplyNeedsDto>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<SupplyNeedGridDto> GetSupplyNeedGridForID(string SupplyID)
+        {
+            try
+            {
+                List<SupplyNeedGridDto> record = new List<SupplyNeedGridDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetSupplyNeedGridForID/" + SupplyID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<SupplyNeedGridDto>>(value);
                     }
                 }
                 return record;

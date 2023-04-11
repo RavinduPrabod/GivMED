@@ -3,6 +3,7 @@ using GiveMED.Api.Dto;
 using GiveMED.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,13 +31,80 @@ namespace GiveMED.Api.Controllers
 
         [HttpGet]
         [ActionName("GetSupplyNeedHeaderWithDetails")]
-        public SupplyNeedsDto GetSupplyNeedHeaderWithDetails()
+        public IEnumerable<PublishedNeedsGridDto> GetSupplyNeedHeaderWithDetails()
         {
-            SupplyNeedsDto oSupplyNeedsDto = new SupplyNeedsDto();
-            oSupplyNeedsDto.SupplyRequestHeaderList = _context.SupplyRequestHeader.ToList();
-            oSupplyNeedsDto.SupplyRequestDetails = _context.SupplyRequestDetails.ToList();
+            List<PublishedNeedsGridDto> Records = new List<PublishedNeedsGridDto>();
 
-            return oSupplyNeedsDto;
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT " +
+                "A.SupplyID, A.SupplyPriorityLevel, A.SupplyCreateDate,A.SupplyExpireDate, " +
+                "B.SupplyItemName, B.SupplyItemQty, " +
+                "C.HospitalName, C.State, " +
+                "D.DonatedQty " +
+                "FROM SupplyRequestHeader A " +
+                "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
+                "INNER JOIN HospitalMaster C ON A.HospitalID = C.HospitalID " +
+                "LEFT OUTER JOIN DonationDetails D ON A.SupplyID = D.SupplyID AND B.SupplyItemCat = D.ItemCategory AND B.SupplyItemID = D.ItemID " +
+                "WHERE A.SupplyStatus = 1";
+
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                PublishedNeedsGridDto data = new PublishedNeedsGridDto();
+                data.SupplyID = Convert.IsDBNull(reader["SupplyID"]) ? "" : reader["SupplyID"].ToString();
+                data.SupplyPriorityLevel = Convert.IsDBNull(reader["SupplyPriorityLevel"]) ? 0 : Convert.ToInt32(reader["SupplyPriorityLevel"]);
+                data.SupplyCreateDate = Convert.IsDBNull(reader["SupplyCreateDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyCreateDate"]);
+                data.SupplyExpireDate = Convert.IsDBNull(reader["SupplyExpireDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyExpireDate"]);
+                data.SupplyItemName = Convert.IsDBNull(reader["SupplyItemName"]) ? "" : reader["SupplyItemName"].ToString();
+                data.HospitalName = Convert.IsDBNull(reader["HospitalName"]) ? "" : reader["HospitalName"].ToString();
+                data.State = Convert.IsDBNull(reader["State"]) ? "" : reader["State"].ToString();
+                data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
+                data.SupplyItemQty = Convert.IsDBNull(reader["SupplyItemQty"]) ? 0 : Convert.ToInt64(reader["SupplyItemQty"]);
+                Records.Add(data);
+            }
+            conn.Close();
+
+            return Records;
+        }
+
+        [HttpGet("{SupplyID}")]
+        [ActionName("GetSupplyNeedGridForID")]
+        public IEnumerable<SupplyNeedGridDto> GetSupplyNeedGridForID(string SupplyID)
+        {
+            List<SupplyNeedGridDto> Records = new List<SupplyNeedGridDto>();
+
+            var id = new SqlParameter("SupplyID", SupplyID);
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT " +
+                "A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, " +
+                "B.ItemCatName, " +
+                "C.DonatedQty " +
+                "FROM " +
+                "SupplyRequestDetails A " +
+                "INNER JOIN ItemCatMaster B ON A.SupplyItemCat = B.ItemCatID " +
+                "LEFT OUTER JOIN DonationDetails C ON A.SupplyID = C.SupplyID AND A.SupplyItemCat = C.ItemCategory AND A.SupplyItemID = C.ItemID " +
+                "WHERE A.SupplyID = @SupplyID";
+
+            comm.Parameters.Add(id);
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                SupplyNeedGridDto data = new SupplyNeedGridDto();
+                data.SupplyItemID = Convert.IsDBNull(reader["SupplyItemID"]) ? 0 : Convert.ToInt32(reader["SupplyItemID"]);
+                data.SupplyItemCat = Convert.IsDBNull(reader["SupplyItemCat"]) ? 0 : Convert.ToInt32(reader["SupplyItemCat"]);
+                data.SupplyItemName = Convert.IsDBNull(reader["SupplyItemName"]) ? "" : reader["SupplyItemName"].ToString();
+                data.SupplyItemQty = Convert.IsDBNull(reader["SupplyItemQty"]) ? 0 : Convert.ToInt64(reader["SupplyItemQty"]);
+                data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
+                data.ItemCatName = Convert.IsDBNull(reader["ItemCatName"]) ? "" : reader["ItemCatName"].ToString();
+                Records.Add(data);
+            }
+            conn.Close();
+
+            return Records;
         }
 
 

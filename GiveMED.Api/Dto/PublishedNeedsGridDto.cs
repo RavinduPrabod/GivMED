@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
 
-namespace GivMED.Dto
+namespace GiveMED.Api.Dto
 {
     public class PublishedNeedsGridDto
     {
@@ -38,8 +38,5 @@ namespace GivMED.Dto
         public long RequestQty { get; set; }
 
         public long DonatedQty { get; set; }
-
-        public int ProcessPrecentage { get; set; }
-
     }
 }

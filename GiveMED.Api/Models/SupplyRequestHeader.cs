@@ -14,6 +14,7 @@ namespace GiveMED.Api.Models
         public int HospitalID { get; set; }
 
         [Required]
+        [MaxLength(50)]
         public string SupplyID { get; set; }
 
         public DateTime? SupplyCreateDate { get; set; }
