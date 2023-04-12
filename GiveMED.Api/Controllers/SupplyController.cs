@@ -101,6 +101,7 @@ namespace GiveMED.Api.Controllers
                 data.SupplyItemQty = Convert.IsDBNull(reader["SupplyItemQty"]) ? 0 : Convert.ToInt64(reader["SupplyItemQty"]);
                 data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
                 data.ItemCatName = Convert.IsDBNull(reader["ItemCatName"]) ? "" : reader["ItemCatName"].ToString();
+                data.RemainingQty = data.SupplyItemQty - data.DonatedQty;
                 Records.Add(data);
             }
             conn.Close();
@@ -116,6 +117,7 @@ namespace GiveMED.Api.Controllers
             SupplyNeedsDto oSupplyNeedsDto = new SupplyNeedsDto();
             oSupplyNeedsDto.SupplyRequestHeader = _context.SupplyRequestHeader.Where(x => x.SupplyID == SupplyID).FirstOrDefault();
             oSupplyNeedsDto.SupplyRequestDetails = _context.SupplyRequestDetails.Where(x => x.SupplyID == SupplyID).ToList();
+            oSupplyNeedsDto.ManageTemplate = _context.ManageTemplate.Where(x => x.HospitalID == oSupplyNeedsDto.SupplyRequestHeader.HospitalID).FirstOrDefault();
 
             return oSupplyNeedsDto;
         }

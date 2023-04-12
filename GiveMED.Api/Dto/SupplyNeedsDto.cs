@@ -16,5 +16,7 @@ namespace GiveMED.Api.Dto
 
         public List<SupplyRequestHeader> SupplyRequestHeaderList { get; set; }
 
+        public ManageTemplate ManageTemplate { get; set; }
+
     }
 }

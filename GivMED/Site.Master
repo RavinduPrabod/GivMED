@@ -27,6 +27,12 @@
     <!-- Theme style -->
     <link href="dist/css/adminlte.min.css" rel="stylesheet" />
 
+    <!-- summernote -->
+    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+    <%--    <!-- SimpleMDE -->
+    <link rel="stylesheet" href="plugins/simplemde/simplemde.min.css">--%>
+
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 
@@ -234,6 +240,17 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <asp:Panel ID="pnlDSidebar" runat="server">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+                            <li class="nav-item">
+                                <a href="/Pages/App/Donor/Published_Needs.aspx" class="nav-link">
+                                    <i class="nav-icon fas fa-donate"></i>
+                                    <p>
+                                        Donate & Support!<span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
                     </asp:Panel>
                     <asp:Panel ID="pnlHSidebar" runat="server">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -360,6 +377,9 @@
 
     <!-- AdminLTE App -->
     <script src='<%=ResolveClientUrl("dist/js/adminlte.min.js")%>' type="text/javascript"></script>
+
+    <!-- Summernote -->
+    <script src='<%=ResolveClientUrl("plugins/summernote/summernote-bs4.min.js")%>' type="text/javascript"></script>
 
     <!-- Common -->
     <script src='<%=ResolveClientUrl("dist/js/common.js")%>' type="text/javascript"></script>

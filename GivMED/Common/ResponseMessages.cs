@@ -48,5 +48,7 @@ namespace GivMED.Common
         public static string NoRecords { get { return "No records available."; } }
 
         public static string SelectFirst { get { return "Please select first."; } }
+
+        public static string pleasefill { get { return "Please fill request qty first."; } }
     }
 }

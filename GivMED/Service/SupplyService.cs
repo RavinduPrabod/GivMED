@@ -165,7 +165,7 @@ namespace GivMED.Service
             }
         }
 
-        public HospitalMaster GetHospitalMasterForID(int SupplyID)
+        public HospitalMaster GetHospitalMasterForID(int HospitalID)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace GivMED.Service
 
                 using (HttpClient client = new HttpClient())
                 {
-                    string path = "Supply/GetHospitalMasterForID/" + SupplyID;
+                    string path = "Supply/GetHospitalMasterForID/" + HospitalID;
                     client.BaseAddress = new Uri(GlobalData.BaseUri);
                     //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
                     HttpResponseMessage response = client.GetAsync(path).Result;

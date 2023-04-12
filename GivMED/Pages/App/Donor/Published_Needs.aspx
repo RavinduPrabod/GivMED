@@ -77,20 +77,20 @@
                                                 </ItemTemplate>
                                                 <ItemStyle Width="84%" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Donated (Qty)">
-                                                <ItemTemplate>
-                                                    <div class="row">
-                                                        &nbsp
-                                                    </div>
-                                                    <asp:Label ID="lblDonatedQty" ForeColor="Green" runat="server" Text='<%# Bind("DonatedQty") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Reuest (Qty)">
                                                 <ItemTemplate>
                                                     <div class="row">
                                                         &nbsp
                                                     </div>
                                                     <asp:Label ID="lblSupplyItemQty" ForeColor="Black" Font-Bold="true" Font-Size="Large" runat="server" Text='<%# Bind("SupplyItemQty") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Donated (Qty)">
+                                                <ItemTemplate>
+                                                    <div class="row">
+                                                        &nbsp
+                                                    </div>
+                                                    <asp:Label ID="lblDonatedQty" ForeColor="Green" runat="server" Text='<%# Bind("DonatedQty") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -117,7 +117,6 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="card card-primary card-outline">
@@ -284,10 +283,31 @@
                     <!-- /.card -->
                 </asp:View>
                 <asp:View ID="View2" runat="server">
+                    <div class="modal fade" id="modal-Show">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Confirmation</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12"></div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
                     <div class="card">
                         <div class="card-header p-2">
                             <div class="col-md-8">
-                                <asp:Label ID="lblSupplyIDin" runat="server"></asp:Label>
+                                <asp:Label ID="lblSupplyIDin" runat="server" Font-Bold="true"></asp:Label>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -302,14 +322,15 @@
                                         <div class="card-body pt-0">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <asp:GridView ID="gvSupplyList" runat="server" class="table table-striped table-bordered table-hover" AutoGenerateColumns="False">
+                                                    <asp:GridView ID="gvSupplyList" runat="server" class="table table-striped table-bordered table-hover" AutoGenerateColumns="False" OnRowDataBound="gvSupplyList_RowDataBound">
                                                         <Columns>
                                                             <asp:TemplateField HeaderText="Code" Visible="false">
                                                                 <ItemTemplate>
                                                                     <asp:Label ID="lblSupplyItemID" runat="server" Text='<%# Bind("SupplyItemID") %>'></asp:Label>
+                                                                    <asp:Label ID="lblSupplyItemCat" runat="server" Text='<%# Bind("SupplyItemCat") %>'></asp:Label>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Supplies Category & Name">
+                                                            <asp:TemplateField HeaderText="Supplies Category & Name" ItemStyle-Width="70%">
                                                                 <ItemTemplate>
                                                                     <div class="row">
                                                                         <div class="col-10">
@@ -322,25 +343,30 @@
                                                                         <asp:Label ID="lblSupplyItemName" runat="server" Text='<%# Bind("SupplyItemName") %>'></asp:Label>
                                                                     </div>
                                                                 </ItemTemplate>
-                                                                <ItemStyle Width="80%" />
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Donated (Qty)" HeaderStyle-CssClass="right-align">
+                                                            <asp:TemplateField HeaderText="Request (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="10%">
                                                                 <ItemTemplate>
                                                                     <div class="row">
                                                                         &nbsp
                                                                     </div>
-                                                                    <asp:Label ID="lblDonatedQty" ForeColor="Green" CssClass="form-text right-align" runat="server" Text='<%# Bind("DonatedQty") %>'></asp:Label>
+                                                                    <asp:Label ID="lblRequestQty" ForeColor="Green" Font-Bold="true" CssClass="form-text right-align" runat="server" Text='<%# Bind("SupplyItemQty") %>'></asp:Label>
                                                                 </ItemTemplate>
-                                                                <ItemStyle Width="10%" />
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Request (Qty)" HeaderStyle-CssClass="right-align">
+                                                            <asp:TemplateField HeaderText="Donated (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="10%">
                                                                 <ItemTemplate>
                                                                     <div class="row">
                                                                         &nbsp
                                                                     </div>
-                                                                    <asp:TextBox runat="server" CssClass="form-text right-align" TextMode="Number" ID="txtQty" ToolTip="you can adjust quantity" AutoPostBack="true" Text='<%# Bind("SupplyItemQty") %>' onkeydown="return ((event.keyCode>=48 && event.keyCode<=57) || (event.keyCode>=96 && event.keyCode<=105) || (event.keyCode==8 || event.keyCode==9));"></asp:TextBox>
+                                                                    <asp:Label ID="lblDonatedQty" Font-Bold="true" CssClass="form-text right-align" runat="server" Text='<%# Bind("DonatedQty") %>'></asp:Label>
                                                                 </ItemTemplate>
-                                                                <ItemStyle Width="10%" />
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="Remaining (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="10%">
+                                                                <ItemTemplate>
+                                                                    <div class="row">
+                                                                        &nbsp
+                                                                    </div>
+                                                                    <asp:TextBox runat="server" CssClass="form-control" Font-Bold="true" TextMode="Number" ID="txtRemainingQty" ToolTip="you can adjust quantity" AutoPostBack="true" Text='<%# Bind("RemainingQty") %>' onkeydown="return ((event.keyCode>=48 && event.keyCode<=57) || (event.keyCode>=96 && event.keyCode<=105) || (event.keyCode==8 || event.keyCode==9));"></asp:TextBox>
+                                                                </ItemTemplate>
                                                             </asp:TemplateField>
                                                         </Columns>
                                                     </asp:GridView>
@@ -349,31 +375,12 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="text-right">
-                                                <asp:LinkButton ID="btnViewProfile" runat="server" CssClass="btn btn-sm btn-primary"><i class="fas fa-box"></i> Confirm
+                                                <asp:LinkButton ID="btnConfirm" runat="server" CssClass="btn btn-sm btn-primary" OnClick="btnConfirm_Click"><i class="fas fa-box"></i> Confirm
                                                 </asp:LinkButton>
-                                                <asp:LinkButton ID="LinkButton3" runat="server" CssClass="btn btn-sm btn-success"><i class="fas fa-donate"></i> Donate Now
+                                                <asp:LinkButton ID="btnDonate" runat="server" CssClass="btn btn-sm btn-success" OnClick="btnDonate_Click"><i class="fas fa-donate"></i> Donate
                                                 </asp:LinkButton>
-                                                <asp:LinkButton ID="LinkButton4" runat="server" CssClass="btn btn-sm btn-warning"><i class="fas fa-hand-scissors"></i> Cancel
+                                                <asp:LinkButton ID="btnCancel" runat="server" CssClass="btn btn-sm btn-warning" OnClick="btnCancel_Click"><i class="fas fa-hand-scissors"></i> Cancel
                                                 </asp:LinkButton>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card bg-light">
-                                        <div class="card-header text-muted border-bottom-0">
-                                            <h6>Description</h6>
-                                            <!-- Add a button or a link that triggers the collapse/expand action -->
-                                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseGridView" aria-expanded="false" aria-controls="collapseGridView">
-                                                <i class="fas fa-arrow-circle-down"></i>
-                                            </button>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <!-- Add the GridView inside a collapsible div -->
-                                                    <div id="collapseGridView" class="collapse">
-                                                        <asp:TextBox runat="server" CssClass="form-control" TextMode="MultiLine" Height="300px" ReadOnly="true"></asp:TextBox>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -398,19 +405,19 @@
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-registered"></i></span>
                                                             <asp:Label ID="lblRegNo" runat="server" Text=""></asp:Label><br />
                                                         </li>
-                                                         &nbsp
+                                                        &nbsp
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-cat"></i></span>
                                                             <asp:Label ID="lbltype" runat="server" Text=""></asp:Label><br />
                                                         </li>
-                                                         &nbsp
+                                                        &nbsp
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-times-circle"></i></span>
                                                             <asp:Label ID="lblYear" runat="server" Text=""></asp:Label><br />
                                                         </li>
-                                                         &nbsp
+                                                        &nbsp
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-bed"></i></span>
                                                             <asp:Label ID="lblNoofBeds" runat="server" Text=""></asp:Label><br />
                                                         </li>
-                                                         &nbsp
+                                                        &nbsp
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked-alt"></i></span>
                                                             <asp:Label ID="lblAddress" runat="server" Text="Address"></asp:Label><br />
                                                         </li>
@@ -421,7 +428,7 @@
                                                         &nbsp
                                                          <li class="small"><span class="fa-li"><i class="fas fa-lg fa-mail-bulk"></i></span>
                                                              <asp:Label ID="lblEmail" runat="server" Text="Email"></asp:Label></li>
-                                                         &nbsp
+                                                        &nbsp
                                                          <li class="small"><span class="fa-li"><i class="fas fa-lg fa-broadcast-tower"></i></span>
                                                              <asp:Label ID="lblWeb" runat="server" Text="Web"></asp:Label></li>
                                                     </ul>
@@ -439,9 +446,32 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card bg-light">
+                                        <div class="card-header text-muted border-bottom-0">
+                                            <h6>Description</h6>
+                                            <!-- Add a button or a link that triggers the collapse/expand action -->
+                                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseGridView" aria-expanded="false" aria-controls="collapseGridView" id="collapseBtn">
+                                                <i class="fas fa-arrow-circle-down"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <!-- Add the GridView inside a collapsible div -->
+                                                    <div id="collapseGridView" class="collapse show">
+                                                        <asp:TextBox runat="server" CssClass="form-control" ID="txtDescription" TextMode="MultiLine" Height="300px" ReadOnly="true"></asp:TextBox>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
+                    <asp:Button ID="btnCancelOK" runat="server" Text="Delete" Style="display: none" OnClick="btnCancelOK_Click" />
                 </asp:View>
             </asp:MultiView>
         </ContentTemplate>
@@ -452,5 +482,38 @@
             $('#modal-Show').modal('show');
             return false;
         };
+
+        function ShowCancelConfirmation() {
+            Swal.fire({
+                title: '<h3>Donation Cancel Confirmation</h3>',
+                html: 'Are you sure you want to cancel this donation?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    jQuery("[ID$=btnCancelOK]").click();
+                    Swal.fire('Canceled!', '', 'error');
+                }
+            });
+        }
+
+        // Add this script block to your page
+        $(document).ready(function () {
+            // Get the collapse button element
+            var collapseBtn = $('#collapseBtn');
+
+            // Add a click event handler to the collapse button
+            collapseBtn.click(function () {
+                // Toggle the icon based on the collapse state
+                if ($(this).attr('aria-expanded') === 'false') {
+                    $(this).html('<i class="fas fa-arrow-circle-up"></i>'); // Change to up icon
+                } else {
+                    $(this).html('<i class="fas fa-arrow-circle-down"></i>'); // Change to down icon
+                }
+            });
+        });
+
     </script>
 </asp:Content>

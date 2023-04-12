@@ -102,6 +102,38 @@
                     </div>
                 </asp:View>
                 <asp:View ID="View2" runat="server">
+                    <div class="modal fade" id="modal-Show">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Manage template</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Template name
+                                            <asp:TextBox ID="txtTemplateName" runat="server" CssClass="form-control" TabIndex="1"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Description
+                                            <asp:TextBox ID="txtEditor" runat="server" CssClass="form-control" TabIndex="2" TextMode="MultiLine" placeholder=""></asp:TextBox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <asp:Button CssClass="btn btn-block btn-outline-primary btn-lg" ID="btnCancelTemp" runat="server" Text="Cancel" OnClick="btnCancelTemp_Click" />
+                                    <asp:Button CssClass="btn btn-block bg-gradient-primary btn-lg" ID="btnSaveTemp" runat="server" Text="Save" OnClick="btnSaveTemp_Click" />
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">Supply Needs Publish Form</h3>
@@ -128,9 +160,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <asp:TextBox runat="server" CssClass="form-control" ID="txtSupplyNarration" TextMode="MultiLine" Height="310px" placeholder="Description here..."></asp:TextBox>
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Manage template</b></h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <asp:Button runat="server" ID="btnNew" Text="create" CssClass="btn btn-primary" OnClick="btnNew_Click" />
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <asp:Button runat="server" ID="btnedit" Text="edit" CssClass="btn btn-success" OnClick="btnedit_Click" />
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <asp:DropDownList ID="ddlTemplates" CssClass="form-control" runat="server" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -249,6 +297,11 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <script>
+        function ShowDetails() {
+            $('.modal-backdrop').remove();
+            $('#modal-Show').modal('show');
+            return false;
+        };
 
         function pageLoad() {
             $(document).ready(function () {
@@ -307,6 +360,19 @@
                     $('#gvSupplyNeeds tbody tr').filter(function () {
                         $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
                     });
+                });
+            });
+
+            $(document).ready(function () {
+                // Initialize Summernote editor
+                $('#<%= txtEditor.ClientID %>').summernote({
+                    height: 300, // Set desired height
+                    toolbar: [
+                        // Customize toolbar buttons if needed
+                        ['style', ['style']],
+                        ['font', ['bold', 'italic', 'underline', 'clear']],
+                        ['para', ['ul', 'ol']]
+                    ]
                 });
             });
         }

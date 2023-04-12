@@ -69,6 +69,42 @@ namespace GivMED.Pages.App.Hospital
         protected global::System.Web.UI.WebControls.View View2;
 
         /// <summary>
+        /// txtTemplateName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTemplateName;
+
+        /// <summary>
+        /// txtEditor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEditor;
+
+        /// <summary>
+        /// btnCancelTemp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelTemp;
+
+        /// <summary>
+        /// btnSaveTemp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSaveTemp;
+
+        /// <summary>
         /// chkHigh control.
         /// </summary>
         /// <remarks>
@@ -96,13 +132,31 @@ namespace GivMED.Pages.App.Hospital
         protected global::System.Web.UI.WebControls.CheckBox chkLow;
 
         /// <summary>
-        /// txtSupplyNarration control.
+        /// btnNew control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSupplyNarration;
+        protected global::System.Web.UI.WebControls.Button btnNew;
+
+        /// <summary>
+        /// btnedit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnedit;
+
+        /// <summary>
+        /// ddlTemplates control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTemplates;
 
         /// <summary>
         /// txtSearch control.

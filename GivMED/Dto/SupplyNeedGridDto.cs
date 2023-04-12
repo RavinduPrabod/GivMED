@@ -22,5 +22,7 @@ namespace GivMED.Dto
         public long RequestQty { get; set; }
 
         public long DonatedQty { get; set; }
+
+        public long RemainingQty { get; set; }
     }
 }

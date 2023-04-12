@@ -9,10 +9,13 @@ namespace GivMED.Dto
     public class SupplyNeedsDto
     {
         public string UserName { get; set; }
+
         public SupplyRequestHeader SupplyRequestHeader { get; set; }
 
         public List<SupplyRequestDetails> SupplyRequestDetails { get; set; }
 
         public List<SupplyRequestHeader> SupplyRequestHeaderList { get; set; }
+
+        public ManageTemplate ManageTemplate { get; set; }
     }
 }

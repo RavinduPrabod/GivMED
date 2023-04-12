@@ -245,6 +245,7 @@
     <Content Include="dist\js\.eslintrc.json" />
     <Content Include="dist\js\adminlte.js.map" />
     <Content Include="dist\js\adminlte.min.js.map" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="Pages\App\Donor\Published_Needs.aspx" />
     <Content Include="Pages\App\Hospital\SupplyNeeds.aspx" />
     <Content Include="Pages\App\Profile\HProfile.aspx" />
@@ -2224,11 +2225,14 @@
     <Compile Include="Login.Master.designer.cs">
       <DependentUpon>Login.Master</DependentUpon>
     </Compile>
+    <Compile Include="Models\DonationDetails.cs" />
+    <Compile Include="Models\DonationHeader.cs" />
     <Compile Include="Models\DonorMaster.cs" />
     <Compile Include="Models\EmailConfiguration.cs" />
     <Compile Include="Models\HospitalMaster.cs" />
     <Compile Include="Models\ItemMaster.cs" />
     <Compile Include="Models\LastSerialNo.cs" />
+    <Compile Include="Models\ManageTemplate.cs" />
     <Compile Include="Models\ProfileImages.cs" />
     <Compile Include="Models\SupplyRequestDetails.cs" />
     <Compile Include="Models\SupplyRequestHeader.cs" />

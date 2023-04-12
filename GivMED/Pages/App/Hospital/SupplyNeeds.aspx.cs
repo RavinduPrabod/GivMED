@@ -419,7 +419,7 @@ namespace GivMED.Pages.App.Hospital
             oHeader.SupplyID = "SPN";
             oHeader.SupplyCreateDate = DateTime.Now;
             oHeader.SupplyExpireDate = Convert.ToDateTime(txtExpireDate.Text).Date;
-            oHeader.SupplyNarration = txtSupplyNarration.Text;
+            //oHeader.SupplyNarration = txtSupplyNarration.Text;
             oHeader.SupplyPriorityLevel = (chkHigh.Checked == true) ? 1 : (chkNormal.Checked == true) ? 2 : (chkLow.Checked == true) ? 3 : 0;
             oHeader.SupplyType = 1;
             oHeader.SupplyStatus = 1;
@@ -586,6 +586,33 @@ namespace GivMED.Pages.App.Hospital
         }
 
         protected void btnRePublish_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCancelTemp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnSaveTemp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCreateNew_Click(object sender, EventArgs e)
+        {
+            txtTemplateName.Text = string.Empty;
+            txtEditor.Text = string.Empty;
+
+        }
+
+        protected void btnNew_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnedit_Click(object sender, EventArgs e)
         {
 
         }

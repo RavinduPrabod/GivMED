@@ -1,4 +1,5 @@
-﻿using GivMED.Dto;
+﻿using GivMED.Common;
+using GivMED.Dto;
 using GivMED.Models;
 using GivMED.Service;
 using System;
@@ -14,11 +15,16 @@ namespace GivMED.Pages.App.Donor
     public partial class Published_Needs : System.Web.UI.Page
     {
         SupplyService oSupplyService = new SupplyService();
+        ProfileService oProfileService = new ProfileService();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
             {
                 LoadGridView();
+                btnConfirm.Visible = true;
+                btnDonate.Visible = false;
+                btnCancel.Visible = false;
                 mvpublishNeeds.ActiveViewIndex = 0;
             }
         }
@@ -38,14 +44,17 @@ namespace GivMED.Pages.App.Donor
                 int donatedQty = 0;
 
                 PublishedNeedsGridDto odata = new PublishedNeedsGridDto();
+                List<PublishedNeedsGridDto> forlist = new List<PublishedNeedsGridDto>();
                 odata.SupplyID = item.SupplyID;
                 string itemsname = string.Empty;
-                for(int i=0; oHeaderWithDetailsList.Where(x=>x.SupplyID == item.SupplyID).ToList().Count > i; i++)
-                {
-                    itemsname = itemsname + oHeaderWithDetailsList[i].SupplyItemName + ", ";
+                forlist = oHeaderWithDetailsList.Where(x => x.SupplyID == item.SupplyID).ToList();
 
-                    requestedQty = requestedQty + Convert.ToInt32(oHeaderWithDetailsList[i].SupplyItemQty);
-                    donatedQty = donatedQty + Convert.ToInt32(oHeaderWithDetailsList[i].DonatedQty);
+                for (int i=0; forlist.Count > i; i++)
+                {
+                    itemsname = itemsname + forlist[i].SupplyItemName + ", ";
+
+                    requestedQty = requestedQty + Convert.ToInt32(forlist[i].SupplyItemQty);
+                    donatedQty = donatedQty + Convert.ToInt32(forlist[i].DonatedQty);
                 }
 
                 if (itemsname.Length > 60)
@@ -130,9 +139,6 @@ namespace GivMED.Pages.App.Donor
                     newitems.Add(odata);
                 }
             }
-            
-
-
 
             lstStates.DataSource = newitems;
             lstStates.DataTextField = "DataTextField";
@@ -265,6 +271,9 @@ namespace GivMED.Pages.App.Donor
                     case "ViewData":
                         ViewState["index"] = e.CommandArgument.ToString();
                         ViewRecord();
+                        btnConfirm.Visible = true;
+                        btnDonate.Visible = false;
+                        btnCancel.Visible = false;
                         mvpublishNeeds.ActiveViewIndex = 1;
                         break;
 
@@ -288,7 +297,15 @@ namespace GivMED.Pages.App.Donor
             string HospitalID = ((Label)oGridViewRow.FindControl("lblHospitalID")).Text.ToString();
             string HospitalName = ((Label)oGridViewRow.FindControl("lblHospitalName")).Text.ToString();
 
-            List<SupplyNeedGridDto> record = oSupplyService.GetSupplyNeedGridForID(SupplyID);
+            Session["vSupplyID"] = null;
+            Session["vHospitalID"] = null;
+            Session["vHospitalName"] = null;
+
+            Session["vSupplyID"] = SupplyID;
+            Session["vHospitalID"] = HospitalID;
+            Session["vHospitalName"] = HospitalName;
+
+            List <SupplyNeedGridDto> record = oSupplyService.GetSupplyNeedGridForID(SupplyID);
 
             record.GroupBy(x => x.SupplyItemCat).Where(g => g.Count() > 1).SelectMany(g => g.Skip(1)).ToList().ForEach(x => x.ItemCatName = "");
 
@@ -309,6 +326,7 @@ namespace GivMED.Pages.App.Donor
                               oHospitalMaster.State + " ZipCode( " + oHospitalMaster.ZipCode.ToString() + " )";
             lblPhone.Text = " " + oHospitalMaster.Telephone.ToString();
             lblEmail.Text = " " + oHospitalMaster.Email.ToString();
+            txtDescription.Text = PrimaryRecords.ManageTemplate.TemplateText.ToString();
         }
 
         private void ViewRecordForDetails()
@@ -332,6 +350,129 @@ namespace GivMED.Pages.App.Donor
         protected void btnBackPage_Click(object sender, EventArgs e)
         {
             mvpublishNeeds.ActiveViewIndex = 0;
+        }
+
+        protected void gvSupplyList_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                TextBox txtRemainigQty = (TextBox)e.Row.FindControl("txtRemainingQty"); // Find the TextBox control in the GridView row
+
+                // Check if the TextBox value is empty
+                if (string.IsNullOrEmpty(txtRemainigQty.Text) || txtRemainigQty.Text == "0")
+                {
+                    txtRemainigQty.Enabled = false; // Disable the TextBox if its value is empty
+                }
+            }
+        }
+
+        protected void btnConfirm_Click(object sender, EventArgs e)
+        {
+            int gridcount = 0;
+            int notfillcount = 0;
+
+            foreach (GridViewRow row in gvSupplyList.Rows)
+            {
+                TextBox txtRemainingQty = (TextBox)row.FindControl("txtRemainingQty");
+
+                // Check if any of the TextBoxes are filled
+                if (string.IsNullOrEmpty(txtRemainingQty.Text) || txtRemainingQty.Text == "0")
+                {
+                    notfillcount = notfillcount+1;
+                }
+                gridcount = gridcount +1;
+            }
+
+            // If at least one TextBox is filled, show an error message
+            if (notfillcount == gridcount)
+            {
+                ShowErrorMessage(ResponseMessages.pleasefill);
+            }
+            else
+            {
+                btnDonate.Visible = true;
+                btnCancel.Visible = true;
+                btnConfirm.Visible = false;
+                foreach (GridViewRow row in gvSupplyList.Rows)
+                {
+                    TextBox txtRemainigQty = (TextBox)row.FindControl("txtRemainingQty"); // Find the TextBox control in the GridView row
+                    txtRemainigQty.Enabled = false; // Disable the TextBox
+                }
+            }
+        }
+
+        protected void btnDonate_Click(object sender, EventArgs e)
+        {
+
+            List<DonationDetails> oDonationDetails = new List<DonationDetails>();
+            DonationHeader oDonationHeader = new DonationHeader();
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+            foreach (GridViewRow row in gvSupplyList.Rows)
+            {
+                DonationDetails odata = new DonationDetails();
+
+                TextBox txtRemainigQty = (TextBox)row.FindControl("txtRemainingQty");
+                if (!string.IsNullOrEmpty(txtRemainigQty.Text) || txtRemainigQty.Text == "0")
+                {
+                    odata.DonationID = "DTN";
+                    odata.SupplyID = lblSupplyIDin.Text.ToString();
+                    odata.ItemID = Convert.ToInt32((Label)row.FindControl("lblSupplyItemID"));
+                    odata.ItemCategory = Convert.ToInt32((Label)row.FindControl("lblSupplyItemCat"));
+                    odata.ItemName = ((Label)row.FindControl("lblSupplyItemName")).ToString();
+                    odata.RequestQty = Convert.ToInt64((Label)row.FindControl("lblRequestQty"));
+                    odata.DonatedQty = Convert.ToInt64(txtRemainigQty);
+                    odata.DonationStatus = 1;
+                    odata.CreatedBy = "admin";
+                    odata.CreatedDateTime = DateTime.Now;
+                    odata.ModifiedBy = "admin";
+                    odata.ModifiedDateTime = DateTime.Now;
+                    oDonationDetails.Add(odata);
+                }
+            }
+            //Session["vSupplyID"] = SupplyID;
+            //Session["vHospitalID"] = HospitalID;
+            //Session["vHospitalName"] = HospitalName;
+
+            //oDonationHeader.DonationID = "DTN";
+            //oDonationHeader.DonorID = oProfileService.GetDonorMaster(loggedUser.UserName.ToString()).DonorID;
+            //oDonationHeader.UserName = loggedUser.UserName.ToString();
+            //oDonationHeader.HospitalID = 
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowCancelConfirmation();", true); 
+        }
+
+        protected void btnCancelOK_Click(object sender, EventArgs e)
+        {
+            btnCancel.Visible = false;
+            btnDonate.Visible = false;
+            btnConfirm.Visible = true;
+            foreach (GridViewRow row in gvSupplyList.Rows)
+            {
+                TextBox txtRemainigQty = (TextBox)row.FindControl("txtRemainingQty"); // Find the TextBox control in the GridView row
+
+                if (string.IsNullOrEmpty(txtRemainigQty.Text) || txtRemainigQty.Text == "0")
+                {
+                    txtRemainigQty.Enabled = false; // Enable the TextBox 
+                }
+                else
+                {
+                    txtRemainigQty.Enabled = true;
+                }
+            }
+        }
+
+        private void ShowSuccessMessage(string msg)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowSuccessMessage('" + msg + "');", true);
+        }
+
+        private void ShowErrorMessage(string msg)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowErrorMessage('" + msg + "');", true);
         }
     }
 }
