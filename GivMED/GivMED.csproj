@@ -2207,7 +2207,10 @@
     </Compile>
     <Compile Include="Dto\ChangePwdDto.cs" />
     <Compile Include="Dto\ComboDTO.cs" />
+    <Compile Include="Dto\GetDonationandSupplyDto.cs" />
+    <Compile Include="Dto\HospitalSupplyNeedsGridDto.cs" />
     <Compile Include="Dto\LoggedUserDto.cs" />
+    <Compile Include="Dto\PublishedNeedsPostDto.cs" />
     <Compile Include="Dto\PublishedNeedsGridDto.cs" />
     <Compile Include="Dto\SupplyNeedGridDto.cs" />
     <Compile Include="Dto\SupplyNeedsDto.cs" />

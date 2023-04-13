@@ -499,6 +499,17 @@
             });
         }
 
+        function ShowDonationID(costsheetno) {
+            Swal.fire({
+                title: '<h3>Donation will Confirm</h3>',
+                html: 'Donation ID : ' + costsheetno,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                // No action needed after OK button is clicked
+            });
+        }
+
         // Add this script block to your page
         $(document).ready(function () {
             // Get the collapse button element

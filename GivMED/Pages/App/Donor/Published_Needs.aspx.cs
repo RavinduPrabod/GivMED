@@ -21,12 +21,17 @@ namespace GivMED.Pages.App.Donor
         {
             if (!this.IsPostBack)
             {
-                LoadGridView();
-                btnConfirm.Visible = true;
-                btnDonate.Visible = false;
-                btnCancel.Visible = false;
-                mvpublishNeeds.ActiveViewIndex = 0;
+                PageLoad();
             }
+        }
+
+        private void PageLoad()
+        {
+            LoadGridView();
+            btnConfirm.Visible = true;
+            btnDonate.Visible = false;
+            btnCancel.Visible = false;
+            mvpublishNeeds.ActiveViewIndex = 0;
         }
 
         private void LoadGridView()
@@ -297,14 +302,6 @@ namespace GivMED.Pages.App.Donor
             string HospitalID = ((Label)oGridViewRow.FindControl("lblHospitalID")).Text.ToString();
             string HospitalName = ((Label)oGridViewRow.FindControl("lblHospitalName")).Text.ToString();
 
-            Session["vSupplyID"] = null;
-            Session["vHospitalID"] = null;
-            Session["vHospitalName"] = null;
-
-            Session["vSupplyID"] = SupplyID;
-            Session["vHospitalID"] = HospitalID;
-            Session["vHospitalName"] = HospitalName;
-
             List <SupplyNeedGridDto> record = oSupplyService.GetSupplyNeedGridForID(SupplyID);
 
             record.GroupBy(x => x.SupplyItemCat).Where(g => g.Count() > 1).SelectMany(g => g.Skip(1)).ToList().ForEach(x => x.ItemCatName = "");
@@ -316,6 +313,7 @@ namespace GivMED.Pages.App.Donor
 
             HospitalMaster oHospitalMaster = oSupplyService.GetHospitalMasterForID(Convert.ToInt32(HospitalID));
 
+            lblSupplyIDin.Text = SupplyID.ToString();
             lblHospitalName.Text = oHospitalMaster.HospitalName.ToString();
             lblRegNo.Text = " " + oHospitalMaster.RegistrationNo.ToString(); 
             lbltype.Text = " " + Enum.GetName(typeof(typeofhospital), Convert.ToInt32(oHospitalMaster.TypeofHosptal)).ToString();
@@ -403,43 +401,82 @@ namespace GivMED.Pages.App.Donor
 
         protected void btnDonate_Click(object sender, EventArgs e)
         {
-
-            List<DonationDetails> oDonationDetails = new List<DonationDetails>();
-            DonationHeader oDonationHeader = new DonationHeader();
-            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
-
-            foreach (GridViewRow row in gvSupplyList.Rows)
-            {
-                DonationDetails odata = new DonationDetails();
-
-                TextBox txtRemainigQty = (TextBox)row.FindControl("txtRemainingQty");
-                if (!string.IsNullOrEmpty(txtRemainigQty.Text) || txtRemainigQty.Text == "0")
-                {
-                    odata.DonationID = "DTN";
-                    odata.SupplyID = lblSupplyIDin.Text.ToString();
-                    odata.ItemID = Convert.ToInt32((Label)row.FindControl("lblSupplyItemID"));
-                    odata.ItemCategory = Convert.ToInt32((Label)row.FindControl("lblSupplyItemCat"));
-                    odata.ItemName = ((Label)row.FindControl("lblSupplyItemName")).ToString();
-                    odata.RequestQty = Convert.ToInt64((Label)row.FindControl("lblRequestQty"));
-                    odata.DonatedQty = Convert.ToInt64(txtRemainigQty);
-                    odata.DonationStatus = 1;
-                    odata.CreatedBy = "admin";
-                    odata.CreatedDateTime = DateTime.Now;
-                    odata.ModifiedBy = "admin";
-                    odata.ModifiedDateTime = DateTime.Now;
-                    oDonationDetails.Add(odata);
-                }
-            }
-            //Session["vSupplyID"] = SupplyID;
-            //Session["vHospitalID"] = HospitalID;
-            //Session["vHospitalName"] = HospitalName;
-
-            //oDonationHeader.DonationID = "DTN";
-            //oDonationHeader.DonorID = oProfileService.GetDonorMaster(loggedUser.UserName.ToString()).DonorID;
-            //oDonationHeader.UserName = loggedUser.UserName.ToString();
-            //oDonationHeader.HospitalID = 
+            Post();
         }
 
+        private void Post()
+        {
+            try
+            {
+                List<DonationDetails> oDonationDetails = new List<DonationDetails>();
+                DonationHeader oDonationHeader = new DonationHeader();
+                LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+                foreach (GridViewRow row in gvSupplyList.Rows)
+                {
+                    DonationDetails odata = new DonationDetails();
+
+                    TextBox txtRemainigQty = (TextBox)row.FindControl("txtRemainingQty");
+                    if (string.IsNullOrEmpty(txtRemainigQty.Text) || txtRemainigQty.Text != "0")
+                    {
+                        odata.DonationID = "DTN";
+                        odata.SupplyID = lblSupplyIDin.Text.ToString();
+                        odata.ItemID = Convert.ToInt32(((Label)row.FindControl("lblSupplyItemID")).Text); // corrected
+                        odata.ItemCategory = Convert.ToInt32(((Label)row.FindControl("lblSupplyItemCat")).Text); // corrected
+                        odata.ItemName = ((Label)row.FindControl("lblSupplyItemName")).Text; // corrected
+                        odata.RequestQty = Convert.ToInt64(((Label)row.FindControl("lblRequestQty")).Text); // corrected
+                        odata.DonatedQty = Convert.ToInt64(txtRemainigQty.Text); // corrected
+                        odata.DonatedQty = Convert.ToInt64(txtRemainigQty.Text);
+                        odata.DonationStatus = 1;
+                        odata.CreatedBy = "admin";
+                        odata.CreatedDateTime = DateTime.Now;
+                        odata.ModifiedBy = "admin";
+                        odata.ModifiedDateTime = DateTime.Now;
+                        oDonationDetails.Add(odata);
+                    }
+                }
+
+                oDonationHeader.DonationID = "DTN";
+                oDonationHeader.DonorID = oProfileService.GetDonorMaster(loggedUser.UserName.ToString()).DonorID;
+                oDonationHeader.UserName = loggedUser.UserName.ToString();
+                oDonationHeader.HospitalID = 0;
+                oDonationHeader.SupplyID = lblSupplyIDin.Text.ToString();
+                oDonationHeader.DonationStatus = 1;
+                oDonationHeader.DonationCreateDate = DateTime.Now;
+                oDonationHeader.DonationDealDate = DateTime.Now;
+                oDonationHeader.CreatedBy = "admin";
+                oDonationHeader.CreatedDateTime = DateTime.Now;
+                oDonationHeader.ModifiedBy = "admin";
+                oDonationHeader.ModifiedDateTime = DateTime.Now;
+
+                PublishedNeedsPostDto oPostData = new PublishedNeedsPostDto();
+                oPostData.DonationHeader = oDonationHeader;
+                oPostData.DonationDetails = oDonationDetails;
+                oPostData.UserName = loggedUser.UserName.ToString();
+
+                WebApiResponse response = new WebApiResponse();
+                response = oSupplyService.PostDonation(oPostData);
+
+                if (response.StatusCode == (int)StatusCode.Success)
+                {
+                    ShowDonationConfirm(response.Result);
+                    PageLoad();
+                }
+                else
+                {
+                    ShowErrorMessage(ResponseMessages.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        private void ShowDonationConfirm(string DonationID)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDonationID('" + DonationID + "');", true);
+        }
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowCancelConfirmation();", true); 

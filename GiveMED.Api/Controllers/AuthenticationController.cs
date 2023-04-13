@@ -99,6 +99,7 @@ namespace GiveMED.Api.Controllers
             var tokenString = tokenHandler.WriteToken(token);
 
             var loggedUserDto = (from A in _context.User
+                                 join B in _context.HospitalMaster on A.UserName equals B.UserName
                                  where A.UserName == userForLoginDto.UserName && A.Type == 3
                                  select new LoggedUserDto
                                  {
@@ -107,6 +108,7 @@ namespace GiveMED.Api.Controllers
                                      LastName = A.LastName,
                                      Type = A.Type,
                                      Status = A.Status,
+                                     HospitalID = B.HospitalID,
                                      TokenString = tokenString.ToString()
                                  }).First();
 

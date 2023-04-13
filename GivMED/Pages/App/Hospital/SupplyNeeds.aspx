@@ -34,12 +34,6 @@
                                                 </ItemTemplate>
                                                 <ItemStyle Width="2%" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Description">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblSupplyNarration" runat="server" Text='<%# Bind("SupplyNarration") %>'></asp:Label>
-                                                </ItemTemplate>
-                                                <ItemStyle Width="20%" />
-                                            </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Last Publish Date">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblSupplyCreateDate" runat="server" Text='<%# Bind("SupplyCreateDate", "{0:d}") %>'></asp:Label>
@@ -58,24 +52,24 @@
                                                 </ItemTemplate>
                                                 <ItemStyle Width="10%" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Status">
+                                            <%--<asp:TemplateField HeaderText="Status">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblSupplyStatus" runat="server"></asp:Label>
                                                 </ItemTemplate>
                                                 <ItemStyle Width="8%" />
-                                            </asp:TemplateField>
-                                            <%--<asp:TemplateField HeaderText="Item Cat ID" ItemStyle-CssClass="project_progress">
+                                            </asp:TemplateField>--%>
+                                            <asp:TemplateField HeaderText="Progress" ItemStyle-CssClass="project_progress">
                                                 <ItemTemplate>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-green" role="progressbar"
                                                             aria-valuemin="0" aria-valuemax="100"
-                                                            style='<%# "width:" + Eval("SupplyStatus") + "%;" %>'>
-                                                            <%# Eval("SupplyStatus") + "%" %>
+                                                            style='<%# "width:" + Eval("Proceprecent") + "%;" %>'>
+                                                            <%# Eval("Proceprecent") + "%" %>
                                                         </div>
                                                     </div>
                                                 </ItemTemplate>
                                                 <ItemStyle Width="10%" />
-                                            </asp:TemplateField>--%>
+                                            </asp:TemplateField>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <div class="project-actions text-center">

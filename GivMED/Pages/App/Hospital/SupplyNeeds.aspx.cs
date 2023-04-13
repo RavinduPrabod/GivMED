@@ -25,24 +25,6 @@ namespace GivMED.Pages.App.Hospital
             {
                 mvSupply.ActiveViewIndex = 0;
 
-                //DataTable dt = new DataTable();
-                //dt.Columns.Add("#", typeof(int));
-                //dt.Columns.Add("User", typeof(string));
-                //dt.Columns.Add("Date", typeof(DateTime));
-                //dt.Columns.Add("Status", typeof(string));
-                //dt.Columns.Add("Reason", typeof(string));
-
-                //// Add some sample data to the table
-                //dt.Rows.Add(183, "John Doe", new DateTime(2014, 11, 7), "Approved", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
-                //dt.Rows.Add(219, "Alexander Pierce", new DateTime(2014, 11, 7), "Pending", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
-                //dt.Rows.Add(657, "Alexander Pierce", new DateTime(2014, 11, 7), "Approved", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
-                //dt.Rows.Add(175, "Mike Doe", new DateTime(2014, 11, 7), "Denied", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
-                //dt.Rows.Add(134, "Jim Doe", new DateTime(2014, 11, 7), "Approved", "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.");
-
-                //// Bind the GridView to the data source
-                //GridView1.DataSource = dt;
-                //GridView1.DataBind();
-
                 LoadGridView();
 
                 ddlSupplyType.DataSource = oCommonService.GetItemCat();
@@ -337,16 +319,48 @@ namespace GivMED.Pages.App.Hospital
 
         private void LoadGridView()
         {
-            List<SupplyRequestHeader> olist = new List<SupplyRequestHeader>();
-            olist = oSupplyService.GetSupplyNeedHeaderlist();
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
-            //olist.ForEach(x => x.SupplyStatus = 50);
+            List<HospitalSupplyNeedsGridDto> olist = new List<HospitalSupplyNeedsGridDto>();
+            olist = oSupplyService.GetSupplyNeedHeaderlist(loggedUser.HospitalID);
 
-            gvSupplyNeeds.DataSource = olist;
+            List<HospitalSupplyNeedsGridDto> result = new List<HospitalSupplyNeedsGridDto>();
+
+            List<HospitalSupplyNeedsGridDto> grouplist = olist.GroupBy(s => s.SupplyID)
+                                                        .Select(group => group.First())
+                                                        .ToList();
+            foreach(var item in grouplist)
+            {
+                int requestedQty = 0;
+                int donatedQty = 0;
+
+                HospitalSupplyNeedsGridDto odata = new HospitalSupplyNeedsGridDto();
+
+                odata.SupplyID = item.SupplyID;
+                odata.SupplyCreateDate = item.SupplyCreateDate;
+                odata.SupplyExpireDate = item.SupplyExpireDate;
+                odata.SupplyPriorityLevel = item.SupplyPriorityLevel;
+
+                List<HospitalSupplyNeedsGridDto> forlist = new List<HospitalSupplyNeedsGridDto>();
+                forlist = olist.Where(x => x.SupplyID == item.SupplyID).ToList();
+
+                for (int i = 0; forlist.Count > i; i++)
+                {
+                    requestedQty = requestedQty + Convert.ToInt32(olist[i].RequestQty);
+                    donatedQty = donatedQty + Convert.ToInt32(olist[i].DonatedQty);
+                }
+
+                // Calculate donated percentage
+                double donatedPercentage = (double)donatedQty / requestedQty * 100;
+                // Round to 2 decimal places
+                donatedPercentage = Convert.ToInt32(donatedPercentage);
+                odata.Proceprecent = Convert.ToInt32(donatedPercentage);
+                result.Add(odata);
+            }
+
+            gvSupplyNeeds.DataSource = result;
             gvSupplyNeeds.DataBind();
 
-            //progressBar.Style["width"] = $"{dataValue}%";
-            //progressBar.Text = $"<span class='sr-only'>{dataValue}% Complete</span>";
         }
 
         private void Delete()

@@ -22,11 +22,39 @@ namespace GiveMED.Api.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("{HospitalID}")]
         [ActionName("GetSupplyNeedHeaderlist")]
-        public List<SupplyRequestHeader> GetSupplyNeedHeaderlist()
+        public List<HospitalSupplyNeedsGridDto> GetSupplyNeedHeaderlist(int HospitalID)
         {
-            return _context.SupplyRequestHeader.ToList();
+            List<HospitalSupplyNeedsGridDto> Records = new List<HospitalSupplyNeedsGridDto>();
+
+            var id = new SqlParameter("HospitalID", HospitalID);
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, " +
+                "B.SupplyItemQty, C.DonatedQty " +
+                "FROM SupplyRequestHeader A " +
+                "LEFT OUTER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
+                "LEFT OUTER JOIN DonationDetails C ON B.SupplyID = C.SupplyID AND B.SupplyItemID = C.ItemID AND B.SupplyItemCat = C.ItemCategory " +
+                "WHERE A.HospitalID = @HospitalID";
+
+            comm.Parameters.Add(id);
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                HospitalSupplyNeedsGridDto data = new HospitalSupplyNeedsGridDto();
+                data.SupplyID = Convert.IsDBNull(reader["SupplyID"]) ? "" : reader["SupplyID"].ToString();
+                data.SupplyPriorityLevel = Convert.IsDBNull(reader["SupplyPriorityLevel"]) ? 0 : Convert.ToInt32(reader["SupplyPriorityLevel"]);
+                data.SupplyCreateDate = Convert.IsDBNull(reader["SupplyCreateDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyCreateDate"]);
+                data.SupplyExpireDate = Convert.IsDBNull(reader["SupplyExpireDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyExpireDate"]);
+                data.RequestQty = Convert.IsDBNull(reader["SupplyItemQty"]) ? 0 : Convert.ToInt64(reader["SupplyItemQty"]);
+                data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
+                Records.Add(data);
+            }
+            conn.Close();
+
+            return Records;
         }
 
         [HttpGet]
@@ -208,6 +236,43 @@ namespace GiveMED.Api.Controllers
                 await _context.SaveChangesAsync();
 
                 return Ok(result); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
+        }
+
+        [HttpPost]
+        [ActionName("PostDonation")]
+        public async Task<IActionResult> PostDonation([FromBody] PublishedNeedsPostDto result)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                LastDocSerialNo record = _context.LastDocSerialNo.Where(x => x.DocCode == "DTN").FirstOrDefault();
+                record.DocCode = "DTN";
+                record.LastTxnSerialNo = record.LastTxnSerialNo + 1;
+                record.ModifiedBy = "admin";
+                record.ModifiedDateTime = DateTime.Now;
+
+                _context.Entry(record).State = EntityState.Modified;
+
+                result.DonationHeader.HospitalID = _context.SupplyRequestHeader.Where(x => x.SupplyID == result.DonationHeader.SupplyID).FirstOrDefault().HospitalID;
+                string NewDonationID = record.DocCode + record.LastTxnSerialNo.ToString("D3");
+                result.DonationHeader.DonationID = NewDonationID;
+                result.DonationDetails.ForEach(x => x.DonationID = NewDonationID);
+
+                _context.DonationHeader.Add(result.DonationHeader);
+                _context.DonationDetails.AddRange(result.DonationDetails);
+
+                await _context.SaveChangesAsync();
+
+                return Ok(NewDonationID); // Return the inserted record
             }
             catch (Exception ex)
             {
