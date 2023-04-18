@@ -58,6 +58,7 @@ namespace GiveMED.Api.Controllers
             var tokenString = tokenHandler.WriteToken(token);
 
             var loggedUserDto = (from A in _context.User
+                                 join B in _context.DonorMaster on A.UserName equals B.UserName
                                  where A.UserName == userForLoginDto.UserName
                                  select new LoggedUserDto
                                  {
@@ -66,6 +67,7 @@ namespace GiveMED.Api.Controllers
                                      LastName = A.LastName,
                                      Type = A.Type,
                                      Status = A.Status,
+                                     DonorID = B.DonorID,
                                      TokenString = tokenString.ToString()
                                  }).First();
 

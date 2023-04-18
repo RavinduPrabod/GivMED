@@ -23,6 +23,7 @@ namespace GivMED.Pages.App.Hospital
         {
             if (!this.IsPostBack)
             {
+
                 mvSupply.ActiveViewIndex = 0;
 
                 LoadGridView();
@@ -31,6 +32,8 @@ namespace GivMED.Pages.App.Hospital
                 ddlSupplyType.DataValueField = "DataValueField";
                 ddlSupplyType.DataTextField = "DataTextField";
                 ddlSupplyType.DataBind();
+
+                LoadTemplate();
 
                 List<ItemMaster> Itembulk = oSupplyService.GetAllItem();
                 Session["Itembulk"] = Itembulk;
@@ -414,14 +417,17 @@ namespace GivMED.Pages.App.Hospital
 
             if (response.StatusCode == (int)StatusCode.Success)
             {
-                ShowSuccessMessage(ResponseMessages.SuccessfullyPulished);
-                // need pop
+                ShowSupplyPublishID(response.Result);
             }
             else
             {
                 ShowErrorMessage(ResponseMessages.Error);
             }
 
+        }
+        private void ShowSupplyPublishID(string publishID)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowSupplyPublishID('" + publishID + "');", true);
         }
         private SupplyNeedsDto UiToModelCreateSupplyNeed()
         {
@@ -603,10 +609,41 @@ namespace GivMED.Pages.App.Hospital
         {
 
         }
-
-        protected void btnCancelTemp_Click(object sender, EventArgs e)
+        protected void btnAddtemp_Click(object sender, EventArgs e)
         {
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
+            ManageTemplate temp = new ManageTemplate();
+            temp.HospitalID = loggedUser.HospitalID;
+            temp.TemplateID = 0;
+            temp.TemplateText = txtEditor.Text.ToString();
+            temp.CreatedBy = "admin";
+            temp.CreatedDateTime = DateTime.Now;
+            temp.ModifiedBy = "admin";
+            temp.ModifiedDateTime = DateTime.Now;
+
+            WebApiResponse response = new WebApiResponse();
+            response = oSupplyService.PostTemplate(temp);
+
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "HideDetails", "$('#modal-Show').modal('fade hide'); $('.modal-backdrop').remove(); return false;", true);
+                LoadTemplate();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "ShowDetailshideScript", "ShowDetailshide();", true);
+            }
+        }
+
+        private void LoadTemplate()
+        {
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+            ddlTemplates.DataSource = oCommonService.GetTemplate(loggedUser.HospitalID);
+            ddlTemplates.DataValueField = "DataValueField";
+            ddlTemplates.DataTextField = "DataTextField";
+            ddlTemplates.DataBind();
         }
 
         protected void btnSaveTemp_Click(object sender, EventArgs e)
@@ -614,21 +651,32 @@ namespace GivMED.Pages.App.Hospital
 
         }
 
-        protected void btnCreateNew_Click(object sender, EventArgs e)
+        protected void btnNewTemp_Click(object sender, EventArgs e)
         {
-            txtTemplateName.Text = string.Empty;
+            btnSaveTemp.Visible = false;
+            btnAddtemp.Visible = true;
             txtEditor.Text = string.Empty;
-
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDetails();", true);
         }
 
-        protected void btnNew_Click(object sender, EventArgs e)
+        protected void btnEditTemp_Click(object sender, EventArgs e)
         {
-
+            btnSaveTemp.Visible = true;
+            btnAddtemp.Visible = false;
+            txtEditor.Text = string.Empty;
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDetails();", true);
         }
 
-        protected void btnedit_Click(object sender, EventArgs e)
+        protected void ddlTemplates_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if(ddlTemplates.SelectedValue.Count() == 5)
+            {
+                btnNewTemp.Enabled = false;
+            }
+            else
+            {
+                btnNewTemp.Enabled = true;
+            }
         }
     }
 }

@@ -9,6 +9,8 @@ namespace GivMED.Dto
     {
         public string SupplyID { get; set; }
 
+        public string DonationID { get; set; }
+
         public int SupplyItemID { get; set; }
 
         public int SupplyItemCat { get; set; }

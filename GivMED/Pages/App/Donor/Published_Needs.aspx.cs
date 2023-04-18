@@ -473,6 +473,12 @@ namespace GivMED.Pages.App.Donor
                 throw ex;
             }
         }
+
+        private void OpenAIFinder()
+        {
+
+        }
+
         private void ShowDonationConfirm(string DonationID)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDonationID('" + DonationID + "');", true);
@@ -510,6 +516,68 @@ namespace GivMED.Pages.App.Donor
         private void ShowErrorMessage(string msg)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowErrorMessage('" + msg + "');", true);
+        }
+
+        protected void gvSupplyList_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            try
+            {
+                switch (e.CommandName)
+                {
+                    case "viewforhelp":
+                        ViewState["index"] = e.CommandArgument.ToString();
+                        UseOpenAI();
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowHelp", "ShowHelp();", true);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void UseOpenAI()
+        {
+            GridViewRow oGridViewRow = gvSupplyList.Rows[Convert.ToInt32(ViewState["index"])];
+            string ItemName = ((Label)oGridViewRow.FindControl("lblSupplyItemName")).Text.ToString();
+
+            WebApiResponse response = new WebApiResponse();
+            response = oSupplyService.UseChatGPT(ItemName);
+
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                lblhelp.Text = response.Result.ToString();
+                //ShowOpenAIResult(response.Result);
+            }
+            else
+            {
+
+            }
+        }
+
+        private void ShowOpenAIResult(string result)
+        {
+            string script = "ShowOpenAIResult('" + result + "');";
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "script", script, true);
+        }
+
+        protected void gvPopSuppliesShow_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            try
+            {
+                switch (e.CommandName)
+                {
+                    case "viewforhelp":
+                        ViewState["index"] = e.CommandArgument.ToString();
+                        UseOpenAI();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

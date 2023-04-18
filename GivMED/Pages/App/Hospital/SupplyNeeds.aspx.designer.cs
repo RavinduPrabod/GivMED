@@ -69,15 +69,6 @@ namespace GivMED.Pages.App.Hospital
         protected global::System.Web.UI.WebControls.View View2;
 
         /// <summary>
-        /// txtTemplateName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTemplateName;
-
-        /// <summary>
         /// txtEditor control.
         /// </summary>
         /// <remarks>
@@ -87,13 +78,13 @@ namespace GivMED.Pages.App.Hospital
         protected global::System.Web.UI.WebControls.TextBox txtEditor;
 
         /// <summary>
-        /// btnCancelTemp control.
+        /// btnAddtemp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelTemp;
+        protected global::System.Web.UI.WebControls.Button btnAddtemp;
 
         /// <summary>
         /// btnSaveTemp control.
@@ -132,22 +123,22 @@ namespace GivMED.Pages.App.Hospital
         protected global::System.Web.UI.WebControls.CheckBox chkLow;
 
         /// <summary>
-        /// btnNew control.
+        /// btnNewTemp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNew;
+        protected global::System.Web.UI.WebControls.LinkButton btnNewTemp;
 
         /// <summary>
-        /// btnedit control.
+        /// btnEditTemp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnedit;
+        protected global::System.Web.UI.WebControls.LinkButton btnEditTemp;
 
         /// <summary>
         /// ddlTemplates control.

@@ -33,6 +33,24 @@ namespace GivMED.Service
             }
             return records;
         }
+        public List<ComboDTO> GetTemplate(int HospitalID)
+        {
+            List<ComboDTO> records = new List<ComboDTO>();
+            records.Add(new ComboDTO { DataValueField = "", DataTextField = "-- Select --" });
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Supply/GetTemplate/" + HospitalID;
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                HttpResponseMessage response = client.GetAsync(path).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var value = response.Content.ReadAsStringAsync().Result;
+                    records.AddRange(JsonConvert.DeserializeObject<List<ComboDTO>>(value));
+                }
+            }
+            return records;
+        }
 
         public List<ComboDTO> GetAllItems()
         {

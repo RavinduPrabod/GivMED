@@ -54,7 +54,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <asp:GridView ID="gvPopSuppliesShow" runat="server" class="table table-striped table-bordered table-hover" AutoGenerateColumns="False">
+                                    <asp:GridView ID="gvPopSuppliesShow" runat="server" class="table table-striped table-bordered table-hover" AutoGenerateColumns="False" OnRowCommand="gvPopSuppliesShow_RowCommand">
                                         <Columns>
                                             <asp:TemplateField HeaderText="Code" Visible="false">
                                                 <ItemTemplate>
@@ -312,6 +312,23 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+                            <div class="modal fade" id="modal-help">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content bg-secondary">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Information ?</h4>&nbsp<h8 class="modal-title">Genarate by OpenAI</h8>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <asp:Label runat="server" ID="lblhelp"></asp:Label>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
                             <div class="row">
                                 <div class="col-8">
                                     <div class="card bg-light">
@@ -322,7 +339,7 @@
                                         <div class="card-body pt-0">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <asp:GridView ID="gvSupplyList" runat="server" class="table table-striped table-bordered table-hover" AutoGenerateColumns="False" OnRowDataBound="gvSupplyList_RowDataBound">
+                                                    <asp:GridView ID="gvSupplyList" runat="server" class="table table-striped table-bordered table-hover" AutoGenerateColumns="False" OnRowDataBound="gvSupplyList_RowDataBound" OnRowCommand="gvSupplyList_RowCommand">
                                                         <Columns>
                                                             <asp:TemplateField HeaderText="Code" Visible="false">
                                                                 <ItemTemplate>
@@ -341,6 +358,7 @@
                                                                     </div>
                                                                     <div class="col-8">
                                                                         <asp:Label ID="lblSupplyItemName" runat="server" Text='<%# Bind("SupplyItemName") %>'></asp:Label>
+                                                                        <asp:ImageButton ID="btnQuestionMark" runat="server" ImageUrl="~/dist/img/question.png" ToolTip="Click for Help OpenAI" CausesValidation="false" CommandName="viewforhelp" CommandArgument="<%# Container.DisplayIndex %>" />
                                                                     </div>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
@@ -477,9 +495,16 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
+
         function ShowDetails() {
             $('.modal-backdrop').remove();
             $('#modal-Show').modal('show');
+            return false;
+        };
+
+        function ShowHelp() {
+            $('.modal-backdrop').remove();
+            $('#modal-help').modal('show');
             return false;
         };
 
@@ -497,18 +522,30 @@
                     Swal.fire('Canceled!', '', 'error');
                 }
             });
-        }
+        };
 
-        function ShowDonationID(costsheetno) {
+        function ShowDonationID(id) {
             Swal.fire({
                 title: '<h3>Donation will Confirm</h3>',
-                html: 'Donation ID : ' + costsheetno,
+                html: 'Donation ID : ' + id,
                 icon: 'success',
                 confirmButtonText: 'OK'
             }).then((result) => {
                 // No action needed after OK button is clicked
             });
-        }
+        };
+
+        function ShowOpenAIResult(args) {
+            Swal.fire({
+                title: '<h3> Open AI</h3>',
+                html: 'What is it : ' + args,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                // No action needed after OK button is clicked
+            });
+        };
+
 
         // Add this script block to your page
         $(document).ready(function () {

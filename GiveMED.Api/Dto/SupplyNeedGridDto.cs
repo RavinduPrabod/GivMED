@@ -9,6 +9,7 @@ namespace GiveMED.Api.Dto
     {
         public string SupplyID { get; set; }
 
+        public string DonationID { get; set; }
         public int SupplyItemID { get; set; }
 
         public int SupplyItemCat { get; set; }

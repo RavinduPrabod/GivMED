@@ -44,9 +44,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit, Version=20.1.0.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
-      <HintPath>..\packages\AjaxControlToolkit.20.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -196,6 +193,8 @@
     <Content Include="dist\img\prod-3.jpg" />
     <Content Include="dist\img\prod-4.jpg" />
     <Content Include="dist\img\prod-5.jpg" />
+    <Content Include="dist\img\question-mark.png" />
+    <Content Include="dist\img\question.png" />
     <Content Include="dist\img\remove.png" />
     <Content Include="dist\img\Untitled design.png" />
     <Content Include="dist\img\user.png" />
@@ -214,6 +213,8 @@
     <Content Include="dist\js\bootstrap-datetimepicker.min.js" />
     <Content Include="dist\js\common.js" />
     <Content Include="dist\js\demo.js" />
+    <Content Include="dist\js\MicrosoftAjax.js" />
+    <Content Include="dist\js\MicrosoftAjaxWebForms.js" />
     <Content Include="dist\js\jquery.validationEngine-en.js" />
     <Content Include="dist\js\jquery.validationEngine.js" />
     <Content Include="dist\js\pages\dashboard.js" />
@@ -246,6 +247,7 @@
     <Content Include="dist\js\adminlte.js.map" />
     <Content Include="dist\js\adminlte.min.js.map" />
     <Content Include="HtmlPage1.html" />
+    <Content Include="Pages\App\Donor\DonationActivities.aspx" />
     <Content Include="Pages\App\Donor\Published_Needs.aspx" />
     <Content Include="Pages\App\Hospital\SupplyNeeds.aspx" />
     <Content Include="Pages\App\Profile\HProfile.aspx" />
@@ -2171,6 +2173,7 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
+    <Content Include="TextFile1.txt" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -2205,8 +2208,10 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Dto\ArchivementsDto.cs" />
     <Compile Include="Dto\ChangePwdDto.cs" />
     <Compile Include="Dto\ComboDTO.cs" />
+    <Compile Include="Dto\DonationActivityDto.cs" />
     <Compile Include="Dto\GetDonationandSupplyDto.cs" />
     <Compile Include="Dto\HospitalSupplyNeedsGridDto.cs" />
     <Compile Include="Dto\LoggedUserDto.cs" />
@@ -2241,6 +2246,13 @@
     <Compile Include="Models\SupplyRequestHeader.cs" />
     <Compile Include="Models\UnsendEmailLog.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Pages\App\Donor\DonationActivities.aspx.cs">
+      <DependentUpon>DonationActivities.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\App\Donor\DonationActivities.aspx.designer.cs">
+      <DependentUpon>DonationActivities.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\App\Donor\Published_Needs.aspx.cs">
       <DependentUpon>Published_Needs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -80,15 +80,48 @@ namespace GivMED.Service
 
                 HttpResponseMessage response = client.PostAsync(path, content).Result;
                 webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Extract the NewDonationID from the response content
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent; // Set the NewDonationID as the response data
+                }
             }
             return webApiResponse;
         }
+
+
         public WebApiResponse PostDonation(PublishedNeedsPostDto oData)
         {
             WebApiResponse webApiResponse = new WebApiResponse();
             using (HttpClient client = new HttpClient())
             {
                 string path = "Supply/PostDonation";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(oData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Extract the NewDonationID from the response content
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent; // Set the NewDonationID as the response data
+                }
+            }
+            return webApiResponse;
+        }
+
+        public WebApiResponse PostTemplate(ManageTemplate oData)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Supply/PostTemplate";
                 client.BaseAddress = new Uri(GlobalData.BaseUri);
                 //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
                 var json = JsonConvert.SerializeObject(oData);
@@ -239,6 +272,111 @@ namespace GivMED.Service
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+
+        public List<SupplyNeedGridDto> GetDonationNeedGridForID(string DonationID)
+        {
+            try
+            {
+                List<SupplyNeedGridDto> record = new List<SupplyNeedGridDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetDonationNeedGridForID/" + DonationID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<SupplyNeedGridDto>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public WebApiResponse UseChatGPT(string query)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Supply/UseChatGPT";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(query);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Extract the NewDonationID from the response content
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent; // Set the NewDonationID as the response data
+                }
+            }
+            return webApiResponse;
+        }
+
+
+        //donation
+        public List<DonationActivityDto> GetDonationHeaderDetails(string username)
+        {
+            try
+            {
+                List<DonationActivityDto> record = new List<DonationActivityDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetDonationHeaderDetails/" + username;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<DonationActivityDto>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<ArchivementsDto> GetArchivementsData(string username)
+        {
+            try
+            {
+                List<ArchivementsDto> record = new List<ArchivementsDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetArchivementsData/" + username;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<ArchivementsDto>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }

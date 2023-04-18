@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OpenAI_API;
+using OpenAI_API.Completions;
 
 namespace GiveMED.Api.Controllers
 {
@@ -66,16 +68,13 @@ namespace GiveMED.Api.Controllers
             var conn = _context.Database.GetDbConnection();
             conn.Open();
             var comm = conn.CreateCommand();
-            comm.CommandText = "SELECT " +
-                "A.SupplyID, A.SupplyPriorityLevel, A.SupplyCreateDate,A.SupplyExpireDate, " +
-                "B.SupplyItemName, B.SupplyItemQty, " +
-                "C.HospitalName, C.HospitalID, C.State, " +
-                "D.DonatedQty " +
+            comm.CommandText = "SELECT A.SupplyID, A.SupplyPriorityLevel, A.SupplyCreateDate, A.SupplyExpireDate, B.SupplyItemName, B.SupplyItemQty, C.HospitalName, C.HospitalID, " +
+                "C.State, SUM(D.DonatedQty) as DonatedQty " +
                 "FROM SupplyRequestHeader A " +
                 "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
                 "INNER JOIN HospitalMaster C ON A.HospitalID = C.HospitalID " +
                 "LEFT OUTER JOIN DonationDetails D ON A.SupplyID = D.SupplyID AND B.SupplyItemCat = D.ItemCategory AND B.SupplyItemID = D.ItemID " +
-                "WHERE A.SupplyStatus = 1";
+                "WHERE A.SupplyStatus = 1 GROUP BY A.SupplyID, A.SupplyPriorityLevel, A.SupplyCreateDate, A.SupplyExpireDate, B.SupplyItemName, B.SupplyItemQty, C.HospitalName, C.HospitalID, C.State;";
 
             var reader = comm.ExecuteReader();
             while (reader.Read())
@@ -108,15 +107,11 @@ namespace GiveMED.Api.Controllers
             var conn = _context.Database.GetDbConnection();
             conn.Open();
             var comm = conn.CreateCommand();
-            comm.CommandText = "SELECT " +
-                "A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, " +
-                "B.ItemCatName, " +
-                "C.DonatedQty " +
-                "FROM " +
-                "SupplyRequestDetails A " +
+            comm.CommandText = "SELECT A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, B.ItemCatName, SUM(C.DonatedQty) as DonatedQty " +
+                "FROM SupplyRequestDetails A " +
                 "INNER JOIN ItemCatMaster B ON A.SupplyItemCat = B.ItemCatID " +
-                "LEFT OUTER JOIN DonationDetails C ON A.SupplyID = C.SupplyID AND A.SupplyItemCat = C.ItemCategory AND A.SupplyItemID = C.ItemID " +
-                "WHERE A.SupplyID = @SupplyID";
+                "LEFT OUTER JOIN DonationDetails C ON A.SupplyID = C.SupplyID AND A.SupplyItemCat = C.ItemCategory AND A.SupplyItemID = C.ItemID WHERE A.SupplyID = @SupplyID " +
+                "GROUP BY A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, B.ItemCatName;";
 
             comm.Parameters.Add(id);
             var reader = comm.ExecuteReader();
@@ -137,6 +132,39 @@ namespace GiveMED.Api.Controllers
             return Records;
         }
 
+        [HttpGet("{DonationID}")]
+        [ActionName("GetDonationNeedGridForID")]
+        public IEnumerable<SupplyNeedGridDto> GetDonationNeedGridForID(string DonationID)
+        {
+            List<SupplyNeedGridDto> Records = new List<SupplyNeedGridDto>();
+
+            var id = new SqlParameter("DonationID", DonationID);
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, B.ItemCatName, SUM(C.DonatedQty) as DonatedQty " +
+                "FROM SupplyRequestDetails A " +
+                "INNER JOIN ItemCatMaster B ON A.SupplyItemCat = B.ItemCatID " +
+                "LEFT OUTER JOIN DonationDetails C ON A.SupplyID = C.SupplyID AND A.SupplyItemCat = C.ItemCategory AND A.SupplyItemID = C.ItemID WHERE C.DonationID = @DonationID " +
+                "GROUP BY A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, B.ItemCatName;";
+
+            comm.Parameters.Add(id);
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                SupplyNeedGridDto data = new SupplyNeedGridDto();
+                data.SupplyItemID = Convert.IsDBNull(reader["SupplyItemID"]) ? 0 : Convert.ToInt32(reader["SupplyItemID"]);
+                data.SupplyItemCat = Convert.IsDBNull(reader["SupplyItemCat"]) ? 0 : Convert.ToInt32(reader["SupplyItemCat"]);
+                data.SupplyItemName = Convert.IsDBNull(reader["SupplyItemName"]) ? "" : reader["SupplyItemName"].ToString();
+                data.RequestQty = Convert.IsDBNull(reader["SupplyItemQty"]) ? 0 : Convert.ToInt64(reader["SupplyItemQty"]);
+                data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
+                data.ItemCatName = Convert.IsDBNull(reader["ItemCatName"]) ? "" : reader["ItemCatName"].ToString();
+                Records.Add(data);
+            }
+            conn.Close();
+
+            return Records;
+        }
 
         [HttpGet("{SupplyID}")]
         [ActionName("GetSupplyNeedsForID")]
@@ -175,6 +203,25 @@ namespace GiveMED.Api.Controllers
                 ComboDTO odata = new ComboDTO();
                 odata.DataValueField = item.ItemCatID.ToString();
                 odata.DataTextField = item.ItemCatName;
+                comlist.Add(odata);
+            }
+            return comlist;
+        }
+
+        [HttpGet("{HospitalID}")]
+        [ActionName("GetTemplate")]
+        public List<ComboDTO> GetTemplate(int HospitalID)
+        {
+            List<ManageTemplate> result = new List<ManageTemplate>();
+            List<ComboDTO> comlist = new List<ComboDTO>();
+
+            result = _context.ManageTemplate.Where(x=>x.HospitalID == HospitalID).ToList();
+
+            foreach (var item in result)
+            {
+                ComboDTO odata = new ComboDTO();
+                odata.DataValueField = item.TemplateID.ToString();
+                odata.DataTextField = "Draft" + item.TemplateID.ToString();
                 comlist.Add(odata);
             }
             return comlist;
@@ -235,7 +282,34 @@ namespace GiveMED.Api.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return Ok(result); // Return the inserted record
+                return Ok(NewSupplyID); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
+        }
+
+        [HttpPost]
+        [ActionName("PostTemplate")]
+        public async Task<IActionResult> PostTemplate([FromBody] ManageTemplate result)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                int NewTempID = _context.ManageTemplate.Where(x => x.HospitalID == result.HospitalID).Select(x=>x.TemplateID).Max();
+
+                _context.ManageTemplate.Add(result);
+
+                await _context.SaveChangesAsync();
+
+                return Ok(); // Return the inserted record
+
+
             }
             catch (Exception ex)
             {
@@ -279,5 +353,95 @@ namespace GiveMED.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
             }
         }
+
+
+        [HttpPost]
+        [ActionName("UseChatGPT")]
+        public async Task<IActionResult> UseChatGPT([FromBody] string query)
+        {
+            string OutPutResult = "";
+            var openai = new OpenAIAPI("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");
+            CompletionRequest completionRequest = new CompletionRequest();
+            completionRequest.Prompt = "What is the " + query + "?";
+            completionRequest.Prompt += "\nAverage Price of LKR " + query + " is:";
+            completionRequest.Model = OpenAI_API.Models.Model.DavinciText;
+            completionRequest.MaxTokens = 2048; // Limit the response length to 2048 tokens
+
+            var completions = await openai.Completions.CreateCompletionAsync(completionRequest);
+
+            // Get the first completion as the result
+            var completion = completions.Completions[0];
+            OutPutResult = completion.Text;
+
+            return Ok(OutPutResult);
+        }
+
+
+        //donationactivuty
+
+        [HttpGet("{UserName}")]
+        [ActionName("GetDonationHeaderDetails")]
+        public IEnumerable<DonationActivityDto> GetDonationHeaderDetails(string UserName)
+        {
+            List<DonationActivityDto> Records = new List<DonationActivityDto>();
+
+            var id = new SqlParameter("UserName", UserName);
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT A.DonationID, A.DonationCreateDate, A.HospitalID, B.HospitalName, B.Email " +
+                "FROM DonationHeader A " +
+                "INNER JOIN HospitalMaster B ON A.HospitalID = B.HospitalID " +
+                "WHERE A.UserName = @UserName";
+
+            comm.Parameters.Add(id);
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                DonationActivityDto data = new DonationActivityDto();
+                data.DonationID = Convert.IsDBNull(reader["DonationID"]) ? "" : reader["DonationID"].ToString();
+                data.DonationCreateDate = Convert.IsDBNull(reader["DonationCreateDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["DonationCreateDate"]);
+                data.HospitalID = Convert.IsDBNull(reader["HospitalID"]) ? 0 : Convert.ToInt32(reader["HospitalID"]);
+                data.HospitalName = Convert.IsDBNull(reader["HospitalName"]) ? "" : reader["HospitalName"].ToString();
+                data.Email = Convert.IsDBNull(reader["Email"]) ? "" : reader["Email"].ToString();
+                Records.Add(data);
+            }
+            conn.Close();
+
+            return Records;
+        }
+
+        //[HttpGet("{UserName}")]
+        //[ActionName("GetArchivementsData")]
+        //public IEnumerable<ArchivementsDto> GetArchivementsData(string UserName)
+        //{
+        //    List<ArchivementsDto> Records = new List<ArchivementsDto>();
+
+        //    var id = new SqlParameter("UserName", UserName);
+        //    var conn = _context.Database.GetDbConnection();
+        //    conn.Open();
+        //    var comm = conn.CreateCommand();
+        //    comm.CommandText = "SELECT A.DonationID, A.DonationCreateDate, A.HospitalID, B.HospitalName, B.Email " +
+        //        "FROM DonationHeader A " +
+        //        "INNER JOIN HospitalMaster B ON A.HospitalID = B.HospitalID " +
+        //        "WHERE A.UserName = @UserName";
+
+        //    comm.Parameters.Add(id);
+        //    var reader = comm.ExecuteReader();
+        //    while (reader.Read())
+        //    {
+        //        ArchivementsDto data = new ArchivementsDto();
+        //        data.us = Convert.IsDBNull(reader["DonationID"]) ? "" : reader["DonationID"].ToString();
+        //        data.DonationCreateDate = Convert.IsDBNull(reader["DonationCreateDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["DonationCreateDate"]);
+        //        data.HospitalID = Convert.IsDBNull(reader["HospitalID"]) ? 0 : Convert.ToInt32(reader["HospitalID"]);
+        //        data.HospitalName = Convert.IsDBNull(reader["HospitalName"]) ? "" : reader["HospitalName"].ToString();
+        //        data.Email = Convert.IsDBNull(reader["Email"]) ? "" : reader["Email"].ToString();
+        //        Records.Add(data);
+        //    }
+        //    conn.Close();
+
+        //    return Records;
+        //}
+
     }
 }
