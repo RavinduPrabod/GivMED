@@ -59,61 +59,68 @@
                 </div>
                 <div class="modal fade" id="modal-contact">
                     <div class="modal-dialog modal-lg">
-                        <div class="modal-content bg-secondary">
+                        <div class="modal-content">
                             <div class="modal-header">
                                 <div class="card-header text-muted border-bottom-0">
-                                    CONTACT DETAILS
+                                    <h1>CONTACT DETAILS</h1>
                                 </div>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                             <div class="modal-body">
-                                <div class="col-4">
-                                    <div class="card bg-light">
-                                        <div class="card-body pt-0">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-3">
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <h2 class="lead"><b>
-                                                                <asp:Label ID="lblHospitalName" runat="server" Text="Hospital Name" Font-Underline="true" Font-Bold="true"></asp:Label></b></h2>
-                                                        </div>
+                                <div class="card bg-light">
+                                    <div class="card-body pt-0">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-4">
                                                     </div>
-                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-registered"></i></span>
-                                                            <asp:Label ID="lblRegNo" runat="server" Text=""></asp:Label><br />
-                                                        </li>
-                                                        &nbsp
+                                                    <div class="col-4">
+                                                        <h2 class="lead"><b>
+                                                            <asp:Label ID="lblHospitalName" runat="server" Text="Hospital Name" Font-Underline="true" Font-Bold="true"></asp:Label></b></h2>
+                                                    </div>
+                                                    <div class="col-4">
+                                                    </div>
+                                                </div>
+                                                <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-registered"></i></span>
+                                                        <asp:Label ID="lblRegNo" runat="server" Text=""></asp:Label><br />
+                                                    </li>
+                                                    &nbsp
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-cat"></i></span>
                                                             <asp:Label ID="lbltype" runat="server" Text=""></asp:Label><br />
                                                         </li>
-                                                        &nbsp
+                                                    &nbsp
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-times-circle"></i></span>
                                                             <asp:Label ID="lblYear" runat="server" Text=""></asp:Label><br />
                                                         </li>
-                                                        &nbsp
+                                                    &nbsp
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-bed"></i></span>
                                                             <asp:Label ID="lblNoofBeds" runat="server" Text=""></asp:Label><br />
                                                         </li>
-                                                        &nbsp
+                                                    &nbsp
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked-alt"></i></span>
                                                             <asp:Label ID="lblAddress" runat="server" Text="Address"></asp:Label><br />
                                                         </li>
-                                                        &nbsp
+                                                    &nbsp
                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span>
                                                             <asp:Label ID="lblPhone" runat="server" Text="Phone"></asp:Label><br />
                                                         </li>
-                                                        &nbsp
+                                                    &nbsp
                                                          <li class="small"><span class="fa-li"><i class="fas fa-lg fa-mail-bulk"></i></span>
                                                              <asp:Label ID="lblEmail" runat="server" Text="Email"></asp:Label></li>
-                                                        &nbsp
+                                                    &nbsp
                                                          <li class="small"><span class="fa-li"><i class="fas fa-lg fa-broadcast-tower"></i></span>
                                                              <asp:Label ID="lblWeb" runat="server" Text="Web"></asp:Label></li>
-                                                    </ul>
-                                                </div>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-4">
+                                </div>
+                                <div class="col-8">
                                 </div>
                             </div>
                         </div>
@@ -298,7 +305,7 @@
                                         <ItemTemplate>
                                             <asp:LinkButton ID="btnView" runat="server" CssClass="btn btn-primary" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-eye"></i>
                                             </asp:LinkButton>
-                                            <asp:LinkButton ID="btnSendMail" runat="server" CssClass="btn btn-warning" CausesValidation="false" CommandName="SendEmail" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-envelope"></i>
+                                            <asp:LinkButton ID="btnSendMail" runat="server" CssClass="btn btn-success" ToolTip="Contact Details" CausesValidation="false" CommandName="Contact" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-comment"></i>
                                             </asp:LinkButton>
                                             <asp:LinkButton ID="btnReject" runat="server" CssClass="btn btn-danger" CausesValidation="false" CommandName="Reject" CommandArgument="<%# Container.DisplayIndex %>">x</asp:LinkButton>
                                         </ItemTemplate>
@@ -323,6 +330,12 @@
         function ShowDetails() {
             $('.modal-backdrop').remove();
             $('#modal-Show').modal('show');
+            return false;
+        };
+
+        function ShowContactDetails() {
+            $('.modal-backdrop').remove();
+            $('#modal-contact').modal('show');
             return false;
         };
 

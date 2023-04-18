@@ -380,5 +380,58 @@ namespace GivMED.Service
                 throw;
             }
         }
+
+        public List<HospitalSupplyNeedsGridDto> GetDonationContributeGridData(int HospitalID)
+        {
+            try
+            {
+                List<HospitalSupplyNeedsGridDto> record = new List<HospitalSupplyNeedsGridDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetDonationContributeGridData/" + HospitalID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<HospitalSupplyNeedsGridDto>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<DonationContributeGridDto> GetDonorsForID(string SupplyID)
+        {
+            try
+            {
+                List<DonationContributeGridDto> record = new List<DonationContributeGridDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetDonorsForID/" + SupplyID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<DonationContributeGridDto>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

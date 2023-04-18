@@ -64,12 +64,12 @@ namespace GivMED.Pages
                         if(oRegistrationService.CheckHospitalMasterAvailability(loggedUser.UserName) == true)
                         {
                             ShowSuccessMessage(ResponseMessages.LoginSuccess);
-                            Response.Redirect("~/Pages/App/Profile/HProfile.aspx");
+                            Response.Redirect("~/Pages/App/Hospital/SupplyNeeds.aspx");
                         }
                         else
                         {
                             ShowSuccessMessage(ResponseMessages.LoginSuccess);
-                            Response.Redirect("~/Pages/Web/Registration/HospitalRegistration.aspx");
+                            Response.Redirect("~/Pages/App/Profile/HProfile.aspx");
                         }    
                     }
                     else

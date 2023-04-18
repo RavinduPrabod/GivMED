@@ -264,16 +264,16 @@ namespace GivMED.Pages.App.Hospital
                     SupplyRequestDetails odata = new SupplyRequestDetails();
                     if (oSupplyRequestDetails.Count > 0)
                     {
-                        if(oSupplyRequestDetails.Where(x=>x.SupplyItemID == Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[0])).Any())
+                        if(oSupplyRequestDetails.Where(x=>x.SupplyItemID == Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[0]) && x.SupplyItemCat == Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[1])).Any())
+                        {
+                            ShowErrorMessage(ResponseMessages.AlreadyExists);
+                        }
+                        else
                         {
                             odata.SupplyItemID = Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[0]);
                             odata.SupplyItemCat = Convert.ToInt32(lstSelection.Items[i].Value.Split('-')[1]);
                             odata.SupplyItemName = lstSelection.Items[i].Text.ToString();
                             oSupplyRequestDetails.Add(odata);
-                        }
-                        else
-                        {
-                            ShowErrorMessage(ResponseMessages.AlreadyExists);
                         }
                     }
                     else
@@ -293,6 +293,8 @@ namespace GivMED.Pages.App.Hospital
                 btnPublish.Visible = true;
                 txtExpireDate.Visible = true;
                 //checboxcontrol(false);
+
+                lstSelection.Items.Clear();
             }
             else
             {
@@ -329,13 +331,10 @@ namespace GivMED.Pages.App.Hospital
 
             List<HospitalSupplyNeedsGridDto> result = new List<HospitalSupplyNeedsGridDto>();
 
-            List<HospitalSupplyNeedsGridDto> grouplist = olist.GroupBy(s => s.SupplyID)
-                                                        .Select(group => group.First())
-                                                        .ToList();
-            foreach(var item in grouplist)
+            foreach (var item in olist)
             {
-                int requestedQty = 0;
-                int donatedQty = 0;
+                long requestedQty = 0;
+                long donatedQty = 0;
 
                 HospitalSupplyNeedsGridDto odata = new HospitalSupplyNeedsGridDto();
 
@@ -344,27 +343,65 @@ namespace GivMED.Pages.App.Hospital
                 odata.SupplyExpireDate = item.SupplyExpireDate;
                 odata.SupplyPriorityLevel = item.SupplyPriorityLevel;
 
-                List<HospitalSupplyNeedsGridDto> forlist = new List<HospitalSupplyNeedsGridDto>();
-                forlist = olist.Where(x => x.SupplyID == item.SupplyID).ToList();
-
-                for (int i = 0; forlist.Count > i; i++)
-                {
-                    requestedQty = requestedQty + Convert.ToInt32(olist[i].RequestQty);
-                    donatedQty = donatedQty + Convert.ToInt32(olist[i].DonatedQty);
-                }
+                requestedQty = item.RequestQty;
+                donatedQty = item.DonatedQty;
 
                 // Calculate donated percentage
                 double donatedPercentage = (double)donatedQty / requestedQty * 100;
                 // Round to 2 decimal places
                 donatedPercentage = Convert.ToInt32(donatedPercentage);
+
                 odata.Proceprecent = Convert.ToInt32(donatedPercentage);
+
                 result.Add(odata);
             }
 
             gvSupplyNeeds.DataSource = result;
             gvSupplyNeeds.DataBind();
+        
+        //List<HospitalSupplyNeedsGridDto> grouplist = olist.GroupBy(s => s.SupplyID)
+        //                                            .Select(group => group.First())
+        //                                            .ToList();
+        //foreach(var item in grouplist)
+        //{
+        //    int requestedQty = 0;
+        //    int donatedQty = 0;
 
-        }
+        //    HospitalSupplyNeedsGridDto odata = new HospitalSupplyNeedsGridDto();
+
+        //    odata.SupplyID = item.SupplyID;
+        //    odata.SupplyCreateDate = item.SupplyCreateDate;
+        //    odata.SupplyExpireDate = item.SupplyExpireDate;
+        //    odata.SupplyPriorityLevel = item.SupplyPriorityLevel;
+
+        //    List<HospitalSupplyNeedsGridDto> forlist = new List<HospitalSupplyNeedsGridDto>();
+        //    forlist = olist.Where(x => x.SupplyID == item.SupplyID && x.DonatedQty > 0).ToList();
+
+        //    if(forlist.Count > 0)
+        //    {
+        //        for (int i = 0; forlist.Count > i; i++)
+        //        {
+        //            requestedQty = requestedQty + Convert.ToInt32(olist[i].RequestQty);
+        //            donatedQty = donatedQty + Convert.ToInt32(olist[i].DonatedQty);
+        //        }
+
+        //        // Calculate donated percentage
+        //        double donatedPercentage = (double)donatedQty / requestedQty * 100;
+        //        // Round to 2 decimal places
+        //        donatedPercentage = Convert.ToInt32(donatedPercentage);
+        //        odata.Proceprecent = Convert.ToInt32(donatedPercentage);
+        //    }
+        //    else
+        //    {
+        //        odata.Proceprecent = 0;
+        //    }
+        //    result.Add(odata);
+        //}
+
+        //gvSupplyNeeds.DataSource = result;
+        //gvSupplyNeeds.DataBind();
+
+    }
 
         private void Delete()
         {
@@ -530,12 +567,13 @@ namespace GivMED.Pages.App.Hospital
                 {
                     case "ViewData":
                         ViewState["index"] = e.CommandArgument.ToString();
-                        ViewRecord();
+                        //ViewRecord();
                         break;
 
                     case "EditData":
                         ViewState["index"] = e.CommandArgument.ToString();
                         ViewRecord();
+                        btnPublish.Visible = false;
                         btnRePublish.Visible = true;
                         break;
 

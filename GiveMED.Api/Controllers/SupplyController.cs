@@ -34,12 +34,13 @@ namespace GiveMED.Api.Controllers
             var conn = _context.Database.GetDbConnection();
             conn.Open();
             var comm = conn.CreateCommand();
-            comm.CommandText = "SELECT A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, " +
-                "B.SupplyItemQty, C.DonatedQty " +
+            comm.CommandText = "SELECT A.SupplyID,  A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, B.SupplyItemQty, SUM(D.DonatedQty) as DonatedQty " +
                 "FROM SupplyRequestHeader A " +
-                "LEFT OUTER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
-                "LEFT OUTER JOIN DonationDetails C ON B.SupplyID = C.SupplyID AND B.SupplyItemID = C.ItemID AND B.SupplyItemCat = C.ItemCategory " +
-                "WHERE A.HospitalID = @HospitalID";
+                "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
+                "INNER JOIN HospitalMaster C ON A.HospitalID = C.HospitalID " +
+                "LEFT OUTER JOIN DonationDetails D ON A.SupplyID = D.SupplyID AND B.SupplyItemCat = D.ItemCategory AND B.SupplyItemID = D.ItemID " +
+                "WHERE A.SupplyStatus = 1 AND A.HospitalID = @HospitalID " +
+                "GROUP BY A.SupplyID,  A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, B.SupplyItemQty";
 
             comm.Parameters.Add(id);
             var reader = comm.ExecuteReader();
@@ -302,7 +303,9 @@ namespace GiveMED.Api.Controllers
                 }
 
                 int NewTempID = _context.ManageTemplate.Where(x => x.HospitalID == result.HospitalID).Select(x=>x.TemplateID).Max();
+                NewTempID = NewTempID + 1;
 
+                result.TemplateID = NewTempID;
                 _context.ManageTemplate.Add(result);
 
                 await _context.SaveChangesAsync();
@@ -443,5 +446,76 @@ namespace GiveMED.Api.Controllers
         //    return Records;
         //}
 
+        [HttpGet("{HospitalID}")]
+        [ActionName("GetDonationContributeGridData")]
+        public IEnumerable<HospitalSupplyNeedsGridDto> GetDonationContributeGridData(int HospitalID)
+        {
+            List<HospitalSupplyNeedsGridDto> Records = new List<HospitalSupplyNeedsGridDto>();
+
+            var id = new SqlParameter("HospitalID", HospitalID);
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT A.SupplyID,  A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel,  B.SupplyItemQty, SUM(D.DonatedQty) as DonatedQty , count(C.DonorID) as DonorCount " +
+                "FROM SupplyRequestHeader A " +
+                "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
+                "INNER JOIN DonationHeader C ON A.SupplyID = C.SupplyID " +
+                "LEFT OUTER JOIN DonationDetails D ON A.SupplyID = D.SupplyID AND B.SupplyItemCat = D.ItemCategory AND B.SupplyItemID = D.ItemID " +
+                "WHERE A.HospitalID = @HospitalID AND DonatedQty > 0 " +
+                "GROUP BY A.SupplyID,  A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, B.SupplyItemQty";
+
+            comm.Parameters.Add(id);
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                HospitalSupplyNeedsGridDto data = new HospitalSupplyNeedsGridDto();
+                data.SupplyID = Convert.IsDBNull(reader["SupplyID"]) ? "" : reader["SupplyID"].ToString();
+                data.SupplyCreateDate = Convert.IsDBNull(reader["SupplyCreateDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyCreateDate"]);
+                data.SupplyExpireDate = Convert.IsDBNull(reader["SupplyExpireDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyExpireDate"]);
+                data.SupplyPriorityLevel = Convert.IsDBNull(reader["SupplyPriorityLevel"]) ? 0 : Convert.ToInt32(reader["SupplyPriorityLevel"]);
+                data.RequestQty = Convert.IsDBNull(reader["SupplyItemQty"]) ? 0 : Convert.ToInt64(reader["SupplyItemQty"]);
+                data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
+                data.DonorCount = Convert.IsDBNull(reader["DonorCount"]) ? 0 : Convert.ToInt32(reader["DonorCount"]);
+                Records.Add(data);
+            }
+            conn.Close();
+
+            return Records;
+        }
+
+        [HttpGet("{SupplyID}")]
+        [ActionName("GetDonorsForID")]
+        public IEnumerable<DonationContributeGridDto> GetDonorsForID(string SupplyID)
+        {
+            List<DonationContributeGridDto> Records = new List<DonationContributeGridDto>();
+
+            var id = new SqlParameter("SupplyID", SupplyID);
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT CONCAT(C.DonorFirstName,' ', C.DonorLastName) As DonorName, A.DonationID, D.ItemCatName, E.ItemName, B.DonatedQty " +
+                "FROM DonationHeader A " +
+                "INNER JOIN DonorMaster C ON A.DonorID = C.DonorID " +
+                "INNER JOIN DonationDetails B ON B.DonationID = A.DonationID " +
+                "INNER JOIN ItemCatMaster D ON B.ItemCategory = D.ItemCatID " +
+                "INNER JOIN ItemMaster E ON B.ItemID = E.ItemID " +
+                "WHERE A.SupplyID = @SupplyID";
+
+            comm.Parameters.Add(id);
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                DonationContributeGridDto data = new DonationContributeGridDto();
+                data.DonorName = Convert.IsDBNull(reader["DonorName"]) ? "" : reader["DonorName"].ToString();
+                data.DonationID = Convert.IsDBNull(reader["DonationID"]) ? "" : reader["DonationID"].ToString();
+                data.SupplyItemCat = Convert.IsDBNull(reader["ItemCatName"]) ? "" : reader["ItemCatName"].ToString();
+                data.SupplyItemName = Convert.IsDBNull(reader["ItemName"]) ? "" : reader["ItemName"].ToString();
+                data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
+                Records.Add(data);
+            }
+            conn.Close();
+
+            return Records;
+        }
     }
 }

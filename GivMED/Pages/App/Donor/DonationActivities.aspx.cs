@@ -1,4 +1,5 @@
 ﻿using GivMED.Dto;
+using GivMED.Models;
 using GivMED.Service;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using static GivMED.Common.Enums;
 
 namespace GivMED.Pages.App.Donor
 {
@@ -76,6 +78,7 @@ namespace GivMED.Pages.App.Donor
                 infoBox.Attributes["class"] = "info-box bg-warning";
             }
         }
+
         private void ViewRecordForDetails()
         {
             GridViewRow oGridViewRow = gvDonationList.Rows[Convert.ToInt32(ViewState["index"])];
@@ -105,8 +108,10 @@ namespace GivMED.Pages.App.Donor
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowDetails", "ShowDetails();", true);
                         break;
 
-                    case "ShowDetails":
+                    case "Contact":
                         ViewState["index"] = e.CommandArgument.ToString();
+                        ViewContactDetails();
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowContactDetails", "ShowContactDetails();", true);
                         break;
                 }
             }
@@ -114,6 +119,25 @@ namespace GivMED.Pages.App.Donor
             {
                 throw ex;
             }
+        }
+
+        private void ViewContactDetails()
+        {
+            GridViewRow oGridViewRow = gvDonationList.Rows[Convert.ToInt32(ViewState["index"])];
+            string HospitalID = ((Label)oGridViewRow.FindControl("lblHospitalID")).Text.ToString();
+
+            HospitalMaster oHospitalMaster = oSupplyService.GetHospitalMasterForID(Convert.ToInt32(HospitalID));
+
+            lblHospitalName.Text = oHospitalMaster.HospitalName.ToString();
+            lblRegNo.Text = " " + oHospitalMaster.RegistrationNo.ToString();
+            lbltype.Text = " " + Enum.GetName(typeof(typeofhospital), Convert.ToInt32(oHospitalMaster.TypeofHosptal)).ToString();
+            lblYear.Text = " " + oHospitalMaster.YearEstablish.ToString();
+            lblNoofBeds.Text = " " + oHospitalMaster.NoOfBeds.ToString();
+            lblWeb.Text = " " + oHospitalMaster.WebURL.ToString();
+            lblAddress.Text = " " + oHospitalMaster.Address.ToUpper().ToString() + "<br />" +
+                              oHospitalMaster.State + " ZipCode( " + oHospitalMaster.ZipCode.ToString() + " )";
+            lblPhone.Text = " " + oHospitalMaster.Telephone.ToString();
+            lblEmail.Text = " " + oHospitalMaster.Email.ToString();
         }
 
         protected void gvDonationList_PageIndexChanging(object sender, GridViewPageEventArgs e)

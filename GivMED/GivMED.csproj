@@ -183,6 +183,10 @@
     <Content Include="dist\img\default-150x150.png" />
     <Content Include="dist\img\deleteb.png" />
     <Content Include="dist\img\Freg1.jpg" />
+    <Content Include="dist\img\icon-minus-dep.png" />
+    <Content Include="dist\img\icon-minus-grp.png" />
+    <Content Include="dist\img\icon-plus-dep.png" />
+    <Content Include="dist\img\icon-plus-grp.png" />
     <Content Include="dist\img\icons.png" />
     <Content Include="dist\img\photo1.png" />
     <Content Include="dist\img\photo2.png" />
@@ -249,6 +253,7 @@
     <Content Include="HtmlPage1.html" />
     <Content Include="Pages\App\Donor\DonationActivities.aspx" />
     <Content Include="Pages\App\Donor\Published_Needs.aspx" />
+    <Content Include="Pages\App\Hospital\DonorContribution.aspx" />
     <Content Include="Pages\App\Hospital\SupplyNeeds.aspx" />
     <Content Include="Pages\App\Profile\HProfile.aspx" />
     <Content Include="Pages\App\Profile\Profile.aspx" />
@@ -2212,6 +2217,8 @@
     <Compile Include="Dto\ChangePwdDto.cs" />
     <Compile Include="Dto\ComboDTO.cs" />
     <Compile Include="Dto\DonationActivityDto.cs" />
+    <Compile Include="Dto\DonationContributeGridDto.cs" />
+    <Compile Include="Dto\DonorGrid.cs" />
     <Compile Include="Dto\GetDonationandSupplyDto.cs" />
     <Compile Include="Dto\HospitalSupplyNeedsGridDto.cs" />
     <Compile Include="Dto\LoggedUserDto.cs" />
@@ -2259,6 +2266,13 @@
     </Compile>
     <Compile Include="Pages\App\Donor\Published_Needs.aspx.designer.cs">
       <DependentUpon>Published_Needs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\App\Hospital\DonorContribution.aspx.cs">
+      <DependentUpon>DonorContribution.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\App\Hospital\DonorContribution.aspx.designer.cs">
+      <DependentUpon>DonorContribution.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\App\Hospital\SupplyNeeds.aspx.cs">
       <DependentUpon>SupplyNeeds.aspx</DependentUpon>

@@ -30,5 +30,7 @@ namespace GivMED.Dto
         public long RemainingQty { get; set; }
 
         public decimal Proceprecent { get; set; }
+
+        public int DonorCount { get; set; }
     }
 }

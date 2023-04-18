@@ -64,18 +64,23 @@
                                                         <div class="progress-bar bg-green" role="progressbar"
                                                             aria-valuemin="0" aria-valuemax="100"
                                                             style='<%# "width:" + Eval("Proceprecent") + "%;" %>'>
-                                                            <%# Eval("Proceprecent") + "%" %>
                                                         </div>
                                                     </div>
                                                 </ItemTemplate>
                                                 <ItemStyle Width="10%" />
                                             </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="">
+                                                <ItemTemplate>
+                                                   <span class="badge bg-danger"><%# Eval("Proceprecent") + "%" %></span>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="2%" />
+                                            </asp:TemplateField>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <div class="project-actions text-center">
-                                                        <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>">
+                                                       <%-- <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>">
                                                             <i class="fas fa-eye"></i>
-                                                        </asp:LinkButton>
+                                                        </asp:LinkButton>--%>
                                                         <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" Text="Edit" CausesValidation="false" CommandName="EditData" CommandArgument="<%# Container.DisplayIndex %>">
                                                             <i class="fas fa-pencil-alt"></i>
                                                         </asp:LinkButton>
