@@ -552,7 +552,7 @@ namespace GivMED.Pages.App.Donor
             }
             else
             {
-
+                ShowErrorMessage(ResponseMessages.Error);
             }
         }
 

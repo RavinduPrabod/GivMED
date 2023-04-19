@@ -74,10 +74,14 @@ namespace GivMED.Pages.Web.Registration
         private void PageLoad()
         {
             //LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
-            if (Session["loggedUser"] != null)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "window.onload = function() { $('#carouselExampleIndicators').carousel('next'); }", true);
-            }
+            //if (loggedUser.UserName != null && loggedUser.HospitalID == 0)
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "window.onload = function() { $('#carouselExampleIndicators').carousel('next'); }", true);
+            //}
+            //else
+            //{
+
+            //}
         }
 
         private UserDto UiToModelCreate()

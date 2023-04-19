@@ -1,33 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="GivMED.Pages.App.Profile.Profile" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style>
-        .custom-file-upload {
-            display: inline-block;
-            padding: 6px 12px;
-            cursor: pointer;
-            background-color: #e7e7e7;
-            color: #333;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-
-            .custom-file-upload:hover {
-                background-color: #ddd;
-            }
-
-            .custom-file-upload:active {
-                background-color: #ccc;
-            }
     </style>
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
+        <Triggers>
+            <asp:PostBackTrigger ControlID="btnUpload" />
+        </Triggers>
         <ContentTemplate>
             <div class="row">
                 <div class="col-md-3">
@@ -39,17 +19,11 @@
                             </div>
                             <div class="form-group row">
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <asp:FileUpload ID="FileUpload1" runat="server" CssClass="custom-file-upload" />
-                                </div>
+                            <div class="row">
+                                 <asp:FileUpload ID="FileUpload1" runat="server" CssClass="form-control" />
                             </div>
-                            <div class="row text-right">
-                                <div class="col-md-6">
-                                </div>
-                                <div class="col-md-4">
-                                    <asp:Button ID="btnUpload" runat="server" CssClass="btn btn-block btn-outline-warning" Text="Upload" OnClick="btnUpload_Click" />
-                                </div>
+                            <div class="form-group row">
+                                <asp:Button ID="btnUpload" runat="server" CssClass="btn btn-block btn-outline-warning btn-sm" Text="Upload" OnClick="btnUpload_Click" />
                             </div>
                             <h3 class="profile-username text-center">
                                 <asp:Label runat="server" ID="lblPdName" Text="Name"></asp:Label></h3>
@@ -119,8 +93,11 @@
                                     <form class="form-horizontal">
                                         <div class="form-group row">
                                             <label for="inputName" class="col-sm-2 col-form-label">User Name</label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <asp:Label runat="server" ID="lblUsername"></asp:Label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <asp:CheckBox runat="server" ID="chkAutoPublish" CssClass="icheck-danger" Text="Do you like your donations publish for publicity ?" />
                                             </div>
                                         </div>
                                         <asp:Panel runat="server" ID="pnlOrg1">
@@ -342,7 +319,7 @@
                 $('#<% = txtCurPwd.ClientID %>').addClass('validate[required]');
                 $('#<% = txtNewPwd.ClientID %>').addClass('validate[required]');
                 $('#<% = txtReNewPwd.ClientID %>').addClass('validate[required]');
-                
+
                 var valid = $("#form1").validationEngine('validate');
                 var vars = $("#form1").serialize();
                 if (valid == true) {

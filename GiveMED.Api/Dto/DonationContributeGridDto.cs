@@ -9,6 +9,10 @@ namespace GiveMED.Api.Dto
     {
         public string DonorName { get; set; }
 
+        public string UserName { get; set; }
+
+        public int DonorID { get; set; }
+
         public string DonationID { get; set; }
 
         public string SupplyItemID { get; set; }
@@ -18,5 +22,7 @@ namespace GiveMED.Api.Dto
         public string SupplyItemName { get; set; }
 
         public long DonatedQty { get; set; }
+
+        public int Status { get; set; }
     }
 }

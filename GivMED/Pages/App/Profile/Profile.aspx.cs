@@ -27,6 +27,8 @@ namespace GivMED.Pages.App.Profile
         {
             if (!this.IsPostBack)
             {
+                Page.Form.Enctype = "multipart/form-data";
+
                 LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
                 Session["DonorID"] = null;
 
@@ -69,6 +71,7 @@ namespace GivMED.Pages.App.Profile
                         txtDesignation.Text = odata.Designation.ToString();
                         ddlOrgType.SelectedValue = odata.OrgType.ToString();
                     }
+                    chkAutoPublish.Checked = odata.PublicStatus == 1 ? true : false;
                     txtDescription.Text = odata.Description.ToString();
                     btnSave.Visible = true;
                     btnSubmit.Visible = false;
@@ -315,6 +318,7 @@ namespace GivMED.Pages.App.Profile
             oData.ZipCode = txtZipCode.Text.Trim();
             oData.Email = txtEmail.Text.Trim();
             oData.Description = txtDescription.Text.Trim();
+            oData.PublicStatus = chkAutoPublish.Checked == true ? 1 : 0;
             oData.CreatedDateTime = DateTime.Now;
             oData.CreatedBy = "admin";
             oData.ModifiedDateTime = DateTime.Now;
@@ -356,6 +360,7 @@ namespace GivMED.Pages.App.Profile
             oData.ZipCode = txtZipCode.Text.Trim();
             oData.Email = txtEmail.Text.Trim();
             oData.Description = txtDescription.Text.Trim();
+            oData.PublicStatus = chkAutoPublish.Checked == true ? 1 : 0;
             oData.ModifiedDateTime = DateTime.Now;
             oData.ModifiedBy = "admin";
             return oData;

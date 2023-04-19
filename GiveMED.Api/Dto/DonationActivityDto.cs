@@ -16,5 +16,7 @@ namespace GiveMED.Api.Dto
         public string HospitalName { get; set; }
 
         public string Email { get; set; }
+
+        public int Status { get; set; }
     }
 }

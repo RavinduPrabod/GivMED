@@ -105,12 +105,13 @@ namespace GivMED.Pages.App.Donor
                     case "ViewData":
                         ViewState["index"] = e.CommandArgument.ToString();
                         ViewRecordForDetails();
+                        ViewContactDetails();
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowDetails", "ShowDetails();", true);
                         break;
 
                     case "Contact":
                         ViewState["index"] = e.CommandArgument.ToString();
-                        ViewContactDetails();
+                        ViewFeedback();
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowContactDetails", "ShowContactDetails();", true);
                         break;
                 }
@@ -140,9 +141,79 @@ namespace GivMED.Pages.App.Donor
             lblEmail.Text = " " + oHospitalMaster.Email.ToString();
         }
 
+        private void ViewFeedback()
+        {
+            GridViewRow oGridViewRow = gvDonationList.Rows[Convert.ToInt32(ViewState["index"])];
+            string DonationID = ((Label)oGridViewRow.FindControl("lblDonationID")).Text.ToString();
+            string HospitalName = ((Label)oGridViewRow.FindControl("lblHospitalName")).Text.ToString();
+
+            DonationFeedback oresullt = oSupplyService.GetFeedBackForID(DonationID);
+
+            lblFeedHlName.Text = HospitalName.ToString();
+
+            DateTime now = DateTime.Now;
+            DateTime tomorrow = now.AddDays(1);
+            string formattedDateTime;
+
+            if (now.Date == oresullt.CreatedDateTime)
+            {
+                // If the date is today, format the time as "h:mm tt" and add "today" at the end
+                formattedDateTime = now.ToString("h:mm tt") + " today";
+            }
+            else if (tomorrow.Date == oresullt.CreatedDateTime)
+            {
+                // If the date is tomorrow, format the time as "h:mm tt" and add "tomorrow" at the end
+                formattedDateTime = now.ToString("h:mm tt") + " tomorrow";
+            }
+            else
+            {
+                // If the date is not today or tomorrow, format the date and time as "M/d/yyyy h:mm tt"
+                formattedDateTime = now.ToString("M/d/yyyy h:mm tt");
+            }
+
+            lblFeedDate.Text = "Shared publicly - " + formattedDateTime;
+
+            lblFeedbackText.Text = oresullt.FeedbackText.ToString();
+        }
+
         protected void gvDonationList_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
 
+        }
+
+        protected void gvDonationList_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Label lblStatus = (Label)e.Row.FindControl("lblStatus");
+                string Status = DataBinder.Eval(e.Row.DataItem, "Status").ToString();
+                switch (Status)
+                {
+                    case "1":
+                        lblStatus.Text = "Confirmed";
+                        lblStatus.CssClass = "badge badge-success";
+                        break;
+                    case "0":
+                        lblStatus.Text = "Pending";
+                        lblStatus.CssClass = "badge badge-warning";
+                        break;
+                }
+            }
+
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Label lblStatus = (Label)e.Row.FindControl("lblStatus");
+                LinkButton btnFeedback = (LinkButton)e.Row.FindControl("btnFeedback");
+
+                if (lblStatus.Text == "Pending")
+                {
+                    btnFeedback.Visible = false;
+                }
+                else
+                {
+                    btnFeedback.Visible = true;
+                }
+            }
         }
     }
 }

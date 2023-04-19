@@ -57,71 +57,42 @@
                     </div>
                     <!-- /.modal-dialog -->
                 </div>
-                <div class="modal fade" id="modal-contact">
+                <div class="modal fade" id="modal-Feedback">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <div class="card-header text-muted border-bottom-0">
-                                    <h1>CONTACT DETAILS</h1>
+                                    <h3><b>Thank You!</b> For Your Contribution</h3>
                                 </div>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div class="card bg-light">
-                                    <div class="card-body pt-0">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <h2 class="lead"><b>
-                                                            <asp:Label ID="lblHospitalName" runat="server" Text="Hospital Name" Font-Underline="true" Font-Bold="true"></asp:Label></b></h2>
-                                                    </div>
-                                                    <div class="col-4">
-                                                    </div>
-                                                </div>
-                                                <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-registered"></i></span>
-                                                        <asp:Label ID="lblRegNo" runat="server" Text=""></asp:Label><br />
-                                                    </li>
-                                                    &nbsp
-                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-cat"></i></span>
-                                                            <asp:Label ID="lbltype" runat="server" Text=""></asp:Label><br />
-                                                        </li>
-                                                    &nbsp
-                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-times-circle"></i></span>
-                                                            <asp:Label ID="lblYear" runat="server" Text=""></asp:Label><br />
-                                                        </li>
-                                                    &nbsp
-                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-bed"></i></span>
-                                                            <asp:Label ID="lblNoofBeds" runat="server" Text=""></asp:Label><br />
-                                                        </li>
-                                                    &nbsp
-                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked-alt"></i></span>
-                                                            <asp:Label ID="lblAddress" runat="server" Text="Address"></asp:Label><br />
-                                                        </li>
-                                                    &nbsp
-                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span>
-                                                            <asp:Label ID="lblPhone" runat="server" Text="Phone"></asp:Label><br />
-                                                        </li>
-                                                    &nbsp
-                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-mail-bulk"></i></span>
-                                                             <asp:Label ID="lblEmail" runat="server" Text="Email"></asp:Label></li>
-                                                    &nbsp
-                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-broadcast-tower"></i></span>
-                                                             <asp:Label ID="lblWeb" runat="server" Text="Web"></asp:Label></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                <div class="post">
+                                    <div class="user-block">
+                                        <asp:Image runat="server" CssClass="img-circle img-bordered-sm" ImageUrl="~/dist/img/letter-h-128.ico" AlternateText="user image" />
+                                         <asp:Label ID="lblFeedHlName" runat="server" CssClass="username" Text=""></asp:Label>
+                                        <asp:Label ID="lblFeedDate" runat="server" CssClass="description" Text=""></asp:Label>
                                     </div>
+                                    <!-- /.user-block -->
+                                    <p>
+                                        <asp:Label ID="lblFeedbackText" runat="server" Text=""></asp:Label>
+                                    </p>
+
+                                    <p>
+                                       <%-- <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i>Share</a>
+                                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i>Like</a>
+                                        <span class="float-right">
+                                            <a href="#" class="link-black text-sm">
+                                                <i class="far fa-comments mr-1"></i>Comments (5)
+                                            </a>
+                                        </span>--%>
+                                    </p>
+
+                                    <%--<asp:TextBox runat="server" CssClass="form-control form-control-sm" Placeholder="Type a comment"></asp:TextBox>--%>
                                 </div>
-                                <div class="col-4">
-                                </div>
-                                <div class="col-8">
-                                </div>
+
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -214,47 +185,98 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <asp:GridView ID="gvPopSuppliesShow" runat="server" class="table table-striped table-bordered table-hover" AutoGenerateColumns="False">
-                                        <Columns>
-                                            <asp:TemplateField HeaderText="Code" Visible="false">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblSupplyItemID" runat="server" Text='<%# Bind("SupplyItemID") %>'></asp:Label>
-                                                </ItemTemplate>
-                                                <ItemStyle Width="10%" />
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Supplies Category & Name">
-                                                <ItemTemplate>
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <asp:GridView ID="gvPopSuppliesShow" runat="server" class="table table-striped table-bordered table-hover" AutoGenerateColumns="False">
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Code" Visible="false">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblSupplyItemID" runat="server" Text='<%# Bind("SupplyItemID") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="10%" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Supplies Category & Name">
+                                                        <ItemTemplate>
+                                                            <div class="row">
+                                                                <div class="col-10">
+                                                                    <asp:Label ID="lblItemCatName" ForeColor="Purple" runat="server" Text='<%# Bind("ItemCatName") %>' Style="text-decoration: underline;"></asp:Label><br />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+                                                            </div>
+                                                            <div class="col-8">
+                                                                <asp:Label ID="lblSupplyItemName" runat="server" Text='<%# Bind("SupplyItemName") %>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="84%" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Reuest (Qty)">
+                                                        <ItemTemplate>
+                                                            <div class="row">
+                                                                &nbsp
+                                                            </div>
+                                                            <asp:Label ID="lblSupplyItemQty" ForeColor="Black" runat="server" Text='<%# Bind("RequestQty") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Donated (Qty)">
+                                                        <ItemTemplate>
+                                                            <div class="row">
+                                                                &nbsp
+                                                            </div>
+                                                            <asp:Label ID="lblDonatedQty" ForeColor="Green" runat="server" Font-Bold="true" Font-Size="Large" Text='<%# Bind("DonatedQty") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                            </asp:GridView>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="card bg-light">
+                                                <div class="card-body pt-0">
                                                     <div class="row">
-                                                        <div class="col-10">
-                                                            <asp:Label ID="lblItemCatName" ForeColor="Purple" runat="server" Text='<%# Bind("ItemCatName") %>' Style="text-decoration: underline;"></asp:Label><br />
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <h2 class="lead"><b>
+                                                                        <asp:Label ID="lblHospitalName" runat="server" Text="Hospital Name" Font-Underline="true" Font-Bold="true"></asp:Label></b></h2>
+                                                                </div>
+                                                            </div>
+                                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-registered"></i></span>
+                                                                    <asp:Label ID="lblRegNo" runat="server" Text=""></asp:Label><br />
+                                                                </li>
+                                                                &nbsp
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-cat"></i></span>
+                                                            <asp:Label ID="lbltype" runat="server" Text=""></asp:Label><br />
+                                                        </li>
+                                                                &nbsp
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-times-circle"></i></span>
+                                                            <asp:Label ID="lblYear" runat="server" Text=""></asp:Label><br />
+                                                        </li>
+                                                                &nbsp
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-bed"></i></span>
+                                                            <asp:Label ID="lblNoofBeds" runat="server" Text=""></asp:Label><br />
+                                                        </li>
+                                                                &nbsp
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked-alt"></i></span>
+                                                            <asp:Label ID="lblAddress" runat="server" Text="Address"></asp:Label><br />
+                                                        </li>
+                                                                &nbsp
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span>
+                                                            <asp:Label ID="lblPhone" runat="server" Text="Phone"></asp:Label><br />
+                                                        </li>
+                                                                &nbsp
+                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-mail-bulk"></i></span>
+                                                             <asp:Label ID="lblEmail" runat="server" Text="Email"></asp:Label></li>
+                                                                &nbsp
+                                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-broadcast-tower"></i></span>
+                                                             <asp:Label ID="lblWeb" runat="server" Text="Web"></asp:Label></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <asp:Label ID="lblSupplyItemName" runat="server" Text='<%# Bind("SupplyItemName") %>'></asp:Label>
-                                                    </div>
-                                                </ItemTemplate>
-                                                <ItemStyle Width="84%" />
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Reuest (Qty)">
-                                                <ItemTemplate>
-                                                    <div class="row">
-                                                        &nbsp
-                                                    </div>
-                                                    <asp:Label ID="lblSupplyItemQty" ForeColor="Black" runat="server" Text='<%# Bind("RequestQty") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Donated (Qty)">
-                                                <ItemTemplate>
-                                                    <div class="row">
-                                                        &nbsp
-                                                    </div>
-                                                    <asp:Label ID="lblDonatedQty" ForeColor="Green" runat="server" Font-Bold="true" Font-Size="Large" Text='<%# Bind("DonatedQty") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                        </Columns>
-                                    </asp:GridView>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -270,7 +292,7 @@
                     <div class="row">
                         &nbsp&nbsp
                         <div class="card-body table-responsive p-0">
-                            <asp:GridView ID="gvDonationList" runat="server" AutoGenerateColumns="False" CssClass="table table-hover text-nowrap table-bordered" AllowPaging="true" PageSize="10" OnRowCommand="gvDonationList_RowCommand" OnPageIndexChanging="gvDonationList_PageIndexChanging">
+                            <asp:GridView ID="gvDonationList" runat="server" AutoGenerateColumns="False" CssClass="table table-hover text-nowrap table-bordered" AllowPaging="true" PageSize="10" OnRowDataBound="gvDonationList_RowDataBound" OnRowCommand="gvDonationList_RowCommand" OnPageIndexChanging="gvDonationList_PageIndexChanging">
                                 <Columns>
                                     <asp:TemplateField HeaderText="DonationID">
                                         <ItemTemplate>
@@ -301,14 +323,19 @@
                                         </ItemTemplate>
                                         <ItemStyle Width="20%" />
                                     </asp:TemplateField>
+                                     <asp:TemplateField HeaderText="Status">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblStatus" runat="server" Text='<%# Bind("Status") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ItemStyle Width="20%" />
+                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Action">
                                         <ItemTemplate>
                                             <asp:LinkButton ID="btnView" runat="server" CssClass="btn btn-primary" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-eye"></i>
                                             </asp:LinkButton>
-                                            <asp:LinkButton ID="btnSendMail" runat="server" CssClass="btn btn-success" ToolTip="Contact Details" CausesValidation="false" CommandName="Contact" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-comment"></i>
+                                            <asp:LinkButton ID="btnFeedback" runat="server" CssClass="btn btn-warning" ToolTip="View Feedback" CausesValidation="false" CommandName="Contact" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-star"></i>
                                             </asp:LinkButton>
-                                            <asp:LinkButton ID="btnReject" runat="server" CssClass="btn btn-danger" CausesValidation="false" CommandName="Reject" CommandArgument="<%# Container.DisplayIndex %>">x</asp:LinkButton>
-                                        </ItemTemplate>
+                                            </ItemTemplate>
                                         <ItemStyle Width="10%" />
                                     </asp:TemplateField>
                                 </Columns>
@@ -335,7 +362,7 @@
 
         function ShowContactDetails() {
             $('.modal-backdrop').remove();
-            $('#modal-contact').modal('show');
+            $('#modal-Feedback').modal('show');
             return false;
         };
 

@@ -47,9 +47,21 @@ namespace GivMED.Common
             Community_hospital = 6,
             Academic_medical_cente = 7
         }
+        public enum typeofOrg
+        {
+            SoleProprietorship = 1,
+            Partnership = 2,
+            LimitedLiabilityCompany = 3,
+            Corporation = 4,
+            NonProfitOrganization = 5,
+            Cooperative = 6,
+            SocialEnterprise = 7,
+            GovernmentAgency = 8,
+            ProfessionalAssociation = 9
+        }
 
         //TransactionCode
-                            //SupplyNeed - SPN
-                            //Donation - DTN
+        //SupplyNeed - SPN
+        //Donation - DTN
     }
 }

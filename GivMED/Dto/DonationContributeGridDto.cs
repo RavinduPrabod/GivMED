@@ -9,6 +9,10 @@ namespace GivMED.Dto
     {
         public string DonorName { get; set; }
 
+        public string UserName { get; set; }
+
+        public int DonorID { get; set; }
+
         public string DonationID { get; set; }
 
         public string SupplyItemID { get; set; }
@@ -20,5 +24,9 @@ namespace GivMED.Dto
         public long DonatedQty { get; set; }
 
         public string DonatedQtytext { get; set; }
+
+        public int Status { get; set; }
+
+        public DateTime CreateDateTime { get; set; }
     }
 }

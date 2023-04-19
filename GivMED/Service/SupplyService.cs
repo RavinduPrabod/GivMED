@@ -249,6 +249,33 @@ namespace GivMED.Service
             }
         }
 
+        public DonationFeedback GetFeedBackForID(string DonationID)
+        {
+            try
+            {
+                DonationFeedback record = new DonationFeedback();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetFeedBackForID/" + DonationID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<DonationFeedback>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<SupplyNeedGridDto> GetSupplyNeedGridForID(string SupplyID)
         {
             try
@@ -309,6 +336,30 @@ namespace GivMED.Service
             using (HttpClient client = new HttpClient())
             {
                 string path = "Supply/UseChatGPT";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(query);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Extract the NewDonationID from the response content
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent; // Set the NewDonationID as the response data
+                }
+            }
+            return webApiResponse;
+        }
+
+        public WebApiResponse UseChatGPTFeedBack(string query)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Supply/UseChatGPTFeedBack";
                 client.BaseAddress = new Uri(GlobalData.BaseUri);
                 //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
                 var json = JsonConvert.SerializeObject(query);
@@ -433,5 +484,58 @@ namespace GivMED.Service
                 throw;
             }
         }
+
+        public WebApiResponse PostFeedBack(DonationFeedback oData)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Supply/PostFeedBack";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(oData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Extract the NewDonationID from the response content
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent; // Set the NewDonationID as the response data
+                }
+            }
+            return webApiResponse;
+        }
+
+        public List<DonationReviewFeedbackDto> GetFeedBackForSupplyID(string SupplyID)
+        {
+            try
+            {
+                List<DonationReviewFeedbackDto> record = new List<DonationReviewFeedbackDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetFeedBackForSupplyID/" + SupplyID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<DonationReviewFeedbackDto>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
     }
 }

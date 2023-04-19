@@ -13,27 +13,20 @@ namespace GivMED.Models
         public string DonorFirstName { get; set; }
 
         public string DonorLastName { get; set; }
-
         public string Address { get; set; }
-
 
         public string Telephone { get; set; }
 
-
         public string City { get; set; }
-
 
         public string State { get; set; }
 
 
         public string Country { get; set; }
 
-
         public string ZipCode { get; set; }
 
-
         public string Email { get; set; }
-
 
         public string ContactPerson { get; set; }
 
@@ -42,10 +35,11 @@ namespace GivMED.Models
 
         public int OrgType { get; set; }
 
-
         public int DonorType { get; set; }
 
         public string Description { get; set; }
+
+        public int PublicStatus { get; set; }
 
         public string CreatedBy { get; set; }
 

@@ -69,6 +69,8 @@ namespace GiveMED.Api.Models
         [MaxLength(200)]
         public string Description { get; set; }
 
+        public int PublicStatus { get; set; }
+
         [MaxLength(50)]
         public string CreatedBy { get; set; }
 

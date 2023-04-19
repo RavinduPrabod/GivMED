@@ -17,6 +17,6 @@ namespace GivMED.Dto
 
         public string Email { get; set; }
 
-        public int MyProperty { get; set; }
+        public int Status { get; set; }
     }
 }

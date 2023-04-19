@@ -37,16 +37,25 @@ namespace GiveMED.Api.Controllers
                 //if (!ModelState.IsValid)
                 //    return BadRequest(ModelState);
 
-                var profileImages = _context.ProfileImages.Where(x => x.UserName == oList.UserName).DefaultIfEmpty();
-                foreach (var image in profileImages)
+                bool ifhave = _context.ProfileImages.Where(x => x.UserName == oList.UserName).Any();
+
+                if(ifhave)
                 {
-                    _context.ProfileImages.Remove(image);
+                    var profileImages = _context.ProfileImages.Where(x => x.UserName == oList.UserName).DefaultIfEmpty();
+                    foreach (var image in profileImages)
+                    {
+                        _context.ProfileImages.Remove(image);
+                    }
+                    _context.SaveChanges();
+                    _context.ProfileImages.Add(oList);
+                    await _context.SaveChangesAsync();
                 }
-                _context.SaveChanges();
-
-                _context.ProfileImages.Add(oList);
-                await _context.SaveChangesAsync();
-
+                else
+                {
+                    _context.ProfileImages.Add(oList);
+                    await _context.SaveChangesAsync();
+                }
+               
                 return Ok(oList); // Return the inserted record
             }
             catch (Exception ex)
