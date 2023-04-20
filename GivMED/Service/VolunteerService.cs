@@ -55,6 +55,32 @@ namespace GivMED.Service
                 throw;
             }
         }
+        public List<VolunteerMaster> GetAllActiveVolunteerMaster()
+        {
+            try
+            {
+                List<VolunteerMaster> record = new List<VolunteerMaster>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Volunteer/GetAllActiveVolunteerMaster";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<VolunteerMaster>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         public VolunteerMaster GetVolunteerMasterbyID(string VolCode)
         {

@@ -35,8 +35,7 @@ namespace GiveMED.Api.Models
         [MaxLength(100)]
         public string VolEmail { get; set; }
 
-        [MaxLength(20)]
-        public string VehicleCat { get; set; }
+        public int VehicleCat { get; set; }
 
         [MaxLength(20)]
         public string VehicleNo { get; set; }

@@ -89,8 +89,17 @@ namespace GivMED.Pages.App.Hospital
             odata.Telephone = txtTele.Text.ToString();
             odata.VolEmail = txtEmail.Text.ToString();
             odata.VolSkill = Convert.ToInt32(ddlSkill.SelectedValue);
-            odata.VehicleCat = ddlVehicleCat.SelectedValue.ToString();
-            odata.VehicleNo = txtVehicleNo.Text.ToString();
+
+            if (ddlSkill.SelectedValue != "1")
+            {
+                odata.VehicleCat = Convert.ToInt32(ddlVehicleCat.SelectedValue);
+                odata.VehicleNo = txtVehicleNo.Text.ToString();
+            }
+            else
+            {
+                odata.VehicleCat = 0;
+                odata.VehicleNo = "None";
+            }
             odata.Status = Convert.ToInt32(ddlStatus.SelectedValue);
             odata.CreateUser = "admin";
             odata.CreateDateTime = DateTime.Now;
@@ -112,9 +121,21 @@ namespace GivMED.Pages.App.Hospital
             odata.VolEmail = txtEmail.Text.ToString();
             odata.Telephone = txtTele.Text.ToString();
             odata.VolSkill = Convert.ToInt32(ddlSkill.SelectedValue);
-            odata.VehicleCat = ddlVehicleCat.SelectedValue.ToString();
-            odata.VehicleNo = txtVehicleNo.Text.ToString();
+
+            if (ddlSkill.SelectedValue != "1")
+            {
+                odata.VehicleCat = Convert.ToInt32(ddlVehicleCat.SelectedValue);
+                odata.VehicleNo = txtVehicleNo.Text.ToString();
+            }
+            else
+            {
+                odata.VehicleCat = 0;
+                odata.VehicleNo = "None";
+            }
+
             odata.Status = Convert.ToInt32(ddlStatus.SelectedValue);
+            odata.CreateUser = "admin";
+            odata.CreateDateTime = Convert.ToDateTime(Session["JoinDate"]);
             odata.ModifiedUser = "admin";
             odata.ModifieDateTime = DateTime.Now;
 
@@ -123,6 +144,7 @@ namespace GivMED.Pages.App.Hospital
 
         private void View()
         {
+            Session["JoinDate"] = null;
             GridViewRow oGridViewRow = gvVol.Rows[Convert.ToInt32(ViewState["index"])];
             Session["VolID"] = ((Label)oGridViewRow.FindControl("lblVolID")).Text.ToString();
 
@@ -134,17 +156,18 @@ namespace GivMED.Pages.App.Hospital
             txtEmail.Text = odata.VolEmail;
             ddlStatus.SelectedValue = odata.Status.ToString();
             ddlSkill.SelectedValue = odata.VolSkill.ToString();
+            Session["JoinDate"] = odata.CreateDateTime; 
             if(ddlSkill.SelectedValue != "1")
             {
                 pnlvehicle.Visible = true;
                 txtVehicleNo.Text = odata.VehicleNo;
-                ddlVehicleCat.SelectedValue = odata.VehicleCat;
+                ddlVehicleCat.SelectedValue = odata.VehicleCat.ToString();
             }
             else
             {
                 pnlvehicle.Visible = false;
                 txtVehicleNo.Text = odata.VehicleNo;
-                ddlVehicleCat.SelectedValue = odata.VehicleCat;
+                ddlVehicleCat.SelectedValue = odata.VehicleCat.ToString();
             }
             
         }
@@ -202,7 +225,7 @@ namespace GivMED.Pages.App.Hospital
                         ViewState["index"] = e.CommandArgument.ToString();
                         GridViewRow oGridViewRow = gvVol.Rows[Convert.ToInt32(ViewState["index"])];
                         Session["VolID"] = ((Label)oGridViewRow.FindControl("lblVolID")).Text.ToString();
-                        ScriptManager.RegisterStartupScript(this, GetType(), "DeleteConfirmation", "ShowDeleteConfirmation();", true);
+                        //ScriptManager.RegisterStartupScript(this, GetType(), "DeleteConfirmation", "ShowDeleteConfirmation();", true);
                         break;
                 }
             }
@@ -260,6 +283,9 @@ namespace GivMED.Pages.App.Hospital
 
         private void Delete()
         {
+            GridViewRow oGridViewRow = gvVol.Rows[Convert.ToInt32(ViewState["index"])];
+            Session["VolID"] = ((Label)oGridViewRow.FindControl("lblVolID")).Text.ToString();
+
             VolunteerMaster delete = new VolunteerMaster();
             delete.VolCode = Session["VolID"].ToString();
 

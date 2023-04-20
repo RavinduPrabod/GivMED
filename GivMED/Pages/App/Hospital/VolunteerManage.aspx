@@ -7,6 +7,7 @@
         <ContentTemplate>
             <asp:MultiView ID="mvVol" runat="server">
                 <asp:View ID="View1" runat="server">
+                    &nbsp
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Volunteer Maintanace</h3>
@@ -26,6 +27,7 @@
                             <div class="row">
                                 <div class="card-body table-responsive p-0">
                                     <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-sm" Text="Add New" OnClick="btnCreate_Click" />
+                                      &nbsp
                                     <asp:GridView ID="gvVol" runat="server" AutoGenerateColumns="False" CssClass="table table-striped projects table-bordered table-hover text-nowrap" AllowPaging="true" OnRowCommand="gvVol_RowCommand">
                                         <Columns>
                                             <asp:TemplateField HeaderText="Code">
@@ -45,12 +47,6 @@
                                                     <asp:Label ID="lblVolName" runat="server" Text='<%# Bind("VolName") %>'></asp:Label>
                                                 </ItemTemplate>
                                                 <ItemStyle Width="10%" />
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Location">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblAddress" runat="server" Text='<%# Bind("Address") %>'></asp:Label>
-                                                </ItemTemplate>
-                                                <ItemStyle Width="20%" />
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Tele">
                                                 <ItemTemplate>
@@ -74,10 +70,9 @@
                                                 <ItemTemplate>
                                                     <asp:LinkButton ID="ViewButton" runat="server" CssClass="btn btn-primary btn-sm" Text="View" CommandName="View" CausesValidation="false" CommandArgument="<%# Container.DisplayIndex %>"></asp:LinkButton>
                                                     <asp:LinkButton ID="EditButton" runat="server" CssClass="btn btn-info btn-sm" Text="Edit" CommandName="EditData" CausesValidation="false" CommandArgument="<%# Container.DisplayIndex %>"></asp:LinkButton>
-                                                    <asp:LinkButton ID="DeleteButton" runat="server" CssClass="btn btn-danger btn-sm" Text="Delete" CommandName="DeleteData" CausesValidation="false" CommandArgument="<%# Container.DisplayIndex %>"></asp:LinkButton>
+                                                    <asp:LinkButton ID="DeleteButton" runat="server" CssClass="btn btn-danger btn-sm" Text="Delete" OnClientClick="ShowDeleteConfirmationPop();"></asp:LinkButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-
                                         </Columns>
                                     </asp:GridView>
                                 </div>
@@ -171,10 +166,31 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
+
+        function pageLoad() {
+            $(document).ready(function () {
+                Validate = function () {
+                    $('#<% = txtVoName.ClientID %>').addClass('validate[required]');
+                    $('#<% = txtAddress.ClientID %>').addClass('validate[required]');
+                    $('#<% = txtNIC.ClientID %>').addClass('validate[required]');
+                    $('#<% = txtTele.ClientID %>').addClass('validate[required]');
+                    var valid = $("#form1").validationEngine('validate');
+                    var vars = $("#form1").serialize();
+                    if (valid == true) {
+                        $("#form1").validationEngine('detach');
+                    } else {
+                        $("#form1").validationEngine('attach', { promptPosition: "inline", scroll: false });
+                        return false;
+                    }
+                }
+
+            });
+        }
+
         function ShowDeleteConfirmation() {
             Swal.fire({
                 title: 'Delete Confirmation',
-                text: 'Are you sure you want to delete this item?',
+                text: 'Are you sure you want to delete this record?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -189,12 +205,22 @@
                     // The user cancelled the delete action
                     Swal.fire(
                         'Cancelled',
-                        'Your item is safe :)',
+                        'Your record is safe :)',
                         'info'
                     );
                 }
             });
         }
 
+        function ShowDeleteConfirmationPop() {
+            alertify.confirm("Are you sure you want to delete this record?", function (e) {
+                if (e) {
+                    jQuery("[ID$=btnDelete]").click();
+                } else {
+                    alertify.error("OK!");
+                }
+            }).setHeader('<h3> Delete Confirmation </h3> ');;
+            return flag;
+        };
     </script>
 </asp:Content>

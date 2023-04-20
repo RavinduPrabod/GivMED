@@ -70,6 +70,14 @@ namespace GiveMED.Api.Controllers
             return _context.VolunteerMaster.Where(x => x.VolCode == VolCode).FirstOrDefault();
         }
 
+        [HttpGet]
+        [ActionName("GetAllActiveVolunteerMaster")]
+        public List<VolunteerMaster> GetAllActiveVolunteerMaster()
+        {
+
+            return _context.VolunteerMaster.Where(x => x.Status == 1).ToList();
+        }
+
         [HttpPut]
         [ActionName("PutVolunteerMaster")]
         public async Task<IActionResult> PutVolunteerMaster([FromBody] VolunteerMaster oData)

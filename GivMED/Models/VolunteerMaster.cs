@@ -24,7 +24,7 @@ namespace GivMED.Models
         public string VolEmail { get; set; }
 
 
-        public string VehicleCat { get; set; }
+        public int VehicleCat { get; set; }
 
 
         public string VehicleNo { get; set; }

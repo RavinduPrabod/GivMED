@@ -114,6 +114,33 @@ namespace GivMED.Pages.App.Donor
         protected global::System.Web.UI.WebControls.View View2;
 
         /// <summary>
+        /// txtDealDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDealDate;
+
+        /// <summary>
+        /// gvVolunteer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvVolunteer;
+
+        /// <summary>
+        /// btnSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnSubmit;
+
+        /// <summary>
         /// lblSupplyIDin control.
         /// </summary>
         /// <remarks>

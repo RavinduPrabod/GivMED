@@ -16,7 +16,8 @@ namespace GivMED.Pages.App.Donor
     {
         SupplyService oSupplyService = new SupplyService();
         ProfileService oProfileService = new ProfileService();
-
+        VolunteerService oVolunteerService = new VolunteerService();
+        CommonService oCommonService = new CommonService();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
@@ -401,7 +402,17 @@ namespace GivMED.Pages.App.Donor
 
         protected void btnDonate_Click(object sender, EventArgs e)
         {
-            Post();
+            LoadVolunteerGridview();
+            ScriptManager.RegisterStartupScript(this, GetType(), "ShowDonateConfirm", "ShowDonateConfirm();", true);
+        }
+
+        private void LoadVolunteerGridview()
+        {
+            List<VolunteerMaster> odata = new List<VolunteerMaster>();
+            odata = oVolunteerService.GetAllActiveVolunteerMaster();
+
+            gvVolunteer.DataSource = odata;
+            gvVolunteer.DataBind();
         }
 
         private void Post()
@@ -443,15 +454,46 @@ namespace GivMED.Pages.App.Donor
                 oDonationHeader.SupplyID = lblSupplyIDin.Text.ToString();
                 oDonationHeader.DonationStatus = 1;
                 oDonationHeader.DonationCreateDate = DateTime.Now;
-                oDonationHeader.DonationDealDate = DateTime.Now;
+                oDonationHeader.DonationDealDate = Convert.ToDateTime(txtDealDate.Text);
                 oDonationHeader.CreatedBy = "admin";
                 oDonationHeader.CreatedDateTime = DateTime.Now;
                 oDonationHeader.ModifiedBy = "admin";
                 oDonationHeader.ModifiedDateTime = DateTime.Now;
 
+                List<DonationVolunteer> oDonationVolunteer = new List<DonationVolunteer>();
+
+                foreach (GridViewRow row in gvVolunteer.Rows)
+                {
+                    if (row.RowType == DataControlRowType.DataRow)
+                    {
+                        bool isChecked = row.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (isChecked)
+                        {
+                            string VolCode = row.Cells[1].Controls.OfType<Label>().FirstOrDefault().Text;
+
+                            DonationVolunteer odata = new DonationVolunteer();
+
+                            odata.DonationCode = "DTN";
+                            odata.SupplyCode = lblSupplyIDin.Text.ToString();
+                            odata.HospitalID = 0;
+                            odata.DonorID = oProfileService.GetDonorMaster(loggedUser.UserName.ToString()).DonorID;
+                            odata.VolunteerCode = VolCode.ToString();
+                            odata.CreatedBy = "admin";
+                            odata.CreatedDateTime = DateTime.Now;
+                            odata.ModifiedBy = "admin";
+                            odata.ModifiedDateTime = DateTime.Now;
+                            oDonationVolunteer.Add(odata);
+                        }
+                    }
+                }
+
                 PublishedNeedsPostDto oPostData = new PublishedNeedsPostDto();
                 oPostData.DonationHeader = oDonationHeader;
                 oPostData.DonationDetails = oDonationDetails;
+                if(oDonationVolunteer.Count > 0)
+                {
+                    oPostData.DonationVolunteer = oDonationVolunteer;
+                }
                 oPostData.UserName = loggedUser.UserName.ToString();
 
                 WebApiResponse response = new WebApiResponse();
@@ -578,6 +620,11 @@ namespace GivMED.Pages.App.Donor
             {
                 throw ex;
             }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            Post();
         }
     }
 }

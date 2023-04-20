@@ -13,5 +13,7 @@ namespace GiveMED.Api.Dto
         public DonationHeader DonationHeader { get; set; }
 
         public List<DonationDetails> DonationDetails { get; set; }
+
+        public List<DonationVolunteer> DonationVolunteer { get; set; }
     }
 }

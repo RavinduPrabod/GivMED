@@ -59,6 +59,8 @@ namespace GivMED.Common
 
         public enum typeofvehicle
         {
+            [Description("None")]
+            None = 0,
             [Description("Bike")]
             Bike = 1,
             [Description("Car")]

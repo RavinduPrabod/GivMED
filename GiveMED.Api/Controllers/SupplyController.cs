@@ -354,8 +354,16 @@ namespace GiveMED.Api.Controllers
                 result.DonationHeader.DonationID = NewDonationID;
                 result.DonationDetails.ForEach(x => x.DonationID = NewDonationID);
 
+                if (result.DonationVolunteer.Count > 0)
+                {
+                    result.DonationVolunteer.ForEach(x => x.DonationCode = NewDonationID);
+                    result.DonationVolunteer.ForEach(x => x.HospitalID = result.DonationHeader.HospitalID);
+                    _context.DonationVolunteer.AddRange(result.DonationVolunteer);
+                }
+
                 _context.DonationHeader.Add(result.DonationHeader);
                 _context.DonationDetails.AddRange(result.DonationDetails);
+                
 
                 await _context.SaveChangesAsync();
 

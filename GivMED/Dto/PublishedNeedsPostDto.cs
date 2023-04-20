@@ -13,5 +13,7 @@ namespace GivMED.Dto
 
         public List<DonationDetails> DonationDetails { get; set; }
 
+        public List<DonationVolunteer> DonationVolunteer { get; set; }
+
     }
 }

@@ -283,21 +283,77 @@
                     <!-- /.card -->
                 </asp:View>
                 <asp:View ID="View2" runat="server">
-                    <div class="modal fade" id="modal-Show">
+                    <div class="modal fade" id="modal-DonateConfirm">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Confirmation</h4>
+                                    <h4 class="modal-title">Donation Confirmation</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-12"></div>
+                                        <div class="col-4">
+                                            <asp:TextBox ID="txtDealDate" runat="server" autocomplete="off" CssClass="form-control" TabIndex="1" placeholder="Enter Deal Date"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    &nbsp
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <asp:GridView ID="gvVolunteer" runat="server" AutoGenerateColumns="False" CssClass="table table-striped projects table-bordered table-hover text-nowrap" AllowPaging="true" >
+                                                <Columns>
+                                                    <asp:TemplateField>
+                                                        <ItemTemplate>
+                                                            <asp:CheckBox ID="chkRow" runat="server" />
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="1%" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Code" Visible="false">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblVolID" runat="server" Text='<%# Bind("VolCode") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="2%" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Name">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblVolName" runat="server" Text='<%# Bind("VolName") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="10%" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Tele">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblTelephone" runat="server" Text='<%# Bind("Telephone") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="5%" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Skill">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblSkill" runat="server" Text='<%# Enum.GetName(typeof(GivMED.Common.Enums.typeofskills), Convert.ToInt32(Eval("VolSkill")))%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="5%" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Vehicle Type">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblVehicleCat" runat="server" Text='<%# Enum.GetName(typeof(GivMED.Common.Enums.typeofvehicle), Convert.ToInt32(Eval("VehicleCat")))%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="5%" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Status">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblStatus" runat="server" Text='<%# Enum.GetName(typeof(GivMED.Common.Enums.UserStatus), Convert.ToInt32(Eval("Status")))%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="2%" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                            </asp:GridView>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
+                                    <asp:LinkButton ID="btnSubmit" runat="server" CssClass="btn btn-sm btn-success" OnClick="btnSubmit_Click" OnClientClick="return validate();"><i class="fas fa-shield-alt"></i> 
+                                         Submit
+                                    </asp:LinkButton>
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -307,7 +363,8 @@
                     <div class="card">
                         <div class="card-header p-2">
                             <div class="col-md-8">
-                                <asp:Label ID="lblSupplyIDin" runat="server" Font-Bold="true"></asp:Label>
+                                Code :
+                                <asp:Label ID="lblSupplyIDin" Font-Size="Large" Font-Underline="true" runat="server" Font-Bold="true"></asp:Label>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -316,7 +373,8 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content bg-secondary">
                                         <div class="modal-header">
-                                            <h4 class="modal-title">Information ?</h4>&nbsp<h8 class="modal-title">Genarate by OpenAI</h8>
+                                            <h4 class="modal-title">Information ?</h4>
+                                            &nbsp<h8 class="modal-title">Genarate by OpenAI</h8>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -347,7 +405,7 @@
                                                                     <asp:Label ID="lblSupplyItemCat" runat="server" Text='<%# Bind("SupplyItemCat") %>'></asp:Label>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Supplies Category & Name" ItemStyle-Width="70%">
+                                                            <asp:TemplateField HeaderText="Supplies Category & Name" ItemStyle-Width="65%">
                                                                 <ItemTemplate>
                                                                     <div class="row">
                                                                         <div class="col-10">
@@ -367,7 +425,7 @@
                                                                     <div class="row">
                                                                         &nbsp
                                                                     </div>
-                                                                    <asp:Label ID="lblRequestQty" ForeColor="Green" Font-Bold="true" CssClass="form-text right-align" runat="server" Text='<%# Bind("SupplyItemQty") %>'></asp:Label>
+                                                                    <asp:Label ID="lblRequestQty" ForeColor="Blue" Font-Bold="true" CssClass="form-text right-align" runat="server" Text='<%# Bind("SupplyItemQty") %>'></asp:Label>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField HeaderText="Donated (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="10%">
@@ -375,15 +433,15 @@
                                                                     <div class="row">
                                                                         &nbsp
                                                                     </div>
-                                                                    <asp:Label ID="lblDonatedQty" Font-Bold="true" CssClass="form-text right-align" runat="server" Text='<%# Bind("DonatedQty") %>'></asp:Label>
+                                                                    <asp:Label ID="lblDonatedQty" Font-Bold="true" ForeColor="Orange" CssClass="form-text right-align" runat="server" Text='<%# Bind("DonatedQty") %>'></asp:Label>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Remaining (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="10%">
+                                                            <asp:TemplateField HeaderText="Remaining (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="15%">
                                                                 <ItemTemplate>
                                                                     <div class="row">
                                                                         &nbsp
                                                                     </div>
-                                                                    <asp:TextBox runat="server" CssClass="form-control" Font-Bold="true" TextMode="Number" ID="txtRemainingQty" ToolTip="you can adjust quantity" AutoPostBack="true" Text='<%# Bind("RemainingQty") %>' onkeydown="return ((event.keyCode>=48 && event.keyCode<=57) || (event.keyCode>=96 && event.keyCode<=105) || (event.keyCode==8 || event.keyCode==9));"></asp:TextBox>
+                                                                    <asp:TextBox runat="server" CssClass="form-control" ForeColor="Red" Font-Bold="true" TextMode="Number" ID="txtRemainingQty" ToolTip="you can adjust quantity" AutoPostBack="true" Text='<%# Bind("RemainingQty") %>' onkeydown="return ((event.keyCode>=48 && event.keyCode<=57) || (event.keyCode>=96 && event.keyCode<=105) || (event.keyCode==8 || event.keyCode==9));"></asp:TextBox>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                         </Columns>
@@ -395,7 +453,7 @@
                                             <div class="text-right">
                                                 <asp:LinkButton ID="btnConfirm" runat="server" CssClass="btn btn-sm btn-primary" OnClick="btnConfirm_Click"><i class="fas fa-box"></i> Confirm
                                                 </asp:LinkButton>
-                                                <asp:LinkButton ID="btnDonate" runat="server" CssClass="btn btn-sm btn-success" OnClick="btnDonate_Click"><i class="fas fa-donate"></i> Donate
+                                                <asp:LinkButton ID="btnDonate" runat="server" CssClass="btn btn-sm btn-success" OnClick="btnDonate_Click" ><i class="fas fa-donate"></i> Donate
                                                 </asp:LinkButton>
                                                 <asp:LinkButton ID="btnCancel" runat="server" CssClass="btn btn-sm btn-warning" OnClick="btnCancel_Click"><i class="fas fa-hand-scissors"></i> Cancel
                                                 </asp:LinkButton>
@@ -495,6 +553,37 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
+        function pageLoad() {
+            $(document).ready(function () {
+                Validate = function () {
+                    $('#<% = txtDealDate.ClientID %>').addClass('validate[required]');
+                    var valid = $("#form1").validationEngine('validate');
+                    var vars = $("#form1").serialize();
+                    if (valid == true) {
+                        $("#form1").validationEngine('detach');
+                    } else {
+                        $("#form1").validationEngine('attach', { promptPosition: "inline", scroll: false });
+                        return false;
+                    }
+                }
+
+            });
+
+            $("[id$=txtDealDate]").datepicker({
+                dateFormat: 'yy/mm/dd',
+                autoclose: true,
+                changeMonth: true,
+                todayHighlight: true,
+                changeYear: false
+
+            });
+        }
+
+        function ShowDonateConfirm() {
+            $('.modal-backdrop').remove();
+            $('#modal-DonateConfirm').modal('show');
+            return false;
+        };
 
         function ShowDetails() {
             $('.modal-backdrop').remove();
