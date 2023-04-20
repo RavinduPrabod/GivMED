@@ -60,6 +60,15 @@ namespace GivMED.Pages.App.Hospital
         protected global::System.Web.UI.WebControls.View View2;
 
         /// <summary>
+        /// btnBackPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnBackPage;
+
+        /// <summary>
         /// lblSupplyCode control.
         /// </summary>
         /// <remarks>

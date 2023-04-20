@@ -71,28 +71,28 @@ namespace GivMED.Service
             return records;
         }
 
-        public static List<ComboDTO> GetEnumCombo<T>()
+        public List<ComboDTO> GetEnumComboWithSelect<T>()
         {
             List<ComboDTO> oData = new List<ComboDTO>();
-            oData.Add(new ComboDTO { DataValueField = "", DataTextField = "-- Select --" });
+            oData.Add(new ComboDTO { DataValueField = "", DataTextField = "-Select-" });
             try
             {
-                foreach (IConvertible e in Enum.GetValues(typeof(T)))
+                foreach (T e in Enum.GetValues(typeof(T)))
                 {
                     string text = e.ToString().Trim();
-                    string value = e.ToType(Enum.GetUnderlyingType(typeof(T)), CultureInfo.CurrentCulture).ToString();
-                    var attributes = typeof(T).GetField(text.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
-                    string Description = attributes.Length == 0 ? text : ((DescriptionAttribute)attributes[0]).Description.ToString();
-                    oData.Add(new ComboDTO { DataValueField = value, DataTextField = Description });
+                    string value = Convert.ToInt32(e).ToString();
+                    var attributes = typeof(T).GetField(text).GetCustomAttributes(typeof(DescriptionAttribute), false);
+                    string description = attributes.Length == 0 ? text : ((DescriptionAttribute)attributes[0]).Description;
+                    oData.Add(new ComboDTO { DataValueField = value, DataTextField = description });
                 }
-                return oData;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            return oData;
         }
-        
+
 
         public static DataTable ToDataTable<T>(IList<T> data)
         {

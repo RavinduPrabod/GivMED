@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel;
 
 namespace GivMED.Common
 {
@@ -60,8 +57,25 @@ namespace GivMED.Common
             ProfessionalAssociation = 9
         }
 
-        //TransactionCode
-        //SupplyNeed - SPN
-        //Donation - DTN
+        public enum typeofvehicle
+        {
+            [Description("Bike")]
+            Bike = 1,
+            [Description("Car")]
+            Car = 2,
+            [Description("Van")]
+            Van = 3,
+            [Description("Lorry")]
+            Lorry = 4,
+            [Description("Other")]
+            Other = 5
+        }
+
+        public enum typeofskills
+        {
+            Organizational = 1,
+            Distribution = 2,
+            Delivery = 3,
+        }
     }
 }

@@ -416,5 +416,10 @@ namespace GivMED.Pages.App.Hospital
         {
             UseOpenAI();
         }
+
+        protected void btnBackPage_Click(object sender, EventArgs e)
+        {
+            mvDonorCont.ActiveViewIndex = 0;
+        }
     }
 }

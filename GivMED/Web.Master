@@ -126,6 +126,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Bootstrap 4 -->
     <script src='<%=ResolveClientUrl("plugins/bootstrap/js/bootstrap.bundle.min.js")%>' type="text/javascript"></script>
 
+    <!-- ChartJS -->
+    <script src='<%=ResolveClientUrl("plugins/chart.js/Chart.min.js")%>' type="text/javascript"></script>
+
     <!-- jquery-validation -->
     <script src='<%=ResolveClientUrl("plugins/jquery-validation/jquery.validate.min.js")%>' type="text/javascript"></script>
     <script src='<%=ResolveClientUrl("plugins/jquery-validation/additional-methods.min.js")%>' type="text/javascript"></script>

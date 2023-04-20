@@ -170,6 +170,7 @@
     <Content Include="dist\img\avatar3.png" />
     <Content Include="dist\img\avatar4.png" />
     <Content Include="dist\img\avatar5.png" />
+    <Content Include="dist\img\banner.jpg" />
     <Content Include="dist\img\boxed-bg.jpg" />
     <Content Include="dist\img\boxed-bg.png" />
     <Content Include="dist\img\credit\american-express.png" />
@@ -260,6 +261,7 @@
     <Content Include="Pages\App\Hospital\Dashboard.aspx" />
     <Content Include="Pages\App\Hospital\DonorContribution.aspx" />
     <Content Include="Pages\App\Hospital\SupplyNeeds.aspx" />
+    <Content Include="Pages\App\Hospital\VolunteerManage.aspx" />
     <Content Include="Pages\App\Profile\HProfile.aspx" />
     <Content Include="Pages\App\Profile\Profile.aspx" />
     <Content Include="Pages\HLogin.aspx" />
@@ -2158,8 +2160,16 @@
     <Content Include="plugins\uplot\uPlot.iife.js" />
     <Content Include="plugins\uplot\uPlot.iife.min.js" />
     <Content Include="plugins\uplot\uPlot.min.css" />
+    <Content Include="Scripts\alertify.js" />
+    <Content Include="Scripts\alertify.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.Bar.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.Line.js" />
+    <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\Chart.StackedBar.js" />
+    <Content Include="Scripts\common.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -2264,6 +2274,7 @@
     <Compile Include="Models\SupplyRequestHeader.cs" />
     <Compile Include="Models\UnsendEmailLog.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\VolunteerMaster.cs" />
     <Compile Include="Pages\App\Donor\DonationActivities.aspx.cs">
       <DependentUpon>DonationActivities.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2298,6 +2309,13 @@
     </Compile>
     <Compile Include="Pages\App\Hospital\SupplyNeeds.aspx.designer.cs">
       <DependentUpon>SupplyNeeds.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\App\Hospital\VolunteerManage.aspx.cs">
+      <DependentUpon>VolunteerManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\App\Hospital\VolunteerManage.aspx.designer.cs">
+      <DependentUpon>VolunteerManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\App\Profile\HProfile.aspx.cs">
       <DependentUpon>HProfile.aspx</DependentUpon>
@@ -2374,6 +2392,7 @@
     <Compile Include="Service\ProfileService.cs" />
     <Compile Include="Service\RegistrationService.cs" />
     <Compile Include="Service\SupplyService.cs" />
+    <Compile Include="Service\VolunteerService.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

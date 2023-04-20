@@ -4,14 +4,16 @@ using GiveMED.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiveMED.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230420135009_22")]
+    partial class _22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -808,9 +810,10 @@ namespace GiveMED.Api.Migrations
 
             modelBuilder.Entity("GiveMED.Api.Models.VolunteerMaster", b =>
                 {
-                    b.Property<string>("VolCode")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                    b.Property<int>("VolID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -850,10 +853,6 @@ namespace GiveMED.Api.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
-                    b.Property<string>("VolEmail")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
                     b.Property<string>("VolNIC")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)")
@@ -867,7 +866,12 @@ namespace GiveMED.Api.Migrations
                     b.Property<int>("VolSkill")
                         .HasColumnType("int");
 
-                    b.HasKey("VolCode");
+                    b.Property<string>("VolunteerEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.HasKey("VolID");
 
                     b.ToTable("VolunteerMaster");
                 });

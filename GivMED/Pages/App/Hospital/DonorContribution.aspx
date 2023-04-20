@@ -92,7 +92,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Donations Progress" ItemStyle-CssClass="project_progress">
                                                 <ItemTemplate>
-                                                     <asp:Label ID="lblSupplyPriorityLevel" runat="server"></asp:Label>
+                                                    <asp:Label ID="lblSupplyPriorityLevel" runat="server"></asp:Label>
                                                     &nbsp
                                                       <asp:Label ID="lblDonorCount" Font-Bold="true" runat="server" Text='<%# Bind("DonorCount") %>'>Donors</asp:Label>
                                                     <div class="progress">
@@ -101,16 +101,14 @@
                                                             style='<%# "width:" + Eval("Proceprecent") + "%;" %>'>
                                                         </div>
                                                     </div>
-                                                        <span class="badge bg-primary"><%# Eval("Proceprecent") + "%" %></span>
+                                                    <span class="badge bg-primary"><%# Eval("Proceprecent") + "%" %></span>
                                                 </ItemTemplate>
                                                 <ItemStyle Width="2%" />
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Actions">
                                                 <ItemTemplate>
                                                     <div class="text-right">
-                                                        <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" Text="Show" ToolTip="Donation Details Progress" CausesValidation="false" CommandName="Show" CommandArgument="<%# Container.DisplayIndex %>"><i class="fas fa-list-ul"></i>
-                                                        </asp:LinkButton>
-                                                        <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" ToolTip="View Contribution Progress" CausesValidation="false" CommandName="View" CommandArgument="<%# Container.DisplayIndex %>"><i class="fas fa-folder"></i>
+                                                        <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" ToolTip="View Donors Details" CausesValidation="false" CommandName="View" CommandArgument="<%# Container.DisplayIndex %>"><i class="fas fa-folder"></i>
                                                         </asp:LinkButton>
                                                         <%--<asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" Text="Delete"><i class="fas fa-trash"></i>
                                                         </asp:LinkButton>--%>
@@ -137,6 +135,8 @@
                                         <div class="card-header">
                                             <div class="row">
                                                 <div class="col-8">
+                                                     <asp:LinkButton ID="btnBackPage" runat="server" CssClass="btn btn-sm btn-secondary"  OnClick="btnBackPage_Click"><i class="fas fa-backward"></i> Back to Page
+                                                        </asp:LinkButton>
                                                 </div>
                                                 <div class="col-4">
                                                     <h1>#
