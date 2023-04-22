@@ -2,6 +2,137 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+
+            .rate:not(:checked) > input {
+                position: absolute;
+                top: -9999px;
+            }
+
+            .rate:not(:checked) > label {
+                float: right;
+                width: 1em;
+                overflow: hidden;
+                white-space: nowrap;
+                cursor: pointer;
+                font-size: 30px;
+                color: #ccc;
+            }
+
+                .rate:not(:checked) > label:before {
+                    content: '★ ';
+                }
+
+            .rate > input:checked ~ label {
+                color: #ffc700;
+            }
+
+            .rate:not(:checked) > label:hover,
+            .rate:not(:checked) > label:hover ~ label {
+                color: #deb217;
+            }
+
+            .rate > input:checked + label:hover,
+            .rate > input:checked + label:hover ~ label,
+            .rate > input:checked ~ label:hover,
+            .rate > input:checked ~ label:hover ~ label,
+            .rate > label:hover ~ input:checked ~ label {
+                color: #c59b08;
+            }
+
+        .rate1 {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+
+            .rate1:not(:checked) > input {
+                position: absolute;
+                top: -9999px;
+            }
+
+            .rate1:not(:checked) > label {
+                float: right;
+                width: 1em;
+                overflow: hidden;
+                white-space: nowrap;
+                cursor: pointer;
+                font-size: 30px;
+                color: #ccc;
+            }
+
+                .rate1:not(:checked) > label:before {
+                    content: '★ ';
+                }
+
+            .rate1 > input:checked ~ label {
+                color: #ffc700;
+            }
+
+            .rate1:not(:checked) > label:hover,
+            .rate1:not(:checked) > label:hover ~ label {
+                color: #deb217;
+            }
+
+            .rate1 > input:checked + label:hover,
+            .rate1 > input:checked + label:hover ~ label,
+            .rate1 > input:checked ~ label:hover,
+            .rate1 > input:checked ~ label:hover ~ label,
+            .rate1 > label:hover ~ input:checked ~ label {
+                color: #c59b08;
+            }
+
+        .rate2 {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+
+            .rate2:not(:checked) > input {
+                position: absolute;
+                top: -9999px;
+            }
+
+            .rate2:not(:checked) > label {
+                float: right;
+                width: 1em;
+                overflow: hidden;
+                white-space: nowrap;
+                cursor: pointer;
+                font-size: 30px;
+                color: #ccc;
+            }
+
+                .rate2:not(:checked) > label:before {
+                    content: '★ ';
+                }
+
+            .rate2 > input:checked ~ label {
+                color: #ffc700;
+            }
+
+            .rate2:not(:checked) > label:hover,
+            .rate2:not(:checked) > label:hover ~ label {
+                color: #deb217;
+            }
+
+            .rate2 > input:checked + label:hover,
+            .rate2 > input:checked + label:hover ~ label,
+            .rate2 > input:checked ~ label:hover,
+            .rate2 > input:checked ~ label:hover ~ label,
+            .rate2 > label:hover ~ input:checked ~ label {
+                color: #c59b08;
+            }
+
         .carousel-item {
             height: 100vh;
             min-height: 350px;
@@ -195,6 +326,35 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
+            <div class="modal fade" id="modal-join">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-4">
+                                    <asp:LinkButton ID="btnjoinFundraiser" CssClass="btn btn-outline-success btn-block" runat="server" Text="<i class='fa fa-medkit'></i> Join As a Fundraiser" OnClick="btnjoinFundraiser_Click" />
+                                </div>
+                                <div class="col-md-4">
+                                    <asp:LinkButton ID="btnjoinRecipient" CssClass="btn btn-outline-primary btn-block" runat="server" Text="<i class='fa fa-hospital'></i> Join As a Recipient" OnClick="btnjoinRecipient_Click" />
+                                </div>
+                                <div class="col-md-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.card -->
             <div class="card" style="background-color: navy">
                 <div class="card-body">
                     <header class="banner-section">
@@ -231,329 +391,342 @@
                     </header>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <section class="pb-0">
-                        <div class="container"></div>
-                        <h2>Designed to Do Good</h2>
-                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                            </ol>
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="carousel-content" style="padding-top: 20%;">
-                                                <h5>Deepest Facebook Integration</h5>
-                                                <p>Integrate your donation form directly into Facebook. Allows you to raise donations within Facebook - no links, no redirects, just plug and play.</p>
+            <div class="card-body table-responsive p-0">
+                <asp:GridView ID="gvDonorProgress" runat="server" ShowHeader="false" AutoGenerateColumns="false" CssClass="table table-striped projects table-bordered table-hover text-nowrap">
+                    <Columns>
+                        <asp:TemplateField HeaderText="#">
+                            <ItemTemplate>
+                                <section class="section-bg" id="campaigns">
+                                    <div class="container">
+                                        <div class="d-lg-flex align-items-center">
+                                            <h2 class="text-center text-lg-left">Top Rating Donors</h2>
+                                            <div class="mx-auto mr-lg-0 search-box mt-4 mt-lg-0">
+                                                <form action="/Search">
+                                                    <input name="q" placeholder="Click and Find Donations" disabled type="text">
+                                                    <button onclick="location.href='/Pages/Web/Review/DonationReview.aspx'">
+                                                        <i class="fa fa-caret-right"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 text-lg-left text-center">
-                                            <img src="https://placehold.it/900x500/3c8dbc/ffffff&text=I+Love+Bootstrap" style="height: 720px;">
+                                        <div class="row pt-5">
+                                            <div class="col-lg-4 col-md-6">
+                                                <div class="campaign-card">
+                                                    <div class="camp-top">
+                                                        <div>
+                                                            <h6>
+                                                                <asp:Label runat="server" ID="lblTop1DonorName" Text='<%# Bind("DonorNameT1") %>'>Name</asp:Label></h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="camp-top">
+                                                        <div>
+                                                            <asp:Image runat="server" ID="ImgTop1" CssClass="profile-user-img img-fluid img-circle" ImageUrl='<%# Bind("ImgURLT1") %>' Width="150px" Height="150px" /><br>
+                                                            <div class="row align-self-baseline">
+                                                                <div class="col-xs-12">
+                                                                    <div class="rate">
+                                                                        <input type="radio" id="star5" name="rate" value="5" disabled />
+                                                                        <label for="star5" title="text">5 stars</label>
+                                                                        <input type="radio" id="star4" name="rate" value="4" checked disabled />
+                                                                        <label for="star4" title="text">4 stars</label>
+                                                                        <input type="radio" id="star3" name="rate" value="3" disabled />
+                                                                        <label for="star3" title="text">3 stars</label>
+                                                                        <input type="radio" id="star2" name="rate" value="2" disabled />
+                                                                        <label for="star2" title="text">2 stars</label>
+                                                                        <input type="radio" id="star1" name="rate" value="1" disabled />
+                                                                        <label for="star1" title="text">1 star</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <asp:Image runat="server" CssClass="profile-user-img img-fluid img-circle" ImageUrl="../../dist/img/1.png" Width="100px" Height="100px" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-value">
+                                                        <div class="camp-amt">
+                                                            Credit -
+                                                            <asp:Label runat="server" ForeColor="Blue" ID="lblTop1DonationCredit" Text='<%# Bind("DonationCreditT1") %>'>Count</asp:Label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress mt-4">
+                                                        <div class="progress">
+                                                            <div class="progress-bar bg-blue" role="progressbar"
+                                                                aria-valuemin="0" aria-valuemax="100"
+                                                                style='<%# "width:" + Eval("DonationPrecentatge") + "%;" %>'>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-value">
+                                                        <div class="camp-percent">
+                                                            <asp:Label runat="server" ID="Label1"></asp:Label>
+                                                        </div>
+                                                        <div class="camp-percent">
+                                                            LastActivityDate -
+                                                            <asp:Label runat="server" ID="lblTop1LastActivityDate" Text='<%# Bind("LastActivityDateT1") %>'></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                    <p class="camp-text pt-4 pb-2">
+                                                        <asp:Label runat="server" ID="lblTop1Lastprogram1" Text='<%# Bind("Lastprogram1T1") %>'>last1</asp:Label>
+                                                        <br>
+                                                        <asp:Label runat="server" ID="lblTop1Lastprogram2" Text='<%# Bind("Lastprogram2T1") %>'>last2</asp:Label>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6">
+                                                <div class="campaign-card">
+                                                    <div class="camp-top">
+                                                        <div>
+                                                            <h6>
+                                                                <asp:Label runat="server" ID="Label2" Text='<%# Bind("DonorNameT2") %>'>Name</asp:Label></h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="camp-top">
+                                                        <div>
+                                                            <asp:Image runat="server" ID="Image1" CssClass="profile-user-img img-fluid img-circle" ImageUrl='<%# Bind("ImgURLT2") %>' Width="150px" Height="150px" /><br>
+                                                            <div class="row align-self-baseline">
+                                                                <div class="col-xs-12">
+                                                                    <div class="rate1">
+                                                                        <input type="radio" id="star5" name="rate1" value="5" checked disabled />
+                                                                        <label for="star5" title="text">5 stars</label>
+                                                                        <input type="radio" id="star4" name="rate1" value="4" disabled />
+                                                                        <label for="star4" title="text">4 stars</label>
+                                                                        <input type="radio" id="star3" name="rate1" value="3" disabled />
+                                                                        <label for="star3" title="text">3 stars</label>
+                                                                        <input type="radio" id="star2" name="rate1" value="2" disabled />
+                                                                        <label for="star2" title="text">2 stars</label>
+                                                                        <input type="radio" id="star1" name="rate1" value="1" disabled />
+                                                                        <label for="star1" title="text">1 star</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <asp:Image runat="server" CssClass="profile-user-img img-fluid img-circle" ImageUrl="../../dist/img/2.png" Width="100px" Height="100px" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-value">
+                                                        <div class="camp-amt">
+                                                            Credit -
+                                                            <asp:Label runat="server" ForeColor="Blue" ID="Label3" Text='<%# Bind("DonationCreditT2") %>'>Count</asp:Label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress mt-4">
+                                                        <div class="progress">
+                                                            <div class="progress-bar bg-blue" role="progressbar"
+                                                                aria-valuemin="0" aria-valuemax="100"
+                                                                style='<%# "width:" + Eval("DonationPrecentatge") + "%;" %>'>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-value">
+                                                        <div class="camp-percent">
+                                                            <asp:Label runat="server" ID="Label4"></asp:Label>
+                                                        </div>
+                                                        <div class="camp-percent">
+                                                            LastActivityDate -
+                                                            <asp:Label runat="server" ID="Label5" Text='<%# Bind("LastActivityDateT2") %>'></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                    <p class="camp-text pt-4 pb-2">
+                                                        <asp:Label runat="server" ID="Label18" Text='<%# Bind("Lastprogram1T2") %>'>last1</asp:Label>
+                                                        <br>
+                                                        <asp:Label runat="server" ID="Label19" Text='<%# Bind("Lastprogram2T2") %>'>last2</asp:Label>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6">
+                                                <div class="campaign-card">
+                                                    <div class="camp-top">
+                                                        <div>
+                                                            <h6>
+                                                                <asp:Label runat="server" ID="Label6" Text='<%# Bind("DonorNameT3") %>'>Name</asp:Label></h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="camp-top">
+                                                        <div>
+                                                            <asp:Image runat="server" ID="Image2" CssClass="profile-user-img img-fluid img-circle" ImageUrl='<%# Bind("ImgURLT3") %>' Width="150px" Height="150px" /><br>
+                                                            <div class="row align-self-baseline">
+                                                                <div class="col-xs-12">
+                                                                    <div class="rate2">
+                                                                        <input type="radio" id="star5" name="rate2" value="5" disabled />
+                                                                        <label for="star5" title="text">5 stars</label>
+                                                                        <input type="radio" id="star4" name="rate2" value="4" disabled />
+                                                                        <label for="star4" title="text">4 stars</label>
+                                                                        <input type="radio" id="star3" name="rate2" value="3" disabled />
+                                                                        <label for="star3" title="text">3 stars</label>
+                                                                        <input type="radio" id="star2" name="rate2" value="2" disabled />
+                                                                        <label for="star2" title="text">2 stars</label>
+                                                                        <input type="radio" id="star1" name="rate2" value="1" checked disabled />
+                                                                        <label for="star1" title="text">1 star</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <asp:Image runat="server" CssClass="profile-user-img img-fluid img-circle" ImageUrl="../../dist/img/3.png" Width="100px" Height="100px" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-value">
+                                                        <div class="camp-amt">
+                                                            Credit -
+                                                            <asp:Label runat="server" ForeColor="Blue" ID="Label7" Text='<%# Bind("DonationCreditT3") %>'>Count</asp:Label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress mt-4">
+                                                        <div class="progress">
+                                                            <div class="progress-bar bg-blue" role="progressbar"
+                                                                aria-valuemin="0" aria-valuemax="100"
+                                                                style='<%# "width:" + Eval("DonationPrecentatge") + "%;" %>'>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-value">
+                                                        <div class="camp-percent">
+                                                            <asp:Label runat="server" ID="Label8"></asp:Label>
+                                                        </div>
+                                                        <div class="camp-percent">
+                                                            LastActivityDate -
+                                                            <asp:Label runat="server" ID="Label20" Text='<%# Bind("LastActivityDateT3") %>'></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                    <p class="camp-text pt-4 pb-2">
+                                                        <asp:Label runat="server" ID="Label21" Text='<%# Bind("Lastprogram1T3") %>'>last1</asp:Label>
+                                                        <br>
+                                                        <asp:Label runat="server" ID="Label22" Text='<%# Bind("Lastprogram2T3") %>'>last2</asp:Label>
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="carousel-content" style="padding-top: 20%;">
-                                                <h5>Deepest Facebook Integration</h5>
-                                                <p>Integrate your donation form directly into Facebook. Allows you to raise donations within Facebook - no links, no redirects, just plug and play.</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 text-lg-left text-center">
-                                            <img src="https://placehold.it/900x500/3c8dbc/ffffff&text=I+Love+Bootstrap" style="height: 720px;">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="carousel-content" style="padding-top: 20%;">
-                                                <h5>Deepest Facebook Integration</h5>
-                                                <p>Integrate your donation form directly into Facebook. Allows you to raise donations within Facebook - no links, no redirects, just plug and play.</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 text-lg-left text-center">
-                                            <img src="https://placehold.it/900x500/3c8dbc/ffffff&text=I+Love+Bootstrap" style="height: 720px;">
+                                    &nbsp
+                                    &nbsp
+                                    <div class="d-lg-flex align-items-center">
+                                        <h2 class="text-center text-lg-left">Trending Donations</h2>
+                                        <div class="mx-auto mr-lg-0 search-box mt-4 mt-lg-0">
+                                            <form action="/Search">
+                                                <input name="q" placeholder="Click and Find Donations" disabled type="text">
+                                                <button onclick="location.href='/Pages/Web/Review/DonationReview.aspx'">
+                                                    <i class="fa fa-caret-right"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                <span class="carousel-control-custom-icon" aria-hidden="true">
-                                    <i class="fas fa-chevron-left"></i>
-                                </span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                <span class="carousel-control-custom-icon" aria-hidden="true">
-                                    <i class="fas fa-chevron-right"></i>
-                                </span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-                    </section>
-                    <section class="section-bg" id="campaigns">
-                        <div class="container">
-                            <div class="d-lg-flex align-items-center">
-                                <h2 class="text-center text-lg-left">Top Donors</h2>
-                                <div class="mx-auto mr-lg-0 search-box mt-4 mt-lg-0">
-                                    <form action="/Search">
-                                        <input name="q" placeholder="Click and Find Donations" disabled type="text">
-                                        <button onclick="location.href='/Pages/Web/Review/DonationReview.aspx'">
-                                            <i class="fa fa-caret-right"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="row pt-5">
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="campaign-card">
-                                        <div class="camp-top">
-                                            <h6>
-                                                <asp:Label runat="server" ID="lblTop1Name">Name</asp:Label></h6>
-                                            <div>
-                                                <asp:Image runat="server" ImageUrl="https://images.fundly.com/uploads/e09ac6e8-23fc-496c-9825-e473f3ec5a9b.jpg?h=275" ID="imgPd" Style="width: 70%;" />
+                                    <div class="row pt-5">
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="campaign-card">
+                                                <div class="camp-top">
+                                                    <h6>
+                                                        <asp:Label runat="server" ID="Label9">Donation ID</asp:Label></h6>
+                                                    <div>
+                                                        <asp:Image runat="server" ImageUrl="https://images.fundly.com/uploads/e09ac6e8-23fc-496c-9825-e473f3ec5a9b.jpg?h=275" ID="Image3" Style="width: 70%;" /><br>
+                                                    </div>
+                                                </div>
+                                                <div class="progress mt-4">
+                                                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar" role="progressbar" style="width: 77%; background-color: #6fa505;"></div>
+                                                </div>
+                                                <div class="progress-value">
+                                                    <div class="camp-amt">
+                                                        <asp:Label runat="server" ID="Label10">Count</asp:Label>
+                                                    </div>
+                                                    <div class="camp-percent">
+                                                        <asp:Label runat="server" ID="Label11">Donation %</asp:Label>
+                                                    </div>
+                                                </div>
+                                                <p class="camp-text pt-4 pb-2">
+                                                    <asp:Label runat="server" ID="Label23">Hospital Name</asp:Label>
+                                                    <br>
+                                                    <asp:Label runat="server" ID="Label24">Location</asp:Label>
+                                                </p>
+                                                <a href="/kendall-lily?form=popup#donate/35">
+                                                    <button class="btn-block mb-3">Contribute Now</button>
+                                                </a>
                                             </div>
                                         </div>
-                                        <div class="progress mt-4">
-                                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar" role="progressbar" style="width: 77%; background-color: #6fa505;"></div>
-                                        </div>
-                                        <div class="progress-value">
-                                            <div class="camp-amt">
-                                                <asp:Label runat="server" ID="Label1">Count</asp:Label>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="campaign-card">
+                                                <div class="camp-top">
+                                                    <h6>
+                                                        <asp:Label runat="server" ID="Label12">Name</asp:Label></h6>
+                                                    <div>
+                                                        <asp:Image runat="server" ImageUrl="https://images.fundly.com/uploads/e09ac6e8-23fc-496c-9825-e473f3ec5a9b.jpg?h=275" ID="Image4" Style="width: 70%;" />
+                                                    </div>
+                                                </div>
+                                                <div class="progress mt-4">
+                                                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar" role="progressbar" style="width: 77%; background-color: #6fa505;"></div>
+                                                </div>
+                                                <div class="progress-value">
+                                                    <div class="camp-amt">
+                                                        <asp:Label runat="server" ID="Label13">Count</asp:Label>
+                                                    </div>
+                                                    <div class="camp-percent">
+                                                        <asp:Label runat="server" ID="Label14">Donation %</asp:Label>
+                                                    </div>
+                                                </div>
+                                                <p class="camp-text pt-4 pb-2">
+                                                    <a href="/charlotte-north-carolina?ft_src=homepage_campaign_card">Charlotte, NC
+                                                    </a>
+                                                    <br>
+                                                    <a href="//memorials-and-funerals?ft_src=homepage_campaign_card">Memorials &amp; Funerals
+                                                    </a>
+                                                </p>
                                             </div>
-                                            <div class="camp-percent">
-                                                <asp:Label runat="server" ID="Label2">Donation %</asp:Label>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="campaign-card">
+                                                <div class="camp-top">
+                                                    <h6>
+                                                        <asp:Label runat="server" ID="Label15">Name</asp:Label></h6>
+                                                    <div>
+                                                        <asp:Image runat="server" ImageUrl="https://images.fundly.com/uploads/e09ac6e8-23fc-496c-9825-e473f3ec5a9b.jpg?h=275" ID="Image5" Style="width: 70%;" /><br>
+                                                        <div class="row align-self-baseline">
+                                                            <div class="col-xs-12">
+                                                                <div class="rate">
+                                                                    <input type="radio" id="star5" name="rate" value="5" />
+                                                                    <label for="star5" title="text">5 stars</label>
+                                                                    <input type="radio" id="star4" name="rate" value="4" />
+                                                                    <label for="star4" title="text">4 stars</label>
+                                                                    <input type="radio" id="star3" name="rate" value="3" />
+                                                                    <label for="star3" title="text">3 stars</label>
+                                                                    <input type="radio" id="star2" name="rate" value="2" />
+                                                                    <label for="star2" title="text">2 stars</label>
+                                                                    <input type="radio" id="star1" name="rate" value="1" />
+                                                                    <label for="star1" title="text">1 star</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="progress mt-4">
+                                                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar" role="progressbar" style="width: 77%; background-color: #6fa505;"></div>
+                                                </div>
+                                                <div class="progress-value">
+                                                    <div class="camp-amt">
+                                                        <asp:Label runat="server" ID="Label16">Count</asp:Label>
+                                                    </div>
+                                                    <div class="camp-percent">
+                                                        <asp:Label runat="server" ID="Label17">Donation %</asp:Label>
+                                                    </div>
+                                                </div>
+                                                <p class="camp-text pt-4 pb-2">
+                                                    <a href="/charlotte-north-carolina?ft_src=homepage_campaign_card">Charlotte, NC
+                                                    </a>
+                                                    <br>
+                                                    <a href="//memorials-and-funerals?ft_src=homepage_campaign_card">Memorials &amp; Funerals
+                                                    </a>
+                                                </p>
+                                                <a href="/kendall-lily?form=popup#donate/35">
+                                                    <button class="btn-block mb-3">Contribute Now</button>
+                                                </a>
                                             </div>
                                         </div>
-                                        <p class="camp-text pt-4 pb-2">
-                                            <a href="/charlotte-north-carolina?ft_src=homepage_campaign_card">Charlotte, NC
-                                            </a>
-                                            <br>
-                                            <a href="//memorials-and-funerals?ft_src=homepage_campaign_card">Memorials &amp; Funerals
-                                            </a>
-                                        </p>
-                                        <a href="/kendall-lily?form=popup#donate/35">
-                                            <button class="btn-block mb-3">Contribute Now</button>
-                                        </a>
                                     </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="campaign-card">
-                                        <div class="camp-top">
-                                            <h6>
-                                                <asp:Label runat="server" ID="Label3">Name</asp:Label></h6>
-                                            <div>
-                                                <asp:Image runat="server" ImageUrl="https://images.fundly.com/uploads/e09ac6e8-23fc-496c-9825-e473f3ec5a9b.jpg?h=275" ID="Image1" Style="width: 70%;" />
-                                            </div>
-                                        </div>
-                                        <div class="progress mt-4">
-                                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar" role="progressbar" style="width: 77%; background-color: #6fa505;"></div>
-                                        </div>
-                                        <div class="progress-value">
-                                            <div class="camp-amt">
-                                                <asp:Label runat="server" ID="Label4">Count</asp:Label>
-                                            </div>
-                                            <div class="camp-percent">
-                                                <asp:Label runat="server" ID="Label5">Donation %</asp:Label>
-                                            </div>
-                                        </div>
-                                        <p class="camp-text pt-4 pb-2">
-                                            <a href="/charlotte-north-carolina?ft_src=homepage_campaign_card">Charlotte, NC
-                                            </a>
-                                            <br>
-                                            <a href="//memorials-and-funerals?ft_src=homepage_campaign_card">Memorials &amp; Funerals
-                                            </a>
-                                        </p>
-                                        <a href="/kendall-lily?form=popup#donate/35">
-                                            <button class="btn-block mb-3">Contribute Now</button>
-                                        </a>
+                                    --%>
                                     </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="campaign-card">
-                                        <div class="camp-top">
-                                            <h6>
-                                                <asp:Label runat="server" ID="Label6">Name</asp:Label></h6>
-                                            <div>
-                                                <asp:Image runat="server" ImageUrl="https://images.fundly.com/uploads/e09ac6e8-23fc-496c-9825-e473f3ec5a9b.jpg?h=275" ID="Image2" Style="width: 70%;" />
-                                            </div>
-                                        </div>
-                                        <div class="progress mt-4">
-                                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar" role="progressbar" style="width: 77%; background-color: #6fa505;"></div>
-                                        </div>
-                                        <div class="progress-value">
-                                            <div class="camp-amt">
-                                                <asp:Label runat="server" ID="Label7">Count</asp:Label>
-                                            </div>
-                                            <div class="camp-percent">
-                                                <asp:Label runat="server" ID="Label8">Donation %</asp:Label>
-                                            </div>
-                                        </div>
-                                        <p class="camp-text pt-4 pb-2">
-                                            <a href="/charlotte-north-carolina?ft_src=homepage_campaign_card">Charlotte, NC
-                                            </a>
-                                            <br>
-                                            <a href="//memorials-and-funerals?ft_src=homepage_campaign_card">Memorials &amp; Funerals
-                                            </a>
-                                        </p>
-                                        <a href="/kendall-lily?form=popup#donate/35">
-                                            <button class="btn-block mb-3">Contribute Now</button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-lg-flex align-items-center">
-                                <h2 class="text-center text-lg-left">Trending Donations</h2>
-                                <div class="mx-auto mr-lg-0 search-box mt-4 mt-lg-0">
-                                    <form action="/Search">
-                                        <input name="q" placeholder="Click and Find Donations" disabled type="text">
-                                        <button onclick="location.href='/Pages/Web/Review/DonationReview.aspx'">
-                                            <i class="fa fa-caret-right"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="row pt-5">
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="campaign-card">
-                                        <div class="camp-top">
-                                            <h6>
-                                                <asp:Label runat="server" ID="Label9">Name</asp:Label></h6>
-                                            <div>
-                                                <asp:Image runat="server" ImageUrl="https://images.fundly.com/uploads/e09ac6e8-23fc-496c-9825-e473f3ec5a9b.jpg?h=275" ID="Image3" Style="width: 70%;" />
-                                            </div>
-                                        </div>
-                                        <div class="progress mt-4">
-                                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar" role="progressbar" style="width: 77%; background-color: #6fa505;"></div>
-                                        </div>
-                                        <div class="progress-value">
-                                            <div class="camp-amt">
-                                                <asp:Label runat="server" ID="Label10">Count</asp:Label>
-                                            </div>
-                                            <div class="camp-percent">
-                                                <asp:Label runat="server" ID="Label11">Donation %</asp:Label>
-                                            </div>
-                                        </div>
-                                        <p class="camp-text pt-4 pb-2">
-                                            <a href="/charlotte-north-carolina?ft_src=homepage_campaign_card">Charlotte, NC
-                                            </a>
-                                            <br>
-                                            <a href="//memorials-and-funerals?ft_src=homepage_campaign_card">Memorials &amp; Funerals
-                                            </a>
-                                        </p>
-                                        <a href="/kendall-lily?form=popup#donate/35">
-                                            <button class="btn-block mb-3">Contribute Now</button>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="campaign-card">
-                                        <div class="camp-top">
-                                            <h6>
-                                                <asp:Label runat="server" ID="Label12">Name</asp:Label></h6>
-                                            <div>
-                                                <asp:Image runat="server" ImageUrl="https://images.fundly.com/uploads/e09ac6e8-23fc-496c-9825-e473f3ec5a9b.jpg?h=275" ID="Image4" Style="width: 70%;" />
-                                            </div>
-                                        </div>
-                                        <div class="progress mt-4">
-                                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar" role="progressbar" style="width: 77%; background-color: #6fa505;"></div>
-                                        </div>
-                                        <div class="progress-value">
-                                            <div class="camp-amt">
-                                                <asp:Label runat="server" ID="Label13">Count</asp:Label>
-                                            </div>
-                                            <div class="camp-percent">
-                                                <asp:Label runat="server" ID="Label14">Donation %</asp:Label>
-                                            </div>
-                                        </div>
-                                        <p class="camp-text pt-4 pb-2">
-                                            <a href="/charlotte-north-carolina?ft_src=homepage_campaign_card">Charlotte, NC
-                                            </a>
-                                            <br>
-                                            <a href="//memorials-and-funerals?ft_src=homepage_campaign_card">Memorials &amp; Funerals
-                                            </a>
-                                        </p>
-                                        <a href="/kendall-lily?form=popup#donate/35">
-                                            <button class="btn-block mb-3">Contribute Now</button>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="campaign-card">
-                                        <div class="camp-top">
-                                            <h6>
-                                                <asp:Label runat="server" ID="Label15">Name</asp:Label></h6>
-                                            <div>
-                                                <asp:Image runat="server" ImageUrl="https://images.fundly.com/uploads/e09ac6e8-23fc-496c-9825-e473f3ec5a9b.jpg?h=275" ID="Image5" Style="width: 70%;" />
-                                            </div>
-                                        </div>
-                                        <div class="progress mt-4">
-                                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" class="progress-bar" role="progressbar" style="width: 77%; background-color: #6fa505;"></div>
-                                        </div>
-                                        <div class="progress-value">
-                                            <div class="camp-amt">
-                                                <asp:Label runat="server" ID="Label16">Count</asp:Label>
-                                            </div>
-                                            <div class="camp-percent">
-                                                <asp:Label runat="server" ID="Label17">Donation %</asp:Label>
-                                            </div>
-                                        </div>
-                                        <p class="camp-text pt-4 pb-2">
-                                            <a href="/charlotte-north-carolina?ft_src=homepage_campaign_card">Charlotte, NC
-                                            </a>
-                                            <br>
-                                            <a href="//memorials-and-funerals?ft_src=homepage_campaign_card">Memorials &amp; Funerals
-                                            </a>
-                                        </p>
-                                        <a href="/kendall-lily?form=popup#donate/35">
-                                            <button class="btn-block mb-3">Contribute Now</button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-join">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title"></h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-4">
-                                    <asp:LinkButton ID="btnjoinFundraiser" CssClass="btn btn-outline-success btn-block" runat="server" Text="<i class='fa fa-medkit'></i> Join As a Fundraiser" OnClick="btnjoinFundraiser_Click" />
-                                </div>
-                                <div class="col-md-4">
-                                    <asp:LinkButton ID="btnjoinRecipient" CssClass="btn btn-outline-primary btn-block" runat="server" Text="<i class='fa fa-hospital'></i> Join As a Recipient" OnClick="btnjoinRecipient_Click" />
-                                </div>
-                                <div class="col-md-1">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-            <!-- /.card -->
+                                </section>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">

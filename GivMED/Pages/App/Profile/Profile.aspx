@@ -103,7 +103,7 @@
                                         <asp:Panel runat="server" ID="pnlOrg1">
                                             <div class="form-group row">
                                                 <label for="inputName" class="col-sm-2 col-form-label">Organization Name</label>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-6">
                                                     <asp:TextBox runat="server" CssClass="form-control" ID="txtOrgName"></asp:TextBox>
                                                 </div>
                                             </div>
