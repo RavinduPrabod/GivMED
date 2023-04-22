@@ -55,6 +55,7 @@ namespace GivMED.Pages.App.Hospital
                 odata.SupplyCreateDate = item.SupplyCreateDate;
                 odata.SupplyExpireDate = item.SupplyExpireDate;
                 odata.SupplyPriorityLevel = item.SupplyPriorityLevel;
+                odata.pendingcount = item.pendingcount;
 
                 requestedQty = item.RequestQty;
                 donatedQty = item.DonatedQty;

@@ -49,7 +49,9 @@
                 color: #c59b08;
             }
 
-        /* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
+        .right-align {
+            text-align: right;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
@@ -106,16 +108,16 @@
                                                 </ItemTemplate>
                                                 <ItemStyle Width="1%" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Actions">
+                                            <asp:TemplateField HeaderText="Pending Confirmations & Authorize" HeaderStyle-CssClass="right-align">
                                                 <ItemTemplate>
                                                     <div class="text-right">
-                                                        <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" ToolTip="View Donors Details" CausesValidation="false" CommandName="View" CommandArgument="<%# Container.DisplayIndex %>"><i class="fas fa-folder"></i>
+                                                        <span class="badge bg-info"><%# Eval("pendingcount") %></span>
+                                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                                        <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" ToolTip="View Donors Details" CausesValidation="false" CommandName="View" CommandArgument="<%# Container.DisplayIndex %>"><i class="fas fa-shield-alt"></i>
                                                         </asp:LinkButton>
-                                                        <%--<asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" Text="Delete"><i class="fas fa-trash"></i>
-                                                        </asp:LinkButton>--%>
                                                     </div>
                                                 </ItemTemplate>
-                                                <ItemStyle Width="10%" />
+                                                <ItemStyle HorizontalAlign="Right" Width="10%" />
                                             </asp:TemplateField>
                                         </Columns>
                                     </asp:GridView>

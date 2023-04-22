@@ -33,6 +33,8 @@ namespace GivMED.Dto
 
         public int DonorCount { get; set; }
 
+        public int pendingcount { get; set; }
+
         public string SearchIndex => $"{SupplyID} {"-"} {SupplyPriorityLevel} {"-"} {SupplyType}";
     }
 }

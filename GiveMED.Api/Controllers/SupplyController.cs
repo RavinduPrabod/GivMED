@@ -62,8 +62,16 @@ namespace GiveMED.Api.Controllers
             {
                 HospitalSupplyNeedsGridDto odata = new HospitalSupplyNeedsGridDto();
                 int headercount = _context.DonationHeader.Where(z => z.SupplyID == item.SupplyID).Count();
+                int feedcount = _context.DonationFeedback.Where(x => x.SupplyCode == item.SupplyID).Count();
 
+                int result = headercount - feedcount;
 
+                Records.ForEach(obj => {
+                    if (obj.SupplyID == item.SupplyID)
+                    {
+                        obj.pendingcount = result;
+                    }
+                });
             }
 
             return Records;

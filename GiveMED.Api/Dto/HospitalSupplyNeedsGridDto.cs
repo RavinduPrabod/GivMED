@@ -32,5 +32,7 @@ namespace GiveMED.Api.Dto
         public decimal Proceprecent { get; set; }
 
         public int DonorCount { get; set; }
+
+        public int pendingcount { get; set; }
     }
 }
