@@ -55,5 +55,35 @@ namespace GiveMED.Api.Controllers
 
             return Records;
         }
+
+        [HttpGet]
+        [ActionName("GetTopTrendingDonations")]
+        public IEnumerable<TopTrendingDonorDto> GetTopTrendingDonations()
+        {
+            List<TopTrendingDonorDto> Records = new List<TopTrendingDonorDto>();
+
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT C.SupplyID, A.DonationID, C.SupplyPriorityLevel, B.RequestQty, B.DonatedQty, A.DonorID, D.HospitalName, D.City, DonorCounts.DonorCount FROM DonationHeader A INNER JOIN DonationDetails B ON A.DonationID = B.DonationID LEFT OUTER JOIN SupplyRequestHeader C ON A.SupplyID = C.SupplyID INNER JOIN HospitalMaster D ON C.HospitalID = D.HospitalID INNER JOIN ( SELECT SupplyID, COUNT(DISTINCT DonorID) AS DonorCount FROM DonationHeader GROUP BY SupplyID ) DonorCounts ON C.SupplyID = DonorCounts.SupplyID";
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                TopTrendingDonorDto data = new TopTrendingDonorDto();
+                data.SupplyID = Convert.IsDBNull(reader["SupplyID"]) ? "" : reader["SupplyID"].ToString();
+                data.DonationID = Convert.IsDBNull(reader["DonationID"]) ? "" : reader["DonationID"].ToString();
+                data.SupplyPriorityLevel = Convert.IsDBNull(reader["SupplyPriorityLevel"]) ? 0 : Convert.ToInt32(reader["SupplyPriorityLevel"]);
+                data.RequestQty = Convert.IsDBNull(reader["RequestQty"]) ? 0 : Convert.ToInt32(reader["RequestQty"]);
+                data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt32(reader["DonatedQty"]);
+                data.DonorID = Convert.IsDBNull(reader["DonorID"]) ? 0 : Convert.ToInt32(reader["DonorID"]);
+                data.HospitalName = Convert.IsDBNull(reader["HospitalName"]) ? "" : reader["HospitalName"].ToString();
+                data.City = Convert.IsDBNull(reader["City"]) ? "" : reader["City"].ToString();
+                data.DonorCount = Convert.IsDBNull(reader["DonorCount"]) ? 0 : Convert.ToInt32(reader["DonorCount"]);
+                Records.Add(data);
+            }
+            conn.Close();
+
+            return Records;
+        }
     }
 }

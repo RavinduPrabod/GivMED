@@ -69,13 +69,13 @@ namespace GiveMED.Api.Controllers
             var conn = _context.Database.GetDbConnection();
             conn.Open();
             var comm = conn.CreateCommand();
-            comm.CommandText = "SELECT A.SupplyID, A.SupplyPriorityLevel, A.SupplyCreateDate, A.SupplyExpireDate, B.SupplyItemName, B.SupplyItemQty, C.HospitalName, C.HospitalID, " +
+            comm.CommandText = "SELECT A.SupplyID, A.SupplyPriorityLevel, A.SupplyCreateDate, A.SupplyExpireDate, B.SupplyItemCat, B.SupplyItemName, B.SupplyItemQty, C.HospitalName, C.HospitalID, " +
                 "C.State, SUM(D.DonatedQty) as DonatedQty " +
                 "FROM SupplyRequestHeader A " +
                 "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
                 "INNER JOIN HospitalMaster C ON A.HospitalID = C.HospitalID " +
                 "LEFT OUTER JOIN DonationDetails D ON A.SupplyID = D.SupplyID AND B.SupplyItemCat = D.ItemCategory AND B.SupplyItemID = D.ItemID " +
-                "WHERE A.SupplyStatus = 1 GROUP BY A.SupplyID, A.SupplyPriorityLevel, A.SupplyCreateDate, A.SupplyExpireDate, B.SupplyItemName, B.SupplyItemQty, C.HospitalName, C.HospitalID, C.State;";
+                "WHERE A.SupplyStatus = 1 GROUP BY A.SupplyID, A.SupplyPriorityLevel, A.SupplyCreateDate, A.SupplyExpireDate, B.SupplyItemCat, B.SupplyItemName, B.SupplyItemQty, C.HospitalName, C.HospitalID, C.State;";
 
             var reader = comm.ExecuteReader();
             while (reader.Read())
@@ -85,6 +85,7 @@ namespace GiveMED.Api.Controllers
                 data.SupplyPriorityLevel = Convert.IsDBNull(reader["SupplyPriorityLevel"]) ? 0 : Convert.ToInt32(reader["SupplyPriorityLevel"]);
                 data.SupplyCreateDate = Convert.IsDBNull(reader["SupplyCreateDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyCreateDate"]);
                 data.SupplyExpireDate = Convert.IsDBNull(reader["SupplyExpireDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyExpireDate"]);
+                data.SupplyItemCat = Convert.IsDBNull(reader["SupplyItemCat"]) ? 0 : Convert.ToInt32(reader["SupplyItemCat"]);
                 data.SupplyItemName = Convert.IsDBNull(reader["SupplyItemName"]) ? "" : reader["SupplyItemName"].ToString();
                 data.HospitalName = Convert.IsDBNull(reader["HospitalName"]) ? "" : reader["HospitalName"].ToString();
                 data.HospitalID = Convert.IsDBNull(reader["HospitalID"]) ? 0 : Convert.ToInt32(reader["HospitalID"]);

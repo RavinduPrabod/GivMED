@@ -19,15 +19,15 @@ namespace GiveMED.Api.Dto
 
         public string ImgURL { get; set; }
 
-        public int DonationCredit { get; set; }
+        public int SupplyPriorityLevel { get; set; }
 
-        public decimal DonationPrecentatge { get; set; }
+        public int RequestQty { get; set; }
 
-        public DateTime? LastActivityDate { get; set; }
+        public int DonatedQty { get; set; }
 
-        public string Lastprogram1 { get; set; }
+        public int DonorCount { get; set; }
 
-        public string Lastprogram2 { get; set; }
+        public string City { get; set; }
 
         public DateTime? CreatedDateTime { get; set; }
     }

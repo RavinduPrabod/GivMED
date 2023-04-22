@@ -156,6 +156,8 @@ namespace GivMED.Pages.App.Donor
             DateTime tomorrow = now.AddDays(1);
             string formattedDateTime;
 
+            DateTime feeddate = oresullt.CreatedDateTime?.Date ?? DateTime.MinValue;
+
             if (now.Date == oresullt.CreatedDateTime)
             {
                 // If the date is today, format the time as "h:mm tt" and add "today" at the end
@@ -169,7 +171,7 @@ namespace GivMED.Pages.App.Donor
             else
             {
                 // If the date is not today or tomorrow, format the date and time as "M/d/yyyy h:mm tt"
-                formattedDateTime = now.ToString("M/d/yyyy h:mm tt");
+                formattedDateTime = feeddate.ToString("M/d/yyyy h:mm tt");
             }
 
             lblFeedDate.Text = "Shared publicly - " + formattedDateTime;

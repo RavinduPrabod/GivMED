@@ -31,26 +31,57 @@ namespace GivMED.Dto
 
         public DateTime? CreatedDateTime { get; set; }
 
+        public int SupplyPriorityLevel { get; set; }
+
+        public int RequestQty { get; set; }
+
+        public int DonatedQty { get; set; }
+
+        public int DonorCount { get; set; }
+
+        public string City { get; set; }
+
 
         public string DonorNameT1 { get; set; }
         public string ImgURLT1 { get; set; }
         public int DonationCreditT1 { get; set; }
-        public DateTime? LastActivityDateT1 { get; set; }
+        public string LastActivityDateT1 { get; set; }
         public string Lastprogram1T1 { get; set; }
         public string Lastprogram2T1 { get; set; }
 
         public string DonorNameT2 { get; set; }
         public string ImgURLT2 { get; set; }
         public int DonationCreditT2 { get; set; }
-        public DateTime? LastActivityDateT2 { get; set; }
+        public string LastActivityDateT2 { get; set; }
         public string Lastprogram1T2 { get; set; }
         public string Lastprogram2T2 { get; set; }
 
         public string DonorNameT3 { get; set; }
         public string ImgURLT3 { get; set; }
         public int DonationCreditT3 { get; set; }
-        public DateTime? LastActivityDateT3 { get; set; }
+        public string LastActivityDateT3 { get; set; }
         public string Lastprogram1T3 { get; set; }
         public string Lastprogram2T3 { get; set; }
+
+        public string DonationIDD1 { get; set; }
+        public string PriorityD1 { get; set; }
+        public int DonationPrecentatgeD1 { get; set; }
+        public string DonorCountD1 { get; set; }
+        public string HospitalNameD1 { get; set; }
+        public string HLocationD1 { get; set; }
+
+        public string DonationIDD2 { get; set; }
+        public string PriorityD2 { get; set; }
+        public int DonationPrecentatgeD2 { get; set; }
+        public string DonorCountD2 { get; set; }
+        public string HospitalNameD2 { get; set; }
+        public string HLocationD2 { get; set; }
+
+        public string DonationIDD3 { get; set; }
+        public string PriorityD3 { get; set; }
+        public int DonationPrecentatgeD3 { get; set; }
+        public string DonorCountD3 { get; set; }
+        public string HospitalNameD3 { get; set; }
+        public string HLocationD3 { get; set; }
     }
 }

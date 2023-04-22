@@ -31,6 +31,8 @@ namespace GivMED.Dto
 
         public int SupplyItemCat { get; set; }
 
+        public string SupplyItemCatIDText { get; set; }
+
         public string SupplyItemName { get; set; }
 
         public long SupplyItemQty { get; set; }
@@ -40,6 +42,8 @@ namespace GivMED.Dto
         public long DonatedQty { get; set; }
 
         public int ProcessPrecentage { get; set; }
+
+        public string SearchIndex => $"{SupplyID} {"-"} {HospitalName} {"-"} {SupplyItemName}";
 
     }
 }

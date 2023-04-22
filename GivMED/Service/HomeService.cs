@@ -38,5 +38,32 @@ namespace GivMED.Service
                 throw;
             }
         }
+
+        public List<TopTrendingDonorDto> GetTopTrendingDonations()
+        {
+            try
+            {
+                List<TopTrendingDonorDto> record = new List<TopTrendingDonorDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Home/GetTopTrendingDonations";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<TopTrendingDonorDto>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
