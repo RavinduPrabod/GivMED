@@ -58,7 +58,6 @@ namespace GiveMED.Api.Controllers
             var tokenString = tokenHandler.WriteToken(token);
 
             var loggedUserDto = (from A in _context.User
-                                 join B in _context.DonorMaster on A.UserName equals B.UserName
                                  where A.UserName == userForLoginDto.UserName
                                  select new LoggedUserDto
                                  {
@@ -67,7 +66,6 @@ namespace GiveMED.Api.Controllers
                                      LastName = A.LastName,
                                      Type = A.Type,
                                      Status = A.Status,
-                                     DonorID = B.DonorID,
                                      TokenString = tokenString.ToString()
                                  }).First();
 
@@ -164,6 +162,26 @@ namespace GiveMED.Api.Controllers
                 }
             }
             return true;
+        }
+
+        [HttpGet("{UserName}")]
+        [ActionName("GetIsDonorAvailability")]
+        public bool GetIsDonorAvailability(string UserName)
+        {
+            bool isAvailable = false;
+            isAvailable = _context.DonorMaster.Where(x => x.UserName == UserName).Any();
+
+            return isAvailable;
+        }
+
+        [HttpGet("{UserName}")]
+        [ActionName("GetIsHospitalAvailability")]
+        public bool GetIsHospitalAvailability(string UserName)
+        {
+            bool isAvailable = false;
+            isAvailable = _context.HospitalMaster.Where(x => x.UserName == UserName).Any();
+
+            return isAvailable;
         }
     }
 }

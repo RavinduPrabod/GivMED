@@ -9,6 +9,8 @@ namespace GivMED.Dto
     public class PublishedNeedsPostDto
     {
         public string UserName { get; set; }
+        public DonorMaster DonorMaster { get; set; }
+
         public DonationHeader DonationHeader { get; set; }
 
         public List<DonationDetails> DonationDetails { get; set; }

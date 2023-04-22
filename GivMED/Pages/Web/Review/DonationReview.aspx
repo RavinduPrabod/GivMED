@@ -40,6 +40,7 @@
                 color: #FFD700;
             }
     </style>
+    <link href="../../../dist/js/animate/animate.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
@@ -66,7 +67,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Supplies Category & Name">
                                                 <ItemTemplate>
-                                                    <div class="row">
+                                                    <div class="row wow zoomIn">
                                                         <div class="col-10">
                                                             <asp:Label ID="lblItemCatName" ForeColor="Purple" runat="server" Text='<%# Bind("ItemCatName") %>' Style="text-decoration: underline;"></asp:Label><br />
                                                         </div>
@@ -170,7 +171,7 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-4">
-                                                    <button  type="button" class="btn btn-outline-primary btn-block"><i class="fa fa-bell"></i> </button>
+                                                    <button type="button" class="btn btn-outline-primary btn-block"><i class="fa fa-bell"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -370,7 +371,6 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
-
         function pageLoad() {
             $(function () {
                 $('.star-rating input[type="radio"]').change(function () {
@@ -410,4 +410,8 @@
         };
 
     </script>
+    <script src="../../../dist/js/isotope/isotope.pkgd.min.js"></script>
+    <script src="../../../dist/js/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../../../dist/js/wow/wow.min.js"></script>
+    <script src="../../../dist/js/main.js"></script>
 </asp:Content>

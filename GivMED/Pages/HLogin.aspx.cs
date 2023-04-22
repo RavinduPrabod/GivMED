@@ -15,11 +15,14 @@ namespace GivMED.Pages
 {
     public partial class HLogin : System.Web.UI.Page
     {
+        CommonService oCommonService = new CommonService();
         private RegistrationService oRegistrationService = new RegistrationService();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
             {
+                Session["loggedUser"] = null;
+                Session["donorisvalid"] = null;
             }
         }
 
@@ -60,17 +63,17 @@ namespace GivMED.Pages
                         GlobalData.Token = loggedUser.TokenString;
 
                         Session["loggedUser"] = loggedUser;
+                        ShowSuccessMessage(ResponseMessages.LoginSuccess);
 
-                        if(oRegistrationService.CheckHospitalMasterAvailability(loggedUser.UserName) == true)
+                        CheckHospitalMaster(loggedUser.UserName);
+                        if (Convert.ToBoolean(Session["donorisvalid"]) == true)
                         {
-                            ShowSuccessMessage(ResponseMessages.LoginSuccess);
                             Response.Redirect("~/Pages/App/Hospital/SupplyNeeds.aspx");
                         }
                         else
                         {
-                            ShowSuccessMessage(ResponseMessages.LoginSuccess);
                             Response.Redirect("~/Pages/App/Profile/HProfile.aspx");
-                        }    
+                        }
                     }
                     else
                     {
@@ -83,7 +86,11 @@ namespace GivMED.Pages
                 throw ex;
             }
         }
-
+        private void CheckHospitalMaster(string UserName)
+        {
+            Session["donorisvalid"] = null;
+            Session["donorisvalid"] = oCommonService.GetIsHospitalAvailability(UserName);
+        }
         private void ShowSuccessMessage(string msg)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ShowSuccessMessage", "ShowSuccessMessage('" + msg + "');", true);

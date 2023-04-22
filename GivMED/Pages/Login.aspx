@@ -55,7 +55,8 @@
                             </div>
                             <!-- /.social-auth-links -->
                             <p class="mb-0">
-                                <a href="/Pages/Web/Registration/FundraiserRegistration.aspx" class="text-center">Register a new Donor</a>
+                                <a href="/Pages/Web/Registration/FundraiserRegistration.aspx" class="text-center">Register a new Donor</a><br>
+                                <a href="/Pages/Web/HomePage.aspx" class="text-center" style="font-weight:bold">Back to Home</a>
                             </p>
                         </div>
                         <!-- /.card-body -->

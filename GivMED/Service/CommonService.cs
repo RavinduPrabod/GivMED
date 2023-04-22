@@ -1,5 +1,6 @@
 ﻿using GivMED.Common;
 using GivMED.Dto;
+using GivMED.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -109,6 +110,60 @@ namespace GivMED.Service
                 table.Rows.Add(row);
             }
             return table;
+        }
+
+        public bool GetIsDonorAvailability(string UserName)
+        {
+            try
+            {
+                bool isAvailable = false;
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Authentication/GetIsDonorAvailability/" + UserName;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        isAvailable = JsonConvert.DeserializeObject<bool>(value);
+                    }
+                }
+                return isAvailable;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool GetIsHospitalAvailability(string UserName)
+        {
+            try
+            {
+                bool isAvailable = false;
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Authentication/GetIsHospitalAvailability/" + UserName;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        isAvailable = JsonConvert.DeserializeObject<bool>(value);
+                    }
+                }
+                return isAvailable;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

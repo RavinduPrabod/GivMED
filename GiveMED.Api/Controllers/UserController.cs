@@ -1,6 +1,7 @@
 ﻿using GiveMED.Api.Data;
 using GiveMED.Api.Dto;
 using GiveMED.Api.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,36 +33,44 @@ namespace GiveMED.Api.Controllers
         [ActionName("PostUser")]
         public async Task<IActionResult> PostUser([FromBody] UserDto oUserForRegisterDto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (await _repo.UserExists(oUserForRegisterDto.UserName.ToLower()))
+                    ModelState.AddModelError("Username", "Username already exists");
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var userToCreate = new User
+                {
+                    UserName = oUserForRegisterDto.UserName,
+                    FirstName = oUserForRegisterDto.FirstName,
+                    LastName = oUserForRegisterDto.LastName,
+                    Type = oUserForRegisterDto.Type,
+                    Status = oUserForRegisterDto.Status,
+                    NoOfAttempts = oUserForRegisterDto.NoOfAttempts,
+                    LastLoginDate = oUserForRegisterDto.LastLoginDate,
+                    UserEmail = oUserForRegisterDto.Email,
+                    CreatedBy = oUserForRegisterDto.CreatedBy,
+                    CreatedDateTime = oUserForRegisterDto.CreatedDateTime,
+                    CreatedWorkStation = oUserForRegisterDto.CreatedWorkStation,
+                    ModifiedBy = oUserForRegisterDto.ModifiedBy,
+                    ModifiedDateTime = oUserForRegisterDto.ModifiedDateTime,
+                    ModifiedWorkStation = oUserForRegisterDto.ModifiedWorkStation
+                };
+
+                var createdUser = await _repo.Register(userToCreate, oUserForRegisterDto.Password);
+                return Ok(CreatedAtAction("GetUser", new { username = createdUser.UserName }, createdUser));
             }
-            if (await _repo.UserExists(oUserForRegisterDto.UserName.ToLower()))
-                ModelState.AddModelError("Username", "Username already exists");
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var userToCreate = new User
+            catch (Exception ex)
             {
-                UserName = oUserForRegisterDto.UserName,
-                FirstName = oUserForRegisterDto.FirstName,
-                LastName = oUserForRegisterDto.LastName,
-                Type = oUserForRegisterDto.Type,
-                Status = oUserForRegisterDto.Status,
-                NoOfAttempts = oUserForRegisterDto.NoOfAttempts,
-                LastLoginDate = oUserForRegisterDto.LastLoginDate,
-                UserEmail = oUserForRegisterDto.Email,
-                CreatedBy = oUserForRegisterDto.CreatedBy,
-                CreatedDateTime = oUserForRegisterDto.CreatedDateTime,
-                CreatedWorkStation = oUserForRegisterDto.CreatedWorkStation,
-                ModifiedBy = oUserForRegisterDto.ModifiedBy,
-                ModifiedDateTime = oUserForRegisterDto.ModifiedDateTime,
-                ModifiedWorkStation = oUserForRegisterDto.ModifiedWorkStation
-            };
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
 
-            var createdUser = await _repo.Register(userToCreate, oUserForRegisterDto.Password);
-            return CreatedAtAction("GetUser", new { username = createdUser.UserName }, createdUser);
         }
 
 

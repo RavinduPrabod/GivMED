@@ -1,10 +1,76 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Web.Master" AutoEventWireup="true" CodeBehind="DonationGuide.aspx.cs" Inherits="GivMED.Pages.Web.DonationGuide" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link href="../../dist/css/GiveMEDHome.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
+            <div class="modal fade" id="modal-join">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content bg-secondary">
+                        <div class="modal-header">
+                            <h4 class="modal-title"><b>How is you join with us ?</b></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-4">
+                                    <asp:LinkButton ID="btnjoinFundraiser" ForeColor="White" CssClass="btn btn-outline-danger btn-block" runat="server" Text="<i class='fa fa-medkit'></i> As a Donor" OnClick="btnjoinFundraiser_Click" />
+                                </div>
+                                <div class="col-md-4">
+                                    <asp:LinkButton ID="btnjoinRecipient" ForeColor="White" CssClass="btn btn-outline-warning btn-block" runat="server" Text="<i class='fa fa-hospital'></i> As a Hospital" OnClick="btnjoinRecipient_Click" />
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <div class="card" style="background-color: navy">
+                <div class="card-body">
+                    <header class="banner-section">
+                        <div class="banner-img" style="background-attachment: inherit;"></div>
+                        <div class="container">
+                            <div class="banner-content">
+                                <div class="row">
+                                    <div class="col-lg-1">
+                                    </div>
+                                    <div class="col-lg-10">
+                                        <h1 style="font-weight: bold; color: azure">A Little Care Can Change the World.</h1>
+                                        <asp:Button CssClass="btn btn-success" runat="server" Text="Join Us!" OnClientClick="ShowJoinUs();" />
+                                    </div>
+                                    <div class="col-lg-1">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                    </div>
+                                    <div class="col-lg-6">
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <h4 style="color: snow"><b>Be a MED-Donator</b></h4>
+                                        <h5 style="font-style: italic; color: azure">For Individuals and Organization. No registration fees. No hidden fees.</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-body">
                     <section class="pb-0">
@@ -71,10 +137,17 @@
                             </a>
                         </div>
                     </section>
-                    d=100:weather-and-climate-data&amp;catid=21:information-services&amp;Itemid=321&amp;lang=en" action="share" data-gapiscan="true" data-onload="true" data-gapistub="true"></g:plus>
+
                 </div>
                 <div class="fastsocialshare_clearer"></div>
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+    <script type="text/javascript">
+        function ShowJoinUs() {
+            $('.modal-backdrop').remove();
+            $('#modal-join').modal('show');
+            return false;
+        };
+    </script>
 </asp:Content>

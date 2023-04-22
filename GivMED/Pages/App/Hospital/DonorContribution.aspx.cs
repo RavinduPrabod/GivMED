@@ -31,17 +31,20 @@ namespace GivMED.Pages.App.Hospital
         }
         private void PageLoad()
         {
+            LoadGridView();
+        }
+
+        private void LoadGridView()
+        {
+            Session["DonorContList"] = null;
             LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
             List<HospitalSupplyNeedsGridDto> olist = new List<HospitalSupplyNeedsGridDto>();
+            olist = oSupplyService.GetSupplyNeedHeaderlist(loggedUser.HospitalID);
+
             List<HospitalSupplyNeedsGridDto> result = new List<HospitalSupplyNeedsGridDto>();
 
-            olist = oSupplyService.GetDonationContributeGridData(loggedUser.HospitalID);
-
-            List<HospitalSupplyNeedsGridDto> grouplist = olist.GroupBy(s => s.SupplyID)
-                                                    .Select(group => group.First())
-                                                    .ToList();
-            foreach (var item in grouplist)
+            foreach (var item in olist)
             {
                 long requestedQty = 0;
                 long donatedQty = 0;
@@ -52,7 +55,7 @@ namespace GivMED.Pages.App.Hospital
                 odata.SupplyCreateDate = item.SupplyCreateDate;
                 odata.SupplyExpireDate = item.SupplyExpireDate;
                 odata.SupplyPriorityLevel = item.SupplyPriorityLevel;
-                odata.DonorCount = olist.Where(x=>x.SupplyID == item.SupplyID).Select(x=>x.DonorCount).Count();
+
                 requestedQty = item.RequestQty;
                 donatedQty = item.DonatedQty;
 
@@ -68,9 +71,11 @@ namespace GivMED.Pages.App.Hospital
 
             gvDonorProgress.DataSource = result;
             gvDonorProgress.DataBind();
+            if (result.Count > 0)
+                Session["DonorContList"] = result;
         }
 
-        protected void gvDonorProgress_RowDataBound(object sender, GridViewRowEventArgs e)
+            protected void gvDonorProgress_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -420,6 +425,48 @@ namespace GivMED.Pages.App.Hospital
         protected void btnBackPage_Click(object sender, EventArgs e)
         {
             mvDonorCont.ActiveViewIndex = 0;
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            Search();
+        }
+
+        private void Search()
+        {
+            try
+            {
+                Session["donorcountFilterList"] = null;
+                List<HospitalSupplyNeedsGridDto> records = Session["DonorContList"] != null ? (List<HospitalSupplyNeedsGridDto>)Session["DonorContList"] : new List<HospitalSupplyNeedsGridDto>();
+                if (!string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    List<HospitalSupplyNeedsGridDto> filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Split('-').Contains(txtSearch.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                    if (filterList.Count == 0)
+                    {
+                        filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Contains(txtSearch.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                    }
+                    gvDonorProgress.DataSource = filterList;
+                    gvDonorProgress.DataBind();
+                    if (filterList.Count > 0)
+                    {
+                        Session["donorcountFilterList"] = filterList;
+                    }
+
+                }
+                else
+                {
+                    gvDonorProgress.DataSource = records;
+                    gvDonorProgress.DataBind();
+                    if (records.Count > 0)
+                    {
+                        Session["donorcountFilterList"] = records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

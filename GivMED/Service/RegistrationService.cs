@@ -78,7 +78,12 @@ namespace GivMED.Service
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = client.PostAsync(path, content).Result;
-                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+                if (response.IsSuccessStatusCode)
+                {
+                    // Extract the NewDonationID from the response content
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent; // Set the NewDonationID as the response data
+                }
             }
             return webApiResponse;
         }

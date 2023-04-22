@@ -1,5 +1,6 @@
 ﻿using GivMED.Common;
 using GivMED.Dto;
+using GivMED.Service;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,13 @@ namespace GivMED.Pages
 {
     public partial class Login : System.Web.UI.Page
     {
+        CommonService oCommonService = new CommonService();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
             {
+                Session["loggedUser"] = null;
+                Session["donorisvalid"] = null;
             }
         }
 
@@ -59,7 +63,16 @@ namespace GivMED.Pages
 
                         Session["loggedUser"] = loggedUser;
                         ShowSuccessMessage(ResponseMessages.LoginSuccess);
-                        Response.Redirect("~/Pages/App/Donor/Published_Needs.aspx");
+
+                        CheckDonorMaster(loggedUser.UserName);
+                        if (Convert.ToBoolean(Session["donorisvalid"]) == true)
+                        {
+                            Response.Redirect("~/Pages/App/Donor/Published_Needs.aspx");
+                        }
+                        else
+                        {
+                            Response.Redirect("~/Pages/App/Profile/Profile.aspx");
+                        }                        
                     }
                     else
                     {
@@ -71,6 +84,12 @@ namespace GivMED.Pages
             {
                 throw ex;
             }
+        }
+
+        private void CheckDonorMaster(string UserName)
+        {
+            Session["donorisvalid"] = null;
+            Session["donorisvalid"] = oCommonService.GetIsDonorAvailability(UserName);
         }
 
         private void ShowSuccessMessage(string msg)

@@ -324,6 +324,7 @@ namespace GivMED.Pages.App.Hospital
 
         private void LoadGridView()
         {
+            Session["FilterSupplyNeedList"] = null;
             LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
             List<HospitalSupplyNeedsGridDto> olist = new List<HospitalSupplyNeedsGridDto>();
@@ -342,7 +343,7 @@ namespace GivMED.Pages.App.Hospital
                 odata.SupplyCreateDate = item.SupplyCreateDate;
                 odata.SupplyExpireDate = item.SupplyExpireDate;
                 odata.SupplyPriorityLevel = item.SupplyPriorityLevel;
-
+                odata.SupplyStatus = item.SupplyStatus;
                 requestedQty = item.RequestQty;
                 donatedQty = item.DonatedQty;
 
@@ -358,6 +359,8 @@ namespace GivMED.Pages.App.Hospital
 
             gvSupplyNeeds.DataSource = result;
             gvSupplyNeeds.DataBind();
+            if (result.Count > 0)
+                Session["FilterSupplyNeedList"] = result;
         
         //List<HospitalSupplyNeedsGridDto> grouplist = olist.GroupBy(s => s.SupplyID)
         //                                            .Select(group => group.First())
@@ -716,5 +719,48 @@ namespace GivMED.Pages.App.Hospital
                 btnNewTemp.Enabled = true;
             }
         }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            Search();
+        }
+
+        private void Search()
+        {
+            try
+            {
+                Session["SupplyNeedFilterList"] = null;
+                List<HospitalSupplyNeedsGridDto> records = Session["FilterSupplyNeedList"] != null ? (List<HospitalSupplyNeedsGridDto>)Session["FilterSupplyNeedList"] : new List<HospitalSupplyNeedsGridDto>();
+                if (!string.IsNullOrEmpty(txtSearchList.Text))
+                {
+                    List<HospitalSupplyNeedsGridDto> filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Split('-').Contains(txtSearchList.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                    if (filterList.Count == 0)
+                    {
+                        filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Contains(txtSearchList.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                    }
+                    gvSupplyNeeds.DataSource = filterList;
+                    gvSupplyNeeds.DataBind();
+                    if (filterList.Count > 0)
+                    {
+                        Session["SupplyNeedFilterList"] = filterList;
+                    }
+
+                }
+                else
+                {
+                    gvSupplyNeeds.DataSource = records;
+                    gvSupplyNeeds.DataBind();
+                    if (records.Count > 0)
+                    {
+                        Session["SupplyNeedFilterList"] = records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

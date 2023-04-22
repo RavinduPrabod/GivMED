@@ -2,6 +2,8 @@
 using GivMED.Dto;
 using GivMED.Models;
 using GivMED.Service;
+using MailKit.Net.Smtp;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,8 @@ namespace GivMED.Pages.App.Donor
 
         private void PageLoad()
         {
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
             LoadGridView();
             btnConfirm.Visible = true;
             btnDonate.Visible = false;
@@ -279,11 +283,20 @@ namespace GivMED.Pages.App.Donor
                 {
                     case "ViewData":
                         ViewState["index"] = e.CommandArgument.ToString();
-                        ViewRecord();
-                        btnConfirm.Visible = true;
-                        btnDonate.Visible = false;
-                        btnCancel.Visible = false;
-                        mvpublishNeeds.ActiveViewIndex = 1;
+
+                        if(Convert.ToBoolean(Session["donorisvalid"]) == true)
+                        {
+                            ViewRecord();
+                            btnConfirm.Visible = true;
+                            btnDonate.Visible = false;
+                            btnCancel.Visible = false;
+                            mvpublishNeeds.ActiveViewIndex = 1;
+                        }
+                        else
+                        {
+                            Response.Redirect("/Pages/App/Profile/Profile.aspx");
+                            ShowErrorMessage("Complete your profile first");
+                        }
                         break;
 
                     case "ShowDetails":
@@ -297,6 +310,14 @@ namespace GivMED.Pages.App.Donor
             {
                 throw ex;
             }
+        }
+
+        private void CheckDonorMaster()
+        {
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+            Session["donorisvalid"] = null;
+            Session["donorisvalid"] = oCommonService.GetIsDonorAvailability(loggedUser.UserName);
         }
 
         private void ViewRecord()
@@ -506,6 +527,9 @@ namespace GivMED.Pages.App.Donor
                 {
                     ShowDonationConfirm(response.Result);
                     PageLoad();
+                    oPostData.DonationHeader.DonationID = response.Result.ToString();
+                    oPostData.DonorMaster = oProfileService.GetDonorMaster(loggedUser.UserName);
+                    EmailSender(oPostData);
                 }
                 else
                 {
@@ -519,9 +543,39 @@ namespace GivMED.Pages.App.Donor
             }
         }
 
-        private void OpenAIFinder()
+        private void EmailSender(PublishedNeedsPostDto odata)
         {
+            try
+            {
+                var email = new MimeMessage();
 
+                email.From.Add(new MailboxAddress("GiveMED Donation Confirmation Notice", "lucifer98moninstar@gmail.com"));
+                email.To.Add(new MailboxAddress("User", "givemed.donation@gmail.com"));
+
+                email.Subject = "We are pleased to inform you that the donation for the '" + odata.DonationHeader.SupplyID.ToString() + "' has been confirmed by the donor.";
+                email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+                {
+                    Text = $"Below are the details of the donation:\n\nDonation ID: {odata.DonationHeader.DonationID}\n" +
+                    $"Donor Name: { (odata.DonorMaster.DonorType == 1 ? odata.DonorMaster.DonorFirstName + " " + odata.DonorMaster.DonorLastName : odata.DonorMaster.DonorFirstName)}\n" +
+                    $"Donor Email: {odata.UserName}\nSupply ID: {odata.DonationHeader.SupplyID}\n" +
+                    $"Deal Date: {odata.DonationHeader.DonationDealDate}\n\nWe hope that this donation will be helpful for the patients in need and contribute to the\n" +
+                    $"improvement of healthcare services in your hospital.\n\nThank you for your continued partnership with us.\n\nBest regards,\n{odata.DonorMaster.DonorFirstName}"
+                };
+
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect("smtp.elasticemail.com", 2525);
+
+                    smtp.Authenticate("lucifer98moninstar@gmail.com", "AFEF5C9832C1703859A338C87629F8A83BEA");
+
+                    smtp.Send(email);
+                    smtp.Disconnect(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void ShowDonationConfirm(string DonationID)

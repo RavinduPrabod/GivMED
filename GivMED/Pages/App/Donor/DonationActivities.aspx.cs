@@ -26,6 +26,7 @@ namespace GivMED.Pages.App.Donor
 
         private int LoaGridView()
         {
+            Session["DonationActList"] = null;
             LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
             List<DonationActivityDto> oBindList = new List<DonationActivityDto>();
@@ -34,12 +35,54 @@ namespace GivMED.Pages.App.Donor
 
             gvDonationList.DataSource = oBindList.OrderByDescending(x=>x.DonationCreateDate).ToList();
             gvDonationList.DataBind();
+            if (oBindList.Count > 0)
+                Session["DonationActList"] = oBindList;
 
             int donationcount = oBindList.Count();
 
             return donationcount;
         }
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            Search();
+        }
 
+        private void Search()
+        {
+            try
+            {
+                Session["DonationActFilterList"] = null;
+                List<DonationActivityDto> records = Session["DonationActList"] != null ? (List<DonationActivityDto>)Session["DonationActList"] : new List<DonationActivityDto>();
+                if (!string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    List<DonationActivityDto> filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Split('-').Contains(txtSearch.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                    if (filterList.Count == 0)
+                    {
+                        filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Contains(txtSearch.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                    }
+                    gvDonationList.DataSource = filterList;
+                    gvDonationList.DataBind();
+                    if (filterList.Count > 0)
+                    {
+                        Session["DonationActFilterList"] = filterList;
+                    }
+
+                }
+                else
+                {
+                    gvDonationList.DataSource = records;
+                    gvDonationList.DataBind();
+                    if (records.Count > 0)
+                    {
+                        Session["DonationActFilterList"] = records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private void GetInfoBoxCssClass(int count)
         {
             int score = count * 5;

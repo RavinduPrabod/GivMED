@@ -205,6 +205,7 @@
     <Content Include="dist\css\alt\adminlte.plugins.min.css" />
     <Content Include="dist\css\bootstrap-datetimepicker.min.css" />
     <Content Include="dist\css\datepicker3.css" />
+    <Content Include="dist\css\GiveMEDHome.css" />
     <Content Include="dist\css\validationEngine.jquery.css" />
     <Content Include="dist\img\1.png" />
     <Content Include="dist\img\2.png" />
@@ -265,18 +266,50 @@
     <Content Include="dist\img\user8-128x128.jpg" />
     <Content Include="dist\js\adminlte.js" />
     <Content Include="dist\js\adminlte.min.js" />
+    <Content Include="dist\js\animate\animate.css" />
+    <Content Include="dist\js\animate\animate.min.css" />
     <Content Include="dist\js\bootstrap-datepicker.js" />
     <Content Include="dist\js\bootstrap-datetimepicker.js" />
     <Content Include="dist\js\bootstrap-datetimepicker.min.js" />
+    <Content Include="dist\js\bootstrap.min.css" />
     <Content Include="dist\js\common.js" />
     <Content Include="dist\js\demo.js" />
+    <Content Include="dist\js\easing\easing.js" />
+    <Content Include="dist\js\easing\easing.min.js" />
+    <Content Include="dist\js\isotope\isotope.pkgd.js" />
+    <Content Include="dist\js\isotope\isotope.pkgd.min.js" />
+    <Content Include="dist\js\lightbox\css\lightbox.css" />
+    <Content Include="dist\js\lightbox\css\lightbox.min.css" />
+    <Content Include="dist\js\lightbox\images\close.png" />
+    <Content Include="dist\js\lightbox\images\loading.gif" />
+    <Content Include="dist\js\lightbox\images\next.png" />
+    <Content Include="dist\js\lightbox\images\prev.png" />
+    <Content Include="dist\js\lightbox\js\lightbox.js" />
+    <Content Include="dist\js\lightbox\js\lightbox.min.js" />
+    <Content Include="dist\js\lightbox\links.php" />
+    <Content Include="dist\js\main.js" />
     <Content Include="dist\js\MicrosoftAjax.js" />
     <Content Include="dist\js\MicrosoftAjaxWebForms.js" />
     <Content Include="dist\js\jquery.validationEngine-en.js" />
     <Content Include="dist\js\jquery.validationEngine.js" />
+    <Content Include="dist\js\owlcarousel\assets\ajax-loader.gif" />
+    <Content Include="dist\js\owlcarousel\assets\owl.carousel.css" />
+    <Content Include="dist\js\owlcarousel\assets\owl.carousel.min.css" />
+    <Content Include="dist\js\owlcarousel\assets\owl.theme.default.css" />
+    <Content Include="dist\js\owlcarousel\assets\owl.theme.default.min.css" />
+    <Content Include="dist\js\owlcarousel\assets\owl.theme.green.css" />
+    <Content Include="dist\js\owlcarousel\assets\owl.theme.green.min.css" />
+    <Content Include="dist\js\owlcarousel\assets\owl.video.play.png" />
+    <Content Include="dist\js\owlcarousel\owl.carousel.js" />
+    <Content Include="dist\js\owlcarousel\owl.carousel.min.js" />
     <Content Include="dist\js\pages\dashboard.js" />
     <Content Include="dist\js\pages\dashboard2.js" />
     <Content Include="dist\js\pages\dashboard3.js" />
+    <Content Include="dist\js\style.css" />
+    <Content Include="dist\js\waypoints\links.php" />
+    <Content Include="dist\js\waypoints\waypoints.min.js" />
+    <Content Include="dist\js\wow\wow.js" />
+    <Content Include="dist\js\wow\wow.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -314,10 +347,10 @@
     <Content Include="Pages\App\Profile\Profile.aspx" />
     <Content Include="Pages\HLogin.aspx" />
     <Content Include="Pages\Login.aspx" />
+    <Content Include="Pages\Web\Benifits.aspx" />
     <Content Include="Pages\Web\DonationGuide.aspx" />
     <Content Include="Pages\Web\HomePage.aspx" />
     <Content Include="Pages\Web\Registration\DonorRegistration.aspx" />
-    <Content Include="Pages\Web\Registration\FundraiserRegistration.aspx" />
     <Content Include="Pages\Web\Registration\HospitalRegistration.aspx" />
     <Content Include="Pages\Web\Review\DonationReview.aspx" />
     <Content Include="Pages\Web\validation.aspx" />
@@ -389,6 +422,7 @@
     <Content Include="plugins\summernote\summernote.min.js.map" />
     <Content Include="plugins\toastr\toastr.js.map" />
     <Content Include="Login.Master" />
+    <Content Include="dist\js\owlcarousel\LICENSE" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css" />
@@ -2289,6 +2323,7 @@
     <Compile Include="Dto\DonationReviewFeedbackDto.cs" />
     <Compile Include="Dto\DonorGrid.cs" />
     <Compile Include="Dto\GetDonationandSupplyDto.cs" />
+    <Compile Include="Dto\HomeDashLineDto.cs" />
     <Compile Include="Dto\HospitalSupplyNeedsGridDto.cs" />
     <Compile Include="Dto\LoggedUserDto.cs" />
     <Compile Include="Dto\PublishedNeedsPostDto.cs" />
@@ -2396,6 +2431,13 @@
     <Compile Include="Pages\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Web\Benifits.aspx.cs">
+      <DependentUpon>Benifits.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Web\Benifits.aspx.designer.cs">
+      <DependentUpon>Benifits.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Web\DonationGuide.aspx.cs">
       <DependentUpon>DonationGuide.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2416,13 +2458,6 @@
     </Compile>
     <Compile Include="Pages\Web\Registration\DonorRegistration.aspx.designer.cs">
       <DependentUpon>DonorRegistration.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Web\Registration\FundraiserRegistration.aspx.cs">
-      <DependentUpon>FundraiserRegistration.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Web\Registration\FundraiserRegistration.aspx.designer.cs">
-      <DependentUpon>FundraiserRegistration.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Web\Registration\HospitalRegistration.aspx.cs">
       <DependentUpon>HospitalRegistration.aspx</DependentUpon>

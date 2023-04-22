@@ -13,5 +13,15 @@ namespace GivMED.Pages.Web
         {
 
         }
+
+        protected void btnjoinFundraiser_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Registration/DonorRegistration.aspx");
+        }
+
+        protected void btnjoinRecipient_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Registration/HospitalRegistration.aspx");
+        }
     }
 }

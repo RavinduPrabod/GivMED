@@ -42,5 +42,7 @@ namespace GivMED.Models
 
 
         public string ModifiedUser { get; set; }
+
+        public string SearchIndex => $"{VolCode} {"-"} {VolName} {"-"} {Telephone}";
     }
 }

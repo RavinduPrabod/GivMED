@@ -34,13 +34,13 @@ namespace GiveMED.Api.Controllers
             var conn = _context.Database.GetDbConnection();
             conn.Open();
             var comm = conn.CreateCommand();
-            comm.CommandText = "SELECT A.SupplyID,  A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, B.SupplyItemQty, SUM(D.DonatedQty) as DonatedQty " +
+            comm.CommandText = "SELECT A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, B.SupplyItemQty, SUM(D.DonatedQty) as DonatedQty, A.SupplyStatus " +
                 "FROM SupplyRequestHeader A " +
                 "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
                 "INNER JOIN HospitalMaster C ON A.HospitalID = C.HospitalID " +
                 "LEFT OUTER JOIN DonationDetails D ON A.SupplyID = D.SupplyID AND B.SupplyItemCat = D.ItemCategory AND B.SupplyItemID = D.ItemID " +
                 "WHERE A.SupplyStatus = 1 AND A.HospitalID = @HospitalID " +
-                "GROUP BY A.SupplyID,  A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, B.SupplyItemQty";
+                "GROUP BY A.SupplyID,  A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, B.SupplyItemQty, A.SupplyStatus";
 
             comm.Parameters.Add(id);
             var reader = comm.ExecuteReader();
@@ -53,9 +53,18 @@ namespace GiveMED.Api.Controllers
                 data.SupplyExpireDate = Convert.IsDBNull(reader["SupplyExpireDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyExpireDate"]);
                 data.RequestQty = Convert.IsDBNull(reader["SupplyItemQty"]) ? 0 : Convert.ToInt64(reader["SupplyItemQty"]);
                 data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
+                data.SupplyStatus = Convert.IsDBNull(reader["SupplyStatus"]) ? 0 : Convert.ToInt32(reader["SupplyStatus"]);
                 Records.Add(data);
             }
             conn.Close();
+
+            foreach(var item in Records)
+            {
+                HospitalSupplyNeedsGridDto odata = new HospitalSupplyNeedsGridDto();
+                int headercount = _context.DonationHeader.Where(z => z.SupplyID == item.SupplyID).Count();
+
+
+            }
 
             return Records;
         }

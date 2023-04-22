@@ -109,9 +109,11 @@ namespace GivMED.Pages.App.Profile
 
             if (response.StatusCode == (int)StatusCode.Success)
             {
+                Session["donorisvalid"] = true;
                 ShowSuccessMessage(ResponseMessages.InsertSuccess);
                 btnSubmit.Visible = false;
                 btnSave.Visible = true;
+                Response.Redirect("~/Pages/App/Donor/Published_Needs.aspx");
             }
             else
             {

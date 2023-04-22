@@ -72,7 +72,7 @@
                                 <div class="post">
                                     <div class="user-block">
                                         <asp:Image runat="server" CssClass="img-circle img-bordered-sm" ImageUrl="~/dist/img/letter-h-128.ico" AlternateText="user image" />
-                                         <asp:Label ID="lblFeedHlName" runat="server" CssClass="username" Text=""></asp:Label>
+                                        <asp:Label ID="lblFeedHlName" runat="server" CssClass="username" Text=""></asp:Label>
                                         <asp:Label ID="lblFeedDate" runat="server" CssClass="description" Text=""></asp:Label>
                                     </div>
                                     <!-- /.user-block -->
@@ -81,7 +81,7 @@
                                     </p>
 
                                     <p>
-                                       <%-- <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i>Share</a>
+                                        <%-- <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i>Share</a>
                                         <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i>Like</a>
                                         <span class="float-right">
                                             <a href="#" class="link-black text-sm">
@@ -283,15 +283,20 @@
                         </div>
                         <!-- /.modal-dialog -->
                     </div>
-                    <div class="row">
-                        <div class="col-md-3 col-sm-6 col-12">
-                            <span>All Donation History
-                            </span>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Donation Activities</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 300px;">
+                                    <asp:TextBox runat="server" CssClass="form-control float-right" ID="txtSearch" placeholder="Search" TextMode="Search"></asp:TextBox>
+                                    <div class="input-group-append">
+                                        <asp:Button runat="server" ID="btnSearch" CssClass="btn btn-lg btn-default" Text="Search" OnClick="btnSearch_Click" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        &nbsp&nbsp
-                        <div class="card-body table-responsive p-0">
+                        <!-- /.card-header -->
+                        <div class="card-body">
                             <asp:GridView ID="gvDonationList" runat="server" AutoGenerateColumns="False" CssClass="table table-hover text-nowrap table-bordered" AllowPaging="true" PageSize="10" OnRowDataBound="gvDonationList_RowDataBound" OnRowCommand="gvDonationList_RowCommand" OnPageIndexChanging="gvDonationList_PageIndexChanging">
                                 <Columns>
                                     <asp:TemplateField HeaderText="DonationID">
@@ -323,7 +328,7 @@
                                         </ItemTemplate>
                                         <ItemStyle Width="20%" />
                                     </asp:TemplateField>
-                                     <asp:TemplateField HeaderText="Status">
+                                    <asp:TemplateField HeaderText="Status">
                                         <ItemTemplate>
                                             <asp:Label ID="lblStatus" runat="server" Text='<%# Bind("Status") %>'></asp:Label>
                                         </ItemTemplate>
@@ -335,7 +340,7 @@
                                             </asp:LinkButton>
                                             <asp:LinkButton ID="btnFeedback" runat="server" CssClass="btn btn-warning" ToolTip="View Feedback" CausesValidation="false" CommandName="Contact" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-star"></i>
                                             </asp:LinkButton>
-                                            </ItemTemplate>
+                                        </ItemTemplate>
                                         <ItemStyle Width="10%" />
                                     </asp:TemplateField>
                                 </Columns>

@@ -11,25 +11,23 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
+                                 <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-md" Text="Create New publish here" OnClick="btnCreate_Click" />
                                 <div class="card-header">
-                                    <h3 class="card-title">Supply Needs Publications</h3>
+                                    <h3 class="card-title">Supplies Needs Publications</h3>
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 300px;">
                                             <asp:TextBox runat="server" CssClass="form-control float-right" ID="txtSearchList" placeholder="Search" TextMode="Search"></asp:TextBox>
                                             <div class="input-group-append">
-                                                <button type="submit" class="btn btn-default">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
+                                                <asp:Button runat="server" ID="btnSearch" CssClass="btn btn-lg btn-default" Text="Search" OnClick="btnSearch_Click" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- ./card-header -->
                                 <div class="card-body table-responsive p-0">
-                                    <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-xs" Text="Create New publish" OnClick="btnCreate_Click" />
                                     <asp:GridView ID="gvSupplyNeeds" runat="server" AutoGenerateColumns="False" CssClass="table table-striped projects table-bordered table-hover text-nowrap" AllowPaging="true" PageSize="10" OnRowDataBound="gvSupplyNeeds_RowDataBound" OnRowCommand="gvSupplyNeeds_RowCommand" OnPageIndexChanging="gvSupplyNeeds_PageIndexChanging">
                                         <Columns>
-                                            <asp:TemplateField HeaderText="#">
+                                            <asp:TemplateField HeaderText="# Code">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblSupplyID" runat="server" Text='<%# Bind("SupplyID") %>'></asp:Label>
                                                 </ItemTemplate>
@@ -53,13 +51,13 @@
                                                 </ItemTemplate>
                                                 <ItemStyle Width="10%" />
                                             </asp:TemplateField>
-                                            <%--<asp:TemplateField HeaderText="Status">
+                                            <asp:TemplateField HeaderText="Status">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblSupplyStatus" runat="server"></asp:Label>
                                                 </ItemTemplate>
                                                 <ItemStyle Width="8%" />
-                                            </asp:TemplateField>--%>
-                                            <asp:TemplateField HeaderText="Progress" ItemStyle-CssClass="project_progress">
+                                            </asp:TemplateField>
+<%--                                            <asp:TemplateField HeaderText="Progress" ItemStyle-CssClass="project_progress">
                                                 <ItemTemplate>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-green" role="progressbar"
@@ -69,13 +67,13 @@
                                                     </div>
                                                 </ItemTemplate>
                                                 <ItemStyle Width="10%" />
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="">
+                                            </asp:TemplateField>--%>
+<%--                                            <asp:TemplateField HeaderText="">
                                                 <ItemTemplate>
                                                    <span class="badge bg-danger"><%# Eval("Proceprecent") + "%" %></span>
                                                 </ItemTemplate>
                                                 <ItemStyle Width="2%" />
-                                            </asp:TemplateField>
+                                            </asp:TemplateField>--%>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <div class="project-actions text-center">

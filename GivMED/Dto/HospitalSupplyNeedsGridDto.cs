@@ -32,5 +32,7 @@ namespace GivMED.Dto
         public decimal Proceprecent { get; set; }
 
         public int DonorCount { get; set; }
+
+        public string SearchIndex => $"{SupplyID} {"-"} {SupplyPriorityLevel} {"-"} {SupplyType}";
     }
 }

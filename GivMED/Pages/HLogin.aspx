@@ -48,7 +48,8 @@
                             <!-- /.social-auth-links -->
 
                             <p class="mb-0">
-                                <a href="/Pages/Web/Registration/HospitalRegistration.aspx" class="text-center">Register a new hospital</a>
+                                <a href="/Pages/Web/Registration/HospitalRegistration.aspx" class="text-center">Register a new hospital</a><br>
+                                <a href="/Pages/Web/HomePage.aspx" class="text-center" style="font-weight: bold">Back to Home</a>
                             </p>
                         </div>
                         <!-- /.card-body -->

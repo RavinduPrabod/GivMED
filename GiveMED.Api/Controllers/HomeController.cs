@@ -85,5 +85,18 @@ namespace GiveMED.Api.Controllers
 
             return Records;
         }
+
+        [HttpGet]
+        [ActionName("GetHomeDashTopLineData")]
+
+        public HomeDashLineDto GetHospitalMasterForID()
+        {
+            HomeDashLineDto odata = new HomeDashLineDto();
+            odata.DonorsCount = _context.DonorMaster.Count();
+            odata.HospitalCount = _context.HospitalMaster.Count();
+            odata.DonationCount = _context.SupplyRequestHeader.Count();
+
+            return odata;
+        }
     }
 }

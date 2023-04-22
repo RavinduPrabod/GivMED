@@ -26,200 +26,221 @@ namespace GivMED.Pages.Web
 
             if (!this.IsPostBack)
             {
-                List<TopTrendingDonorDto> result = new List<TopTrendingDonorDto>();
-                List<TopTrendingDonorDto> lastresult = new List<TopTrendingDonorDto>();
+                Session["loggedUser"] = null;
+                Session["donorisvalid"] = null;
+                PageLoad();
+            }
+        }
+        private void EmailSender()
+        {
+            try
+            {
+                var random = new Random();
+                var code = random.Next(100000, 999999); // Generate a 6-digit code
 
-                List<TopTrendingDonorDto> Toplist = new List<TopTrendingDonorDto>();
-                List<TopTrendingDonorDto> grplist = new List<TopTrendingDonorDto>();
+                var email = new MimeMessage();
 
-                Toplist = oHomeService.GetTopRateDonors();
+                email.From.Add(new MailboxAddress("GiveMED", "lucifer98moninstar@gmail.com"));
+                email.To.Add(new MailboxAddress("User", "givemed.donation@gmail.com"));
 
-                grplist = Toplist.GroupBy(s => s.DonorID)
-                                                    .Select(group => group.First())
-                                                    .ToList();
-
-                foreach (var item in grplist)
+                email.Subject = "Your verification code";
+                email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
                 {
-                    TopTrendingDonorDto otemp = new TopTrendingDonorDto();
-                    otemp.DonorName = item.DonorName.ToString();
-                    otemp.ImgURL = GetimageURL(item.ImgURL);
-                    otemp.DonationCredit = (5 * Toplist.Where(x => x.DonorID == item.DonorID).Count());
-                    otemp.DonorID = item.DonorID;
-                    otemp.LastActivityDate = Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().CreatedDateTime;
-                    otemp.Lastprogram1 = Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().HospitalName + " " + Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().SupplyID;
-                    otemp.Lastprogram2 = Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().HospitalName + " " + Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().SupplyID;
-                    result.Add(otemp);
+                    Text = $"Your verification code is {code}"
+                };
+
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect("smtp.elasticemail.com", 2525);
+
+                    smtp.Authenticate("lucifer98moninstar@gmail.com", "AFEF5C9832C1703859A338C87629F8A83BEA");
+
+                    smtp.Send(email);
+                    smtp.Disconnect(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void PageLoad()
+        {
+            List<TopTrendingDonorDto> result = new List<TopTrendingDonorDto>();
+            List<TopTrendingDonorDto> lastresult = new List<TopTrendingDonorDto>();
+
+            List<TopTrendingDonorDto> Toplist = new List<TopTrendingDonorDto>();
+            List<TopTrendingDonorDto> grplist = new List<TopTrendingDonorDto>();
+
+            Toplist = oHomeService.GetTopRateDonors();
+
+            grplist = Toplist.GroupBy(s => s.DonorID)
+                                                .Select(group => group.First())
+                                                .ToList();
+
+            foreach (var item in grplist)
+            {
+                TopTrendingDonorDto otemp = new TopTrendingDonorDto();
+                otemp.DonorName = item.DonorName.ToString();
+                otemp.ImgURL = GetimageURL(item.ImgURL);
+                otemp.DonationCredit = (5 * Toplist.Where(x => x.DonorID == item.DonorID).Count());
+                otemp.DonorID = item.DonorID;
+                otemp.LastActivityDate = Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().CreatedDateTime;
+                otemp.Lastprogram1 = Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().HospitalName + " " + Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().SupplyID;
+                otemp.Lastprogram2 = Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().HospitalName + " " + Toplist.Where(x => x.DonorID == item.DonorID).LastOrDefault().SupplyID;
+                result.Add(otemp);
+            }
+
+            result = result.OrderByDescending(x => x.DonationCredit).Take(3).ToList();
+
+            TopTrendingDonorDto odata = new TopTrendingDonorDto();
+
+            for (int i = 0; result.Count > i; i++)
+            {
+                if (result[i].DonorName.Length > 25)
+                {
+                    result[i].DonorName = result[i].DonorName.Substring(0, 25) + "...";
                 }
 
-                result = result.OrderByDescending(x => x.DonationCredit).Take(3).ToList();
+                DateTime? dateOnly = Toplist.Where(x => x.DonorID == result[i].DonorID).OrderByDescending(x => x.CreatedDateTime).First().CreatedDateTime;
 
-                TopTrendingDonorDto odata = new TopTrendingDonorDto();
+                DateTime paraddate = dateOnly?.Date ?? DateTime.MinValue;
 
-                for (int i = 0; result.Count > i; i++)
+                DateTime now = DateTime.Now;
+                DateTime tomorrow = now.AddDays(1);
+                string formattedDateTime;
+
+                if (now.Date == paraddate)
                 {
-                    if (result[i].DonorName.Length > 25)
-                    {
-                        result[i].DonorName = result[i].DonorName.Substring(0, 25) + "...";
-                    }
-
-                    DateTime? dateOnly = Toplist.Where(x => x.DonorID == result[i].DonorID).OrderByDescending(x => x.CreatedDateTime).First().CreatedDateTime;
-
-                    DateTime paraddate = dateOnly?.Date ?? DateTime.MinValue;
-
-                    DateTime now = DateTime.Now;
-                    DateTime tomorrow = now.AddDays(1);
-                    string formattedDateTime;
-
-                    if (now.Date == paraddate)
-                    {
-                        // If the date is today, format the time as "h:mm tt" and add "today" at the end
-                        formattedDateTime = now.ToString("h:mm tt") + " today";
-                    }
-                    else if (tomorrow.Date == paraddate)
-                    {
-                        // If the date is tomorrow, format the time as "h:mm tt" and add "tomorrow" at the end
-                        formattedDateTime = now.ToString("h:mm tt") + " tomorrow";
-                    }
-                    else
-                    {
-                        // If the date is not today or tomorrow, format the date and time as "M/d/yyyy h:mm tt"
-                        formattedDateTime = paraddate.ToString("M/d/yyyy h:mm tt");
-                    }
-
-                    if (i == 0)
-                    {
-                        odata.DonorNameT1 = result[i].DonorName;
-                        odata.ImgURLT1 = result[i].ImgURL;
-                        odata.DonationCreditT1 = result[i].DonationCredit;
-                        odata.LastActivityDateT1 = formattedDateTime;
-                        odata.Lastprogram1T1 = result[i].Lastprogram1;
-                        odata.Lastprogram2T1 = result[i].Lastprogram2;
-                    }
-                    else if (i == 1)
-                    {
-                        odata.DonorNameT2 = result[i].DonorName;
-                        odata.ImgURLT2 = result[i].ImgURL;
-                        odata.DonationCreditT2 = result[i].DonationCredit;
-                        odata.LastActivityDateT2 = formattedDateTime;
-                        odata.Lastprogram1T2 = result[i].Lastprogram1;
-                        odata.Lastprogram2T2 = result[i].Lastprogram2;
-                    }
-                    else
-                    {
-                        odata.DonorNameT3 = result[i].DonorName;
-                        odata.ImgURLT3 = result[i].ImgURL;
-                        odata.DonationCreditT3 = result[i].DonationCredit;
-                        odata.LastActivityDateT3 = formattedDateTime;
-                        odata.Lastprogram1T3 = result[i].Lastprogram1;
-                        odata.Lastprogram2T3 = result[i].Lastprogram2;
-                    }
+                    // If the date is today, format the time as "h:mm tt" and add "today" at the end
+                    formattedDateTime = now.ToString("h:mm tt") + " today";
+                }
+                else if (tomorrow.Date == paraddate)
+                {
+                    // If the date is tomorrow, format the time as "h:mm tt" and add "tomorrow" at the end
+                    formattedDateTime = now.ToString("h:mm tt") + " tomorrow";
+                }
+                else
+                {
+                    // If the date is not today or tomorrow, format the date and time as "M/d/yyyy h:mm tt"
+                    formattedDateTime = paraddate.ToString("M/d/yyyy h:mm tt");
                 }
 
-
-                List<TopTrendingDonorDto> Temp1list = new List<TopTrendingDonorDto>();
-                List<TopTrendingDonorDto> Temp2list = new List<TopTrendingDonorDto>();
-
-                Temp1list = oHomeService.GetTopTrendingDonations();
-
-                grplist = Temp1list.GroupBy(s => s.SupplyID)
-                                                    .Select(group => group.First())
-                                                    .ToList();
-                Temp2list = grplist.OrderByDescending(x => x.DonorCount).Take(3).ToList();
-
-                for (int i = 0; Temp2list.Count > i; i++)
+                if (i == 0)
                 {
-                    long requestedQty = 0;
-                    long donatedQty = 0;
-
-                    if (i == 0)
-                    {
-                        odata.DonationIDD1 = Temp2list[i].SupplyID;
-                        odata.PriorityD1 = Temp2list[i].SupplyPriorityLevel.ToString();
-
-                        requestedQty = Temp2list[i].RequestQty;
-                        donatedQty = Temp1list.Where(x=>x.SupplyID == Temp2list[i].SupplyID).Select(x=>x.DonatedQty).Sum();
-
-                        // Calculate donated percentage
-                        double donatedPercentage = (double)donatedQty / requestedQty * 100;
-                        // Round to 2 decimal places
-                        donatedPercentage = Convert.ToInt32(donatedPercentage);
-
-                        odata.DonationPrecentatgeD1 = Convert.ToInt32(donatedPercentage);
-
-                        odata.DonorCountD1 = Temp2list[i].DonorCount.ToString();
-                        odata.HospitalNameD1 = Temp2list[i].HospitalName;
-                        odata.HLocationD1 = Temp2list[i].City;
-                    }
-                    else if (i == 1)
-                    {
-                        odata.DonationIDD2 = Temp2list[i].SupplyID;
-                        odata.PriorityD2 = Temp2list[i].SupplyPriorityLevel.ToString();
-
-                        requestedQty = Temp2list[i].RequestQty;
-                        donatedQty = Temp1list.Where(x => x.SupplyID == Temp2list[i].SupplyID).Select(x => x.DonatedQty).Sum();
-
-                        // Calculate donated percentage
-                        double donatedPercentage = (double)donatedQty / requestedQty * 100;
-                        // Round to 2 decimal places
-                        donatedPercentage = Convert.ToInt32(donatedPercentage);
-
-                        odata.DonationPrecentatgeD2 = Convert.ToInt32(donatedPercentage);
-
-                        odata.DonorCountD2 = Temp2list[i].DonorCount.ToString();
-                        odata.HospitalNameD2 = Temp2list[i].HospitalName;
-                        odata.HLocationD2 = Temp2list[i].City;
-                    }
-                    else
-                    {
-                        odata.DonationIDD3 = Temp2list[i].SupplyID;
-                        odata.PriorityD3 = Temp2list[i].SupplyPriorityLevel.ToString();
-
-                        requestedQty = Temp2list[i].RequestQty;
-                        donatedQty = Temp1list.Where(x => x.SupplyID == Temp2list[i].SupplyID).Select(x => x.DonatedQty).Sum();
-
-                        // Calculate donated percentage
-                        double donatedPercentage = (double)donatedQty / requestedQty * 100;
-                        // Round to 2 decimal places
-                        donatedPercentage = Convert.ToInt32(donatedPercentage);
-
-                        odata.DonationPrecentatgeD3 = Convert.ToInt32(donatedPercentage);
-
-                        odata.DonorCountD3 = Temp2list[i].DonorCount.ToString();
-                        odata.HospitalNameD3 = Temp2list[i].HospitalName;
-                        odata.HLocationD3 = Temp2list[i].City;
-                    }
-
+                    odata.DonorNameT1 = result[i].DonorName;
+                    odata.ImgURLT1 = result[i].ImgURL;
+                    odata.DonationCreditT1 = result[i].DonationCredit;
+                    odata.LastActivityDateT1 = formattedDateTime;
+                    odata.Lastprogram1T1 = result[i].Lastprogram1;
+                    odata.Lastprogram2T1 = result[i].Lastprogram2;
                 }
-
-
-                lastresult.Add(odata);
-                gvDonorProgress.DataSource = lastresult;
-                gvDonorProgress.DataBind();
+                else if (i == 1)
+                {
+                    odata.DonorNameT2 = result[i].DonorName;
+                    odata.ImgURLT2 = result[i].ImgURL;
+                    odata.DonationCreditT2 = result[i].DonationCredit;
+                    odata.LastActivityDateT2 = formattedDateTime;
+                    odata.Lastprogram1T2 = result[i].Lastprogram1;
+                    odata.Lastprogram2T2 = result[i].Lastprogram2;
+                }
+                else
+                {
+                    odata.DonorNameT3 = result[i].DonorName;
+                    odata.ImgURLT3 = result[i].ImgURL;
+                    odata.DonationCreditT3 = result[i].DonationCredit;
+                    odata.LastActivityDateT3 = formattedDateTime;
+                    odata.Lastprogram1T3 = result[i].Lastprogram1;
+                    odata.Lastprogram2T3 = result[i].Lastprogram2;
+                }
             }
 
 
+            List<TopTrendingDonorDto> Temp1list = new List<TopTrendingDonorDto>();
+            List<TopTrendingDonorDto> Temp2list = new List<TopTrendingDonorDto>();
+
+            Temp1list = oHomeService.GetTopTrendingDonations();
+
+            grplist = Temp1list.GroupBy(s => s.SupplyID)
+                                                .Select(group => group.First())
+                                                .ToList();
+            Temp2list = grplist.OrderByDescending(x => x.DonorCount).Take(3).ToList();
+
+            for (int i = 0; Temp2list.Count > i; i++)
+            {
+                long requestedQty = 0;
+                long donatedQty = 0;
+
+                if (i == 0)
+                {
+                    odata.DonationIDD1 = Temp2list[i].SupplyID;
+                    odata.PriorityD1 = Temp2list[i].SupplyPriorityLevel.ToString();
+
+                    requestedQty = Temp2list[i].RequestQty;
+                    donatedQty = Temp1list.Where(x => x.SupplyID == Temp2list[i].SupplyID).Select(x => x.DonatedQty).Sum();
+
+                    // Calculate donated percentage
+                    double donatedPercentage = (double)donatedQty / requestedQty * 100;
+                    // Round to 2 decimal places
+                    donatedPercentage = Convert.ToInt32(donatedPercentage);
+
+                    odata.DonationPrecentatgeD1 = Convert.ToInt32(donatedPercentage);
+
+                    odata.DonorCountD1 = Temp2list[i].DonorCount.ToString();
+                    odata.HospitalNameD1 = Temp2list[i].HospitalName;
+                    odata.HLocationD1 = Temp2list[i].City;
+                }
+                else if (i == 1)
+                {
+                    odata.DonationIDD2 = Temp2list[i].SupplyID;
+                    odata.PriorityD2 = Temp2list[i].SupplyPriorityLevel.ToString();
+
+                    requestedQty = Temp2list[i].RequestQty;
+                    donatedQty = Temp1list.Where(x => x.SupplyID == Temp2list[i].SupplyID).Select(x => x.DonatedQty).Sum();
+
+                    // Calculate donated percentage
+                    double donatedPercentage = (double)donatedQty / requestedQty * 100;
+                    // Round to 2 decimal places
+                    donatedPercentage = Convert.ToInt32(donatedPercentage);
+
+                    odata.DonationPrecentatgeD2 = Convert.ToInt32(donatedPercentage);
+
+                    odata.DonorCountD2 = Temp2list[i].DonorCount.ToString();
+                    odata.HospitalNameD2 = Temp2list[i].HospitalName;
+                    odata.HLocationD2 = Temp2list[i].City;
+                }
+                else
+                {
+                    odata.DonationIDD3 = Temp2list[i].SupplyID;
+                    odata.PriorityD3 = Temp2list[i].SupplyPriorityLevel.ToString();
+
+                    requestedQty = Temp2list[i].RequestQty;
+                    donatedQty = Temp1list.Where(x => x.SupplyID == Temp2list[i].SupplyID).Select(x => x.DonatedQty).Sum();
+
+                    // Calculate donated percentage
+                    double donatedPercentage = (double)donatedQty / requestedQty * 100;
+                    // Round to 2 decimal places
+                    donatedPercentage = Convert.ToInt32(donatedPercentage);
+
+                    odata.DonationPrecentatgeD3 = Convert.ToInt32(donatedPercentage);
+
+                    odata.DonorCountD3 = Temp2list[i].DonorCount.ToString();
+                    odata.HospitalNameD3 = Temp2list[i].HospitalName;
+                    odata.HLocationD3 = Temp2list[i].City;
+                }
+
+            }
 
 
-            //var email = new MimeMessage();
+            lastresult.Add(odata);
+            gvDonorProgress.DataSource = lastresult;
+            gvDonorProgress.DataBind();
 
-            //email.From.Add(new MailboxAddress("Sender Name", "joan8@ethereal.email"));
-            //email.To.Add(new MailboxAddress("Receiver Name", "gilbert.runolfsdottir22@ethereal.email"));
-
-            //email.Subject = "Testing out email sending";
-            //email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
-            //{
-            //    Text = "Hello all the way from the land of C#"
-            //};
-            //using (var smtp = new SmtpClient())
-            //{
-            //    smtp.Connect("smtp.ethereal.email", 587, false);
-
-            //    // Note: only needed if the SMTP server requires authentication
-            //    smtp.Authenticate("joan8@ethereal.email", "DSaAs5TKsp6X5pgyKc");
-
-            //    smtp.Send(email);
-            //    smtp.Disconnect(true);
-            //}
+            HomeDashLineDto dashdata = oHomeService.GetHomeDashTopLineData();
+            lblDonorCount.Text = dashdata.DonorsCount.ToString();
+            lblHospitalCount.Text = dashdata.HospitalCount.ToString();
+            lblNeedCount.Text = dashdata.DonationCount.ToString();
         }
 
         private string GetimageURL(string fileName)
@@ -237,7 +258,7 @@ namespace GivMED.Pages.Web
 
         protected void btnjoinFundraiser_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Registration/FundraiserRegistration.aspx");
+            Response.Redirect("Registration/DonorRegistration.aspx");
         }
 
         protected void btnjoinRecipient_Click(object sender, EventArgs e)

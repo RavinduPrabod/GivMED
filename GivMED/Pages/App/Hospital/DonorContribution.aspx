@@ -65,11 +65,9 @@
                                     <h3 class="card-title">Donor Contribution</h3>
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 300px;">
-                                            <asp:TextBox runat="server" CssClass="form-control float-right" ID="txtSearchList" placeholder="Search" TextMode="Search"></asp:TextBox>
+                                            <asp:TextBox runat="server" CssClass="form-control float-right" ID="txtSearch" placeholder="Search" TextMode="Search"></asp:TextBox>
                                             <div class="input-group-append">
-                                                <button type="submit" class="btn btn-default">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
+                                                <asp:Button runat="server" ID="btnSearch" CssClass="btn btn-lg btn-default" Text="Search" OnClick="btnSearch_Click" />
                                             </div>
                                         </div>
                                     </div>
@@ -78,7 +76,7 @@
                                 <div class="card-body table-responsive p-0">
                                     <asp:GridView ID="gvDonorProgress" runat="server" AutoGenerateColumns="False" CssClass="table table-striped projects table-bordered table-hover text-nowrap" AllowPaging="true" PageSize="10" OnRowDataBound="gvDonorProgress_RowDataBound" OnRowCommand="gvDonorProgress_RowCommand">
                                         <Columns>
-                                            <asp:TemplateField HeaderText="#">
+                                            <asp:TemplateField HeaderText="# Code">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblSupplyID" runat="server" Text='<%# Bind("SupplyID") %>'></asp:Label>
                                                 </ItemTemplate>
@@ -92,18 +90,21 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Donations Progress" ItemStyle-CssClass="project_progress">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblSupplyPriorityLevel" runat="server"></asp:Label>
-                                                    &nbsp
-                                                      <asp:Label ID="lblDonorCount" Font-Bold="true" runat="server" Text='<%# Bind("DonorCount") %>'>Donors</asp:Label>
                                                     <div class="progress">
-                                                        <div class="progress-bar bg-blue" role="progressbar"
+                                                        <div class="progress-bar bg-green" role="progressbar"
                                                             aria-valuemin="0" aria-valuemax="100"
                                                             style='<%# "width:" + Eval("Proceprecent") + "%;" %>'>
                                                         </div>
                                                     </div>
-                                                    <span class="badge bg-primary"><%# Eval("Proceprecent") + "%" %></span>
+                                                    <span class="badge  bg-warning"><%# Eval("Proceprecent") + "%" %></span>
                                                 </ItemTemplate>
-                                                <ItemStyle Width="2%" />
+                                                <ItemStyle Width="10%" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Priority Level">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSupplyPriorityLevel" runat="server"></asp:Label>
+                                                </ItemTemplate>
+                                                <ItemStyle Width="1%" />
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Actions">
                                                 <ItemTemplate>
@@ -135,8 +136,8 @@
                                         <div class="card-header">
                                             <div class="row">
                                                 <div class="col-8">
-                                                     <asp:LinkButton ID="btnBackPage" runat="server" CssClass="btn btn-sm btn-secondary"  OnClick="btnBackPage_Click"><i class="fas fa-backward"></i> Back to Page
-                                                        </asp:LinkButton>
+                                                    <asp:LinkButton ID="btnBackPage" runat="server" CssClass="btn btn-sm btn-secondary" OnClick="btnBackPage_Click"><i class="fas fa-backward"></i> Back to Page
+                                                    </asp:LinkButton>
                                                 </div>
                                                 <div class="col-4">
                                                     <h1>#

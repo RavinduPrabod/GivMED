@@ -65,5 +65,32 @@ namespace GivMED.Service
                 throw;
             }
         }
+
+        public HomeDashLineDto GetHomeDashTopLineData()
+        {
+            try
+            {
+                HomeDashLineDto record = new HomeDashLineDto();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Home/GetHomeDashTopLineData";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<HomeDashLineDto>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

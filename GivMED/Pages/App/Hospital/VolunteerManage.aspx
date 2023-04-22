@@ -9,15 +9,14 @@
                 <asp:View ID="View1" runat="server">
                     &nbsp
                     <div class="card">
+                        <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-sm" Text="Add New Volunteer here" OnClick="btnCreate_Click" />
                         <div class="card-header">
                             <h3 class="card-title">Volunteer Maintanace</h3>
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 300px;">
-                                    <asp:TextBox runat="server" CssClass="form-control float-right" ID="txtSearchList" placeholder="Search" TextMode="Search"></asp:TextBox>
+                                    <asp:TextBox runat="server" CssClass="form-control float-right" ID="txtSearch" placeholder="Search" TextMode="Search"></asp:TextBox>
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default">
-                                            <i class="fas fa-search"></i>
-                                        </button>
+                                        <asp:Button runat="server" ID="btnSearch" CssClass="btn btn-lg btn-default" Text="Search" OnClick="btnSearch_Click" />
                                     </div>
                                 </div>
                             </div>
@@ -26,8 +25,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="card-body table-responsive p-0">
-                                    <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-sm" Text="Add New" OnClick="btnCreate_Click" />
-                                      &nbsp
+                                    &nbsp
                                     <asp:GridView ID="gvVol" runat="server" AutoGenerateColumns="False" CssClass="table table-striped projects table-bordered table-hover text-nowrap" AllowPaging="true" OnRowCommand="gvVol_RowCommand">
                                         <Columns>
                                             <asp:TemplateField HeaderText="Code">
@@ -72,6 +70,7 @@
                                                     <asp:LinkButton ID="EditButton" runat="server" CssClass="btn btn-info btn-sm" Text="Edit" CommandName="EditData" CausesValidation="false" CommandArgument="<%# Container.DisplayIndex %>"></asp:LinkButton>
                                                     <asp:LinkButton ID="DeleteButton" runat="server" CssClass="btn btn-danger btn-sm" Text="Delete" OnClientClick="ShowDeleteConfirmationPop();"></asp:LinkButton>
                                                 </ItemTemplate>
+                                                <ItemStyle Width="2%" />
                                             </asp:TemplateField>
                                         </Columns>
                                     </asp:GridView>
@@ -155,7 +154,7 @@
                                 <div class="offset-sm-2 col-sm-10">
                                     <asp:Button runat="server" CssClass="btn btn-primary" ID="btnAdd" Text="Add" OnClientClick="return Validate();" OnClick="btnAdd_Click" />
                                     <asp:Button runat="server" CssClass="btn btn-success" ID="btnSave" Text="Save" OnClientClick="return Validate();" OnClick="btnSave_Click" />
-                                    <asp:Button runat="server" CssClass="btn btn-warning" ID="btnCancel" Text="Cancel" OnClientClick="return Validate();" OnClick="btnCancel_Click" />
+                                    <asp:Button runat="server" CssClass="btn btn-warning" ID="btnCancel" Text="Cancel" OnClick="btnCancel_Click" />
                                 </div>
                             </div>
                         </div>

@@ -67,6 +67,7 @@ namespace GivMED.Pages.App.Hospital
 
         private void LoadGridview()
         {
+            Session["VolgridList"] = null;
             LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
             List<VolunteerMaster> odata = new List<VolunteerMaster>();
@@ -74,8 +75,51 @@ namespace GivMED.Pages.App.Hospital
 
             gvVol.DataSource = odata;
             gvVol.DataBind();
+
+            if (odata.Count > 0)
+                Session["VolgridList"] = odata;
+        }
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            Search();
         }
 
+        private void Search()
+        {
+            try
+            {
+                Session["VolgridFilterList"] = null;
+                List<VolunteerMaster> records = Session["VolgridList"] != null ? (List<VolunteerMaster>)Session["VolgridList"] : new List<VolunteerMaster>();
+                if (!string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    List<VolunteerMaster> filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Split('-').Contains(txtSearch.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                    if (filterList.Count == 0)
+                    {
+                        filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Contains(txtSearch.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                    }
+                    gvVol.DataSource = filterList;
+                    gvVol.DataBind();
+                    if (filterList.Count > 0)
+                    {
+                        Session["VolgridFilterList"] = filterList;
+                    }
+
+                }
+                else
+                {
+                    gvVol.DataSource = records;
+                    gvVol.DataBind();
+                    if (records.Count > 0)
+                    {
+                        Session["VolgridFilterList"] = records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private VolunteerMaster UiToModelAddVolunteer()
         {
             LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];

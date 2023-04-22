@@ -57,22 +57,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <li class="nav-item">
                             <a href="/Pages/Web/Review/DonationReview.aspx" class="nav-link">
                                 <p>
-                                    Donate Now<span class="right badge badge-danger">Live</span>
+                                    Donate Now  &nbsp<span class="right badge badge-danger">Live</span>
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Benifits</a>
+                            <a href="/Pages/Web/Benifits.aspx" class="nav-link">Benifits</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">How its work</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Fundraising Guide</a>
+                            <a href="/Pages/Web/DonationGuide.aspx" class="nav-link">Fundraising Guide</a>
                         </li>
                         <li class="nav-item">
                             <a href="/Pages/Login.aspx" class="btn btn-danger">Login Donor</a>
                         </li>
+                        &nbsp
                         <li class="nav-item">
                             <a href="/Pages/HLogin.aspx" class="btn btn-warning">Login Hospital</a>
                         </li>
