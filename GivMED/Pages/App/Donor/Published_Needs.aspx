@@ -295,22 +295,29 @@
                     <!-- /.card -->
                 </asp:View>
                 <asp:View ID="View2" runat="server">
-                    <div class="modal fade" id="modal-DonateConfirm">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Donation Confirmation</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <asp:TextBox ID="txtDealDate" runat="server" autocomplete="off" CssClass="form-control" TabIndex="1" placeholder="Enter Deal Date"></asp:TextBox>
+                    <div class="card">
+                        <div class="card-header p-2">
+                            <asp:LinkButton ID="btnBackPage" runat="server" CssClass="btn btn-sm btn-secondary" OnClick="btnBackPage_Click"><i class="fas fa-backward"></i> Back to Page
+                            </asp:LinkButton>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="modal fade" id="modal-DonateConfirm">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Get Help Volunteers</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
-                                    </div>
-                                    &nbsp
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <asp:TextBox ID="txtDealDate" runat="server" autocomplete="off" CssClass="form-control" TabIndex="1" placeholder="Enter Deal Date"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            &nbsp
                                     <div class="row">
                                         <div class="col-12">
                                             <asp:GridView ID="gvVolunteer" runat="server" AutoGenerateColumns="False" CssClass="table table-striped projects table-bordered table-hover text-nowrap" AllowPaging="true">
@@ -361,26 +368,17 @@
                                             </asp:GridView>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <asp:LinkButton ID="btnSubmit" runat="server" CssClass="btn btn-sm btn-success" OnClick="btnSubmit_Click" OnClientClick="return validate();"><i class="fas fa-shield-alt"></i> 
+                                        </div>
+                                        <div class="modal-footer">
+                                            <asp:LinkButton ID="btnSubmit" runat="server" CssClass="btn btn-sm btn-success" OnClick="btnSubmit_Click" OnClientClick="return validate();"><i class="fas fa-shield-alt"></i> 
                                          Submit
-                                    </asp:LinkButton>
+                                            </asp:LinkButton>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
                                 </div>
+                                <!-- /.modal-dialog -->
                             </div>
-                            <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                    </div>
-                    <div class="card">
-                        <div class="card-header p-2">
-                            <div class="col-md-8">
-                                Code :
-                                <asp:Label ID="lblSupplyIDin" Font-Size="Large" Font-Underline="true" runat="server" Font-Bold="true"></asp:Label>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
                             <div class="modal fade" id="modal-help">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content bg-secondary">
@@ -403,8 +401,10 @@
                                 <div class="col-8">
                                     <div class="card bg-light">
                                         <div class="card-header text-muted border-bottom-0">
-                                            <asp:LinkButton ID="btnBackPage" runat="server" CssClass="btn btn-sm btn-secondary" OnClick="btnBackPage_Click"><i class="fas fa-backward"></i> Back to Page
-                                            </asp:LinkButton>
+                                            <div class="col-md-8">
+                                                Code :
+                                                <asp:Label ID="lblSupplyIDin" Font-Size="Large" Font-Underline="true" runat="server" Font-Bold="true"></asp:Label>
+                                            </div>
                                         </div>
                                         <div class="card-body pt-0">
                                             <div class="row">

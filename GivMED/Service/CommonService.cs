@@ -165,5 +165,112 @@ namespace GivMED.Service
                 throw;
             }
         }
+
+        public bool GetIsUserAvailability(string Email)
+        {
+            try
+            {
+                bool isAvailable = false;
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Authentication/GetIsUserAvailability/" + Email;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        isAvailable = JsonConvert.DeserializeObject<bool>(value);
+                    }
+                }
+                return isAvailable;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public EmailConfiguration GetEmailConfiguration()
+        {
+            try
+            {
+                EmailConfiguration isSettings = new EmailConfiguration();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Authentication/GetEmailConfiguration/";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        isSettings = JsonConvert.DeserializeObject<EmailConfiguration>(value);
+                    }
+                }
+                return isSettings;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<EmailUsers> GetAllActiveEmailUsers()
+        {
+            try
+            {
+                List<EmailUsers> record = new List<EmailUsers>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Registration/GetAllActiveEmailUsers";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<EmailUsers>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<VolunteerMaster> GetAllAssignVolunteers(List<DonationVolunteer> oDonationVolunteer)
+        {
+            try
+            {
+                List<VolunteerMaster> record = new List<VolunteerMaster>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Registration/GetAllAssignVolunteers/" + oDonationVolunteer;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<VolunteerMaster>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

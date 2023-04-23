@@ -7,6 +7,7 @@ using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -32,14 +33,21 @@ namespace GivMED.Pages.App.Donor
         private void PageLoad()
         {
             LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
-
+            EmailConfigurationLoad();
             LoadGridView();
             btnConfirm.Visible = true;
             btnDonate.Visible = false;
             btnCancel.Visible = false;
             mvpublishNeeds.ActiveViewIndex = 0;
         }
-
+        private void EmailConfigurationLoad()
+        {
+            EmailConfiguration oEmailConfiguration = oCommonService.GetEmailConfiguration();
+            GlobalData.Port = oEmailConfiguration.Port;
+            GlobalData.SmtpAddress = oEmailConfiguration.SmtpAddress;
+            GlobalData.NoreplyEmail = oEmailConfiguration.EmailAddress;
+            GlobalData.NoreplyPassword = oEmailConfiguration.Password;
+        }
         private void LoadGridView()
         {
             List<PublishedNeedsGridDto> oBindList = new List<PublishedNeedsGridDto>();
@@ -322,10 +330,14 @@ namespace GivMED.Pages.App.Donor
 
         private void ViewRecord()
         {
+            Session["lblSupplyPriorityLevel"] = null;
+            Session["lblHospitalName"] = null;
             GridViewRow oGridViewRow = gvNeedsList.Rows[Convert.ToInt32(ViewState["index"])];
             string SupplyID = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
             string HospitalID = ((Label)oGridViewRow.FindControl("lblHospitalID")).Text.ToString();
             string HospitalName = ((Label)oGridViewRow.FindControl("lblHospitalName")).Text.ToString();
+            Session["lblHospitalName"] = HospitalName.ToString();
+            Session["lblSupplyPriorityLevel"] = ((Label)oGridViewRow.FindControl("lblSupplyPriorityLevel")).Text.ToString();
 
             List <SupplyNeedGridDto> record = oSupplyService.GetSupplyNeedGridForID(SupplyID);
 
@@ -437,6 +449,8 @@ namespace GivMED.Pages.App.Donor
 
             gvVolunteer.DataSource = odata;
             gvVolunteer.DataBind();
+            if (odata.Count > 0)
+                Session["AllActiveVolunteerMaster"] = odata;
         }
 
         private void Post()
@@ -525,11 +539,12 @@ namespace GivMED.Pages.App.Donor
 
                 if (response.StatusCode == (int)StatusCode.Success)
                 {
-                    ShowDonationConfirm(response.Result);
                     PageLoad();
                     oPostData.DonationHeader.DonationID = response.Result.ToString();
                     oPostData.DonorMaster = oProfileService.GetDonorMaster(loggedUser.UserName);
                     EmailSender(oPostData);
+                    EmailSenderToVolunteers(oPostData);
+                    ShowDonationConfirm(response.Result);
                 }
                 else
                 {
@@ -549,7 +564,7 @@ namespace GivMED.Pages.App.Donor
             {
                 var email = new MimeMessage();
 
-                email.From.Add(new MailboxAddress("GiveMED Donation Confirmation Notice", "lucifer98moninstar@gmail.com"));
+                email.From.Add(new MailboxAddress("Donation Confirmation Notice", GlobalData.NoreplyEmail));
                 email.To.Add(new MailboxAddress("User", "givemed.donation@gmail.com"));
 
                 email.Subject = "We are pleased to inform you that the donation for the '" + odata.DonationHeader.SupplyID.ToString() + "' has been confirmed by the donor.";
@@ -559,14 +574,14 @@ namespace GivMED.Pages.App.Donor
                     $"Donor Name: { (odata.DonorMaster.DonorType == 1 ? odata.DonorMaster.DonorFirstName + " " + odata.DonorMaster.DonorLastName : odata.DonorMaster.DonorFirstName)}\n" +
                     $"Donor Email: {odata.UserName}\nSupply ID: {odata.DonationHeader.SupplyID}\n" +
                     $"Deal Date: {odata.DonationHeader.DonationDealDate}\n\nWe hope that this donation will be helpful for the patients in need and contribute to the\n" +
-                    $"improvement of healthcare services in your hospital.\n\nThank you for your continued partnership with us.\n\nBest regards,\n{odata.DonorMaster.DonorFirstName}"
+                    $"improvement of healthcare services in your hospital.\n\nBest regards,\n{odata.DonorMaster.DonorFirstName}"
                 };
 
                 using (var smtp = new SmtpClient())
                 {
-                    smtp.Connect("smtp.elasticemail.com", 2525);
+                    smtp.Connect(GlobalData.SmtpAddress, GlobalData.Port);
 
-                    smtp.Authenticate("lucifer98moninstar@gmail.com", "AFEF5C9832C1703859A338C87629F8A83BEA");
+                    smtp.Authenticate(GlobalData.NoreplyEmail, GlobalData.NoreplyPassword);
 
                     smtp.Send(email);
                     smtp.Disconnect(true);
@@ -578,9 +593,67 @@ namespace GivMED.Pages.App.Donor
             }
         }
 
+        private void EmailSenderToVolunteers(PublishedNeedsPostDto Supply)
+        {
+            try
+            {
+                LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+                var email = new MimeMessage();
+                email.From.Add(new MailboxAddress("GiveMED Notice", GlobalData.NoreplyEmail));
+                email.Subject = "Urgent request for Medical Supply Donations";
+
+                StringBuilder suppliesText = new StringBuilder();
+                foreach (var supply in Supply.DonationDetails)
+                {
+                    suppliesText.AppendLine($"Supply Name: {supply.ItemName}\n Quantity: {supply.DonatedQty}");
+                }
+
+                email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+                {
+                    Text = $"Dear Volunteer,\n\n" +
+                       $"We hope this email finds you well. As you know, our hospital is currently facing a critical shortage of essential medical supplies. We are reaching out to our valued donors and supporters to request their urgent assistance in helping us overcome this critical situation.\n\n" +
+                       $"We are pleased to inform you that {Supply.DonorMaster.DonorFirstName}, located at {Supply.DonorMaster.Address}, has generously agreed to donate medical supplies to our hospital. The deal was finalized on {Supply.DonationHeader.DonationDealDate} and we are now in possession of the following supplies:\n\n" +
+                       $"Priority Level: {Session["lblSupplyPriorityLevel"].ToString()}\n\n" +
+                       $"{suppliesText.ToString()}\n\n" +
+                       $"We would also like to take this opportunity to thank {lblHospitalName.Text} for their ongoing support in our mission to provide quality healthcare services to the community. Their\n" +
+                       $"continued assistance is greatly appreciated.\n" +
+                       $"For any queries or further information, please do not hesitate to contact us at {lblPhone.Text}.\n" +
+                       $"We thank you for your continued support and look forward to working with you in the future.\n\n" +
+                       $"Best regards,\n\n" +
+                       $"{lblHospitalName.Text}\n" +
+                       $"{lblPhone.Text}\n"
+                };
+
+                List<VolunteerMaster> VolunteerMaster = (List<VolunteerMaster>)Session["AllActiveVolunteerMaster"];
+
+                foreach (var item in Supply.DonationVolunteer)
+                {
+                    email.To.Add(new MailboxAddress("Volunteer", VolunteerMaster.Where(x=>x.VolCode == item.VolunteerCode).First().VolEmail));
+
+                    using (var smtp = new SmtpClient())
+                    {
+                        smtp.Connect(GlobalData.SmtpAddress, GlobalData.Port);
+
+                        smtp.Authenticate(GlobalData.NoreplyEmail, GlobalData.NoreplyPassword);
+
+                        smtp.Send(email);
+                        smtp.Disconnect(true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         private void ShowDonationConfirm(string DonationID)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDonationID('" + DonationID + "');", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+            //ScriptManager.RegisterStartupScript(this, GetType(), "ShowDonateConfirm", "$('.modal-backdrop').addClass('show'); $('#modal-DonateConfirm').modal('show');", true);
         }
         protected void btnCancel_Click(object sender, EventArgs e)
         {

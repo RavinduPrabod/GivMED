@@ -21,41 +21,70 @@ namespace GivMED.Pages.Web.Registration
     public partial class DonorRegistration : System.Web.UI.Page
     {
         private RegistrationService oRegistrationService = new RegistrationService();
+        CommonService oCommonService = new CommonService();
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            EmailConfigurationLoad();
             mvFundreg.ActiveViewIndex = 0;
+        }
+
+        private void EmailConfigurationLoad()
+        {
+            EmailConfiguration oEmailConfiguration = oCommonService.GetEmailConfiguration();
+            GlobalData.Port = oEmailConfiguration.Port;
+            GlobalData.SmtpAddress = oEmailConfiguration.SmtpAddress;
+            GlobalData.NoreplyEmail = oEmailConfiguration.EmailAddress;
+            GlobalData.NoreplyPassword = oEmailConfiguration.Password;
         }
         protected void btnRegisterOrg_Click(object sender, EventArgs e)
         {
-            Session["UserName"] = null;
-            WebApiResponse response = new WebApiResponse();
-            response = oRegistrationService.CreateUser(UiToModelCreaterOrg());
-
-            if (response.StatusCode == (int)StatusCode.Created)
+            if (txtPwdOrg.Text.Length >= 6)
             {
-                ShowSuccessMessage(ResponseMessages.InsertSuccess);
-                //PageLoad();
-            }
-            else if (response.StatusCode == (int)StatusCode.BadRequest)
-            {
-                ShowErrorMessage(ResponseMessages.EmailAlreadyExists);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('next');", true);
-                txtEmailOrg.Focus();
+                if (!oCommonService.GetIsUserAvailability(txtEmailOrg.Text))
+                {
+                    EmailSender(txtEmailOrg.Text);
+                    lblEmailOrg.Text = txtEmailOrg.Text.ToString();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showemailverify", "showemailverifyorg();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('next');", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('next');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Email Already Exists!', showConfirmButton: false, timer: 1500});", true);
+                }
             }
             else
             {
-                ShowSuccessMessage(ResponseMessages.Registerd);
-                UserDto getuser = UiToModelCreateInd();
-                Session["UserName"] = getuser.UserName.ToString();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('next');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Password minimum 6 characters required!', showConfirmButton: false, timer: 1500});", true);
             }
+
         }
 
         protected void btnRegisterInd_Click(object sender, EventArgs e)
         {
-            EmailSender(txtEmailInd.Text);
-            ScriptManager.RegisterStartupScript(this, GetType(), "showemailverify", "showemailverify();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('prev');", true);
+            if (txtPwdInd.Text.Length >= 6)
+            {
+                if (!oCommonService.GetIsUserAvailability(txtEmailInd.Text))
+                {
+                    EmailSender(txtEmailInd.Text);
+                    lblEmail.Text = txtEmailInd.Text.ToString();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showemailverify", "showemailverify();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('prev');", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('prev');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Email Already Exists!', showConfirmButton: false, timer: 1500});", true);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('prev');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Password minimum 6 characters required!', showConfirmButton: false, timer: 1500});", true);
+            }
+
         }
 
         private void EmailSender(string emailuser)
@@ -69,7 +98,7 @@ namespace GivMED.Pages.Web.Registration
 
                 var email = new MimeMessage();
 
-                email.From.Add(new MailboxAddress("GiveMED email verification", "lucifer98moninstar@gmail.com"));
+                email.From.Add(new MailboxAddress("GiveMED email verification", GlobalData.NoreplyEmail));
                 email.To.Add(new MailboxAddress("User", emailuser));
 
                 email.Subject = "Your verification code";
@@ -80,9 +109,9 @@ namespace GivMED.Pages.Web.Registration
 
                 using (var smtp = new SmtpClient())
                 {
-                    smtp.Connect("smtp.elasticemail.com", 2525);
+                    smtp.Connect(GlobalData.SmtpAddress, GlobalData.Port);
 
-                    smtp.Authenticate("lucifer98moninstar@gmail.com", "AFEF5C9832C1703859A338C87629F8A83BEA");
+                    smtp.Authenticate(GlobalData.NoreplyEmail, GlobalData.NoreplyPassword);
 
                     smtp.Send(email);
                     smtp.Disconnect(true);
@@ -94,29 +123,8 @@ namespace GivMED.Pages.Web.Registration
             }
         }
 
-        private void RegisteredInd()
-        {
-            Session["UserName"] = null;
-            WebApiResponse response = new WebApiResponse();
-            response = oRegistrationService.CreateUser(UiToModelCreateInd());
+        
 
-            if (response.StatusCode == (int)StatusCode.Success)
-            {
-                txtCode.Text = string.Empty;
-                lblError.Text = string.Empty;
-                Session["emailGenarateCode"] = null;
-                UserDto getuser = UiToModelCreateInd();
-                Session["UserName"] = getuser.UserName.ToString();
-                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "Showverify();", true);
-                Response.Redirect("/Pages/Login.aspx");
-            }
-            else
-            {
-                ShowErrorMessage(ResponseMessages.EmailAlreadyExists);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('prev');", true);
-                txtEmailInd.Focus();
-            }
-        }
         private UserDto UiToModelCreateInd()
         {
             UserDto oData = new UserDto();
@@ -183,6 +191,71 @@ namespace GivMED.Pages.Web.Registration
                 ScriptManager.RegisterStartupScript(this, GetType(), "showemailverify", "showemailverify();", true);
                 lblError.Text = "Wrong Code. Try again";
             }
+        }
+
+        protected void btnVerifyOrg_Click(object sender, EventArgs e)
+        {
+            lblErrorOrg.Text = string.Empty;
+            if (txtCodeOrg.Text == Session["emailGenarateCode"].ToString())
+            {
+                RegisterdOrg();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showemailverifyorg", "showemailverifyorg();", true);
+                lblErrorOrg.Text = "Wrong Code. Try again";
+            }
+        }
+
+        private void RegisteredInd()
+        {
+            Session["UserName"] = null;
+            WebApiResponse response = new WebApiResponse();
+            response = oRegistrationService.CreateUser(UiToModelCreateInd());
+
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                txtCode.Text = string.Empty;
+                lblError.Text = string.Empty;
+                Session["emailGenarateCode"] = null;
+                UserDto getuser = UiToModelCreateInd();
+                Session["UserName"] = getuser.UserName.ToString();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+                Response.Redirect("/Pages/Login.aspx");
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'An error occurred!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('prev');", true);
+                txtEmailInd.Focus();
+            }
+        }
+
+        private void RegisterdOrg()
+        {
+            Session["UserName"] = null;
+            WebApiResponse response = new WebApiResponse();
+            response = oRegistrationService.CreateUser(UiToModelCreaterOrg());
+
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                txtCodeOrg.Text = string.Empty;
+                lblErrorOrg.Text = string.Empty;
+                Session["emailGenarateCode"] = null;
+                UserDto getuser = UiToModelCreaterOrg();
+                Session["UserName"] = getuser.UserName.ToString();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+                Response.Redirect("/Pages/Login.aspx");
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'An error occurred!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "carouselSlide", "$('#carouselExampleIndicators').carousel('next');", true);
+                txtEmailOrg.Focus();
+            }
+
         }
     }
 }

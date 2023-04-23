@@ -15,6 +15,7 @@ namespace GivMED.Dto
         public string TokenString { get; set; }
 
         public int DonorID { get; set; }
+
         public int HospitalID { get; set; }
     }
 }

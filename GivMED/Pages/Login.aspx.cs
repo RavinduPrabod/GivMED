@@ -62,21 +62,28 @@ namespace GivMED.Pages
                         GlobalData.Token = loggedUser.TokenString;
 
                         Session["loggedUser"] = loggedUser;
-                        ShowSuccessMessage(ResponseMessages.LoginSuccess);
-
-                        CheckDonorMaster(loggedUser.UserName);
-                        if (Convert.ToBoolean(Session["donorisvalid"]) == true)
+                        if(loggedUser.Type != 3)
                         {
-                            Response.Redirect("~/Pages/App/Donor/Published_Needs.aspx");
+                            ShowSuccessMessage(ResponseMessages.LoginSuccess);
+                            CheckDonorMaster(loggedUser.UserName);
+                            if (Convert.ToBoolean(Session["donorisvalid"]) == true)
+                            {
+                                Response.Redirect("~/Pages/App/Donor/Published_Needs.aspx");
+                            }
+                            else
+                            {
+                                Response.Redirect("~/Pages/App/Profile/Profile.aspx");
+                            }
                         }
                         else
                         {
-                            Response.Redirect("~/Pages/App/Profile/Profile.aspx");
-                        }                        
+                            ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Invalid Email Address!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
+                        }
+
                     }
                     else
                     {
-                        ShowErrorMessage("LoginFail");
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Login Fail!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
                     }
                 }
             }

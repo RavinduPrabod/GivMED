@@ -33,7 +33,7 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="icheck-primary">
-                                        <input type="checkbox" id="remember">
+                                        <input type="checkbox" checked id="remember">
                                         <label for="remember">
                                             Remember Me
                                         </label>
@@ -44,14 +44,6 @@
                                     <asp:Button ID="btnSignIn" CssClass="btn btn-primary btn-block" runat="server" Text="Sign In" OnClientClick="return Validate();" OnClick="btnSignIn_Click" />
                                 </div>
 
-                            </div>
-                            <div class="social-auth-links text-center mt-2 mb-3">
-                                <a href="#" class="btn btn-block btn-primary">
-                                    <i class="fab fa-facebook mr-2"></i>Sign in using Facebook
-                                </a>
-                                <a href="#" class="btn btn-block btn-danger">
-                                    <i class="fab fa-google-plus mr-2"></i>Sign in using Google+
-                                </a>
                             </div>
                             <!-- /.social-auth-links -->
                             <p class="mb-0">
@@ -109,5 +101,7 @@
                 });
             }
         });
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
     </script>
 </asp:Content>

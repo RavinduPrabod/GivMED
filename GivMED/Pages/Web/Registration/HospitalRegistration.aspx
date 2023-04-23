@@ -14,6 +14,37 @@
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
             <div class="card" style="width: 100%; height: 800px; overflow: hidden;">
+                <%--<div class="modal fade" id="modal-emailverify">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title text-center">GiveMED Password Reset Confirmation - Check your email for instructions</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p> A password has been sent to your email address<strong> <asp:Label ID="lblEmail" runat="server"></asp:Label></strong>. 
+                                            Please check your email and enter the password below: </p> Note: You can use this password to login to your account. 
+                                        We recommend changing your password as soon as you login for security purposes.
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <asp:TextBox ID="txtCode" runat="server" placeholder="enter code"></asp:TextBox>
+                                        <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <asp:Button runat="server" ID="btnVerify" CssClass="btn btn-primary" Text="Verify"/>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>--%>
                 <div class="card-body d-flex justify-content-center">
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false" style="width: 100%;">
                         <div class="carousel-inner">
@@ -55,9 +86,11 @@
                                                             <span class="fas fa-envelope"></span>
                                                         </div>
                                                     </div>
-                                                    <asp:TextBox ID="txtHospitalEmail" runat="server" CssClass="form-control" placeholder="Hospital Email" TextMode="Email"></asp:TextBox>  
+                                                    <asp:TextBox ID="txtHospitalEmail" runat="server" CssClass="form-control" placeholder="Hospital Email" TextMode="Email"></asp:TextBox>
+                                                     &nbsp&nbsp&nbsp<asp:Button ID="btnVerify" runat="server" Text="Verify" CssClass="btn btn-primary" OnClientClick="return Validate();" OnClick="btnVerify_Click" />
                                                 </div>
                                                 <div class="col-sm-3">
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -66,18 +99,18 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="input-group mb-3">
-                                                     <div class="input-group-append">
+                                                    <div class="input-group-append">
                                                         <div class="input-group-text">
                                                             <span class="fas fa-lock"></span>
                                                         </div>
                                                     </div>
-                                                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" placeholder="Password"></asp:TextBox>  
+                                                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" placeholder="Password"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                             </div>
                                         </div>
-                                        <div class="form-group row">
+                                        <%--<div class="form-group row">
                                             <div class="col-sm-3">
                                             </div>
                                             <div class="col-sm-6">
@@ -92,7 +125,7 @@
                                             </div>
                                             <div class="col-sm-3">
                                             </div>
-                                        </div>
+                                        </div>--%>    
                                     </div>
                                 </div>
                                 <div class="card-footer">
@@ -196,7 +229,7 @@
                                         <div class="form-group row">
                                             <div class="col-sm-3">
                                                 <div class="input-group mb-3">
-                                                     <div class="input-group-append">
+                                                    <div class="input-group-append">
                                                         <div class="input-group-text">
                                                             <span class="fas fa-user-ninja"></span>
                                                         </div>
@@ -206,7 +239,7 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="input-group mb-3">
-                                                     <div class="input-group-append">
+                                                    <div class="input-group-append">
                                                         <div class="input-group-text">
                                                             <span class="fas fa-user-nurse"></span>
                                                         </div>
@@ -274,12 +307,30 @@
     </asp:UpdatePanel>
     <script type="text/javascript">
 
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
+
         $(document).ready(function () {
             Validate = function () {
                 $('#<% = txtNameofHospital.ClientID %>').addClass('validate[required]');
                 $('#<% = txtHospitalEmail.ClientID %>').addClass('validate[required,custom[email]]');
                 $('#<% = txtPassword.ClientID %>').addClass('validate[required]');
-                $('#<% = txtConfirmPassword.ClientID %>').addClass('validate[required]'); // add custom validation rule
+                $("#mainform").validationEngine('attach', { promptPosition: "inline", scroll: false });
+                var valid = $("#mainform").validationEngine('validate');
+                var vars = $("#mainform").serialize();
+                if (valid == true) {
+                    $("#mainform").validationEngine('detach');
+                } else {
+                    $("#mainform").validationEngine('attach', { promptPosition: "inline", scroll: false });
+                    return false;
+                }
+            }
+        });
+
+        (document).ready(function () {
+            ValidateVerify = function () {
+                $('#<% = txtNameofHospital.ClientID %>').addClass('validate[required]');
+                $('#<% = txtHospitalEmail.ClientID %>').addClass('validate[required,custom[email]]');
                 $("#mainform").validationEngine('attach', { promptPosition: "inline", scroll: false });
                 var valid = $("#mainform").validationEngine('validate');
                 var vars = $("#mainform").serialize();
@@ -319,6 +370,11 @@
             }
         });
 
+        function showemailverify() {
+            $('.modal-backdrop').remove();
+            $('#modal-emailverify').modal('show');
+            return false;
+        };
 
         $(document).ready(function () {
             //var prevButton = $('.carousel-control-prev');

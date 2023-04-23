@@ -2,10 +2,13 @@
 using GivMED.Dto;
 using GivMED.Models;
 using GivMED.Service;
+using MailKit.Net.Smtp;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -23,32 +26,45 @@ namespace GivMED.Pages.App.Hospital
         {
             if (!this.IsPostBack)
             {
-
-                mvSupply.ActiveViewIndex = 0;
-
-                LoadGridView();
-
-                ddlSupplyType.DataSource = oCommonService.GetItemCat();
-                ddlSupplyType.DataValueField = "DataValueField";
-                ddlSupplyType.DataTextField = "DataTextField";
-                ddlSupplyType.DataBind();
-
-                LoadTemplate();
-
-                List<ItemMaster> Itembulk = oSupplyService.GetAllItem();
-                Session["Itembulk"] = Itembulk;
-                btnPublish.Visible = false;
-                txtExpireDate.Visible = false;
-                checboxcontrol(true);
-
-                Session["SupplyList"] = null;
-                Session["SeletedCatinBulk"] = null;
-                Session["SearchList"] = null;
-                btnRePublish.Visible = false;
+                PageLoad();
             }
 
         }
 
+        private void PageLoad()
+        {
+            mvSupply.ActiveViewIndex = 0;
+
+            EmailConfigurationLoad();
+
+            LoadGridView();
+
+            ddlSupplyType.DataSource = oCommonService.GetItemCat();
+            ddlSupplyType.DataValueField = "DataValueField";
+            ddlSupplyType.DataTextField = "DataTextField";
+            ddlSupplyType.DataBind();
+
+            LoadTemplate();
+
+            List<ItemMaster> Itembulk = oSupplyService.GetAllItem();
+            Session["Itembulk"] = Itembulk;
+            btnPublish.Visible = false;
+            txtExpireDate.Visible = false;
+            checboxcontrol(true);
+
+            Session["SupplyList"] = null;
+            Session["SeletedCatinBulk"] = null;
+            Session["SearchList"] = null;
+            btnRePublish.Visible = false;
+        }
+        private void EmailConfigurationLoad()
+        {
+            EmailConfiguration oEmailConfiguration = oCommonService.GetEmailConfiguration();
+            GlobalData.Port = oEmailConfiguration.Port;
+            GlobalData.SmtpAddress = oEmailConfiguration.SmtpAddress;
+            GlobalData.NoreplyEmail = oEmailConfiguration.EmailAddress;
+            GlobalData.NoreplyPassword = oEmailConfiguration.Password;
+        }
         protected void ddlSupplyType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(ddlSupplyType.SelectedItem.Value != "")
@@ -361,50 +377,52 @@ namespace GivMED.Pages.App.Hospital
             gvSupplyNeeds.DataBind();
             if (result.Count > 0)
                 Session["FilterSupplyNeedList"] = result;
-        
-        //List<HospitalSupplyNeedsGridDto> grouplist = olist.GroupBy(s => s.SupplyID)
-        //                                            .Select(group => group.First())
-        //                                            .ToList();
-        //foreach(var item in grouplist)
-        //{
-        //    int requestedQty = 0;
-        //    int donatedQty = 0;
 
-        //    HospitalSupplyNeedsGridDto odata = new HospitalSupplyNeedsGridDto();
+            //List<HospitalSupplyNeedsGridDto> grouplist = olist.GroupBy(s => s.SupplyID)
+            //                                            .Select(group => group.First())
+            //                                            .ToList();
+            //foreach (var item in grouplist)
+            //{
+            //    int requestedQty = 0;
+            //    int donatedQty = 0;
 
-        //    odata.SupplyID = item.SupplyID;
-        //    odata.SupplyCreateDate = item.SupplyCreateDate;
-        //    odata.SupplyExpireDate = item.SupplyExpireDate;
-        //    odata.SupplyPriorityLevel = item.SupplyPriorityLevel;
+            //    HospitalSupplyNeedsGridDto odata = new HospitalSupplyNeedsGridDto();
 
-        //    List<HospitalSupplyNeedsGridDto> forlist = new List<HospitalSupplyNeedsGridDto>();
-        //    forlist = olist.Where(x => x.SupplyID == item.SupplyID && x.DonatedQty > 0).ToList();
+            //    odata.SupplyID = item.SupplyID;
+            //    odata.SupplyCreateDate = item.SupplyCreateDate;
+            //    odata.SupplyExpireDate = item.SupplyExpireDate;
+            //    odata.SupplyPriorityLevel = item.SupplyPriorityLevel;
 
-        //    if(forlist.Count > 0)
-        //    {
-        //        for (int i = 0; forlist.Count > i; i++)
-        //        {
-        //            requestedQty = requestedQty + Convert.ToInt32(olist[i].RequestQty);
-        //            donatedQty = donatedQty + Convert.ToInt32(olist[i].DonatedQty);
-        //        }
+            //    List<HospitalSupplyNeedsGridDto> forlist = new List<HospitalSupplyNeedsGridDto>();
+            //    forlist = olist.Where(x => x.SupplyID == item.SupplyID && x.DonatedQty > 0).ToList();
 
-        //        // Calculate donated percentage
-        //        double donatedPercentage = (double)donatedQty / requestedQty * 100;
-        //        // Round to 2 decimal places
-        //        donatedPercentage = Convert.ToInt32(donatedPercentage);
-        //        odata.Proceprecent = Convert.ToInt32(donatedPercentage);
-        //    }
-        //    else
-        //    {
-        //        odata.Proceprecent = 0;
-        //    }
-        //    result.Add(odata);
-        //}
+            //    if (forlist.Count > 0)
+            //    {
+            //        for (int i = 0; forlist.Count > i; i++)
+            //        {
+            //            requestedQty = requestedQty + Convert.ToInt32(olist[i].RequestQty);
+            //            donatedQty = donatedQty + Convert.ToInt32(olist[i].DonatedQty);
+            //        }
 
-        //gvSupplyNeeds.DataSource = result;
-        //gvSupplyNeeds.DataBind();
+            //        // Calculate donated percentage
+            //        double donatedPercentage = (double)donatedQty / requestedQty * 100;
+            //        // Round to 2 decimal places
+            //        donatedPercentage = Convert.ToInt32(donatedPercentage);
+            //        odata.Proceprecent = Convert.ToInt32(donatedPercentage);
+            //    }
+            //    else
+            //    {
+            //        odata.Proceprecent = 0;
+            //    }
+            //    result.Add(odata);
+            //}
 
-    }
+            //gvSupplyNeeds.DataSource = result;
+            //gvSupplyNeeds.DataBind();
+            //if (result.Count > 0)
+            //    Session["FilterSupplyNeedList"] = result;
+
+        }
 
         private void Delete()
         {
@@ -458,6 +476,7 @@ namespace GivMED.Pages.App.Hospital
             if (response.StatusCode == (int)StatusCode.Success)
             {
                 ShowSupplyPublishID(response.Result);
+                EmailSender(UiToModelCreateSupplyNeed());
             }
             else
             {
@@ -465,6 +484,67 @@ namespace GivMED.Pages.App.Hospital
             }
 
         }
+
+        private void EmailSender(SupplyNeedsDto Supply)
+        {
+            try
+            {
+                LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+                var email = new MimeMessage();
+                email.From.Add(new MailboxAddress("GiveMED Urgent Notice", GlobalData.NoreplyEmail));
+                if (Supply.SupplyRequestHeader.SupplyPriorityLevel == 1)
+                {
+                    email.Subject = "Urgent Notice - Medical Supplies Shortage in '" + loggedUser.FirstName + "'";
+                }
+                else
+                {
+                    email.Subject = "Notice - Medical Supplies Shortage in '" + loggedUser.FirstName + "'";
+                }
+
+                StringBuilder suppliesText = new StringBuilder();
+                foreach (var supply in Supply.SupplyRequestDetails)
+                {
+                    suppliesText.AppendLine($"Item Name: {supply.SupplyItemName}\n Quantity: {supply.SupplyItemQty}");
+                }
+
+                email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+                {
+                    Text = $"Dear Valued Donors,\n\n" +
+                    $"We hope this email finds you well. As you know, our hospital has been facing a shortage of \n" +
+                    $"medical supplies due to the ongoing pandemic. We are reaching out to our previous donors\n" +
+                    $"to request your urgent support to help us overcome this critical situation.\n\n" +
+                    $"We are facing a critical shortage of the following medical supplies:\n\n" +
+                    $"Priority Level: {(Supply.SupplyRequestHeader.SupplyPriorityLevel == 1 ? "High" : (Supply.SupplyRequestHeader.SupplyPriorityLevel == 2 ? "Normal" : "Low"))}\n\n"+
+                    $"{suppliesText.ToString()}\n\n" +
+                    $"Thank you for your kind consideration and support.\n" +
+                    $"Best regards,\n" +
+                    $"{loggedUser.FirstName}"
+                };
+
+                List<EmailUsers> EmailUserList = oCommonService.GetAllActiveEmailUsers();
+
+                foreach(var item in EmailUserList)
+                {
+                    email.To.Add(new MailboxAddress("Donor", item.Email));
+
+                    using (var smtp = new SmtpClient())
+                    {
+                        smtp.Connect(GlobalData.SmtpAddress, GlobalData.Port);
+
+                        smtp.Authenticate(GlobalData.NoreplyEmail, GlobalData.NoreplyPassword);
+
+                        smtp.Send(email);
+                        smtp.Disconnect(true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         private void ShowSupplyPublishID(string publishID)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowSupplyPublishID('" + publishID + "');", true);
@@ -668,12 +748,13 @@ namespace GivMED.Pages.App.Hospital
 
             if (response.StatusCode == (int)StatusCode.Success)
             {
-                ScriptManager.RegisterStartupScript(this, GetType(), "HideDetails", "$('#modal-Show').modal('fade hide'); $('.modal-backdrop').remove(); return false;", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'success', title: 'Created!', text: 'Draft'"+ response.Result+ "'.', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
                 LoadTemplate();
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, GetType(), "ShowDetailshideScript", "ShowDetailshide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
             }
         }
 

@@ -83,9 +83,8 @@ namespace GivMED.Service
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Extract the NewDonationID from the response content
                     var responseContent = response.Content.ReadAsStringAsync().Result;
-                    webApiResponse.Result = responseContent; // Set the NewDonationID as the response data
+                    webApiResponse.Result = responseContent;
                 }
             }
             return webApiResponse;

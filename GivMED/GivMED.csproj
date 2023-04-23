@@ -2351,6 +2351,7 @@
     <Compile Include="Models\DonationVolunteer.cs" />
     <Compile Include="Models\DonorMaster.cs" />
     <Compile Include="Models\EmailConfiguration.cs" />
+    <Compile Include="Models\EmailUsers.cs" />
     <Compile Include="Models\HospitalMaster.cs" />
     <Compile Include="Models\ItemMaster.cs" />
     <Compile Include="Models\LastSerialNo.cs" />

@@ -28,9 +28,9 @@
                     "alertText2": "Date Time Range"
                 },
                 "minSize": {
-                    "regex": "none",
-                    "alertText": "* Minimum ",
-                    "alertText2": " characters required"
+                    "minSize": 6,
+                    "alertText": "* Minimum 6 characters required",
+                    "alertText2": ""
                 },
                 "maxSize": {
                     "regex": "none",

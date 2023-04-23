@@ -109,7 +109,7 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h4 class="modal-title">Manage template</h4>
+                                            <h4 class="modal-title">Manage template</h4> 
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -117,8 +117,8 @@
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    Description
-                                            <asp:TextBox ID="txtEditor" runat="server" CssClass="form-control" TabIndex="2" TextMode="MultiLine" placeholder=""></asp:TextBox>
+                                                    &nbsp
+                                            <asp:TextBox ID="txtEditor" runat="server" CssClass="form-control" MaxLength="1000" TabIndex="2" TextMode="MultiLine" Height="400px" placeholder="Write here.."></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -291,7 +291,11 @@
             </asp:MultiView>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <script>
+   <script type="text/javascript">
+
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
+
         function ShowDetails() {
             $('.modal-backdrop').remove();
             $('#modal-Show').modal('show');

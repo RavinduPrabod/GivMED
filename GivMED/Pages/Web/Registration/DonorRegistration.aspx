@@ -92,15 +92,10 @@
                                                 <a type="button" id="regin" class="btn btn-app bg-success" href="#carouselExampleIndicators" data-slide="prev">
                                                     <i class="fas fa-chevron-left"></i>INDIVIDUAL
                                                 </a>
-                                                <a class="btn btn-app bg-secondary" aria-readonly="true">
-                                                    <i class="fas fa-user"></i>
-                                                </a>
                                             </div>
                                         </div>
                                         <div class="col-md-4 text-center">
                                             <div class="btn-group" role="group" aria-label="Registration Buttons">
-                                                <a class="btn btn-app bg-secondary" aria-readonly="true">
-                                                    <i class="fas fa-users"></i></a>
                                                 <a type="button" id="regorg" class="btn btn-app bg-warning" href="#carouselExampleIndicators" data-slide="next">
                                                     <i class="fas fa-chevron-right"></i>ORGANIZATION 
                                                 </a>
@@ -180,16 +175,6 @@
                                                             </div>
                                                         </div>
                                                     </form>
-                                                    <div class="social-auth-links text-center">
-                                                        <a href="#" class="btn btn-block btn-primary">
-                                                            <i class="fab fa-facebook mr-2"></i>
-                                                            Sign up using Facebook
-                                                        </a>
-                                                        <a href="#" class="btn btn-block btn-danger">
-                                                            <i class="fab fa-google-plus mr-2"></i>
-                                                            Sign up using Google+
-                                                        </a>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -266,16 +251,6 @@
                                                             <asp:Button runat="server" ID="btnRegisterInd" CssClass="btn btn-primary btn-block" Text="Register" OnClientClick="return ValidateInd();" OnClick="btnRegisterInd_Click" />
                                                         </div>
                                                     </div>
-                                                    <div class="social-auth-links text-center">
-                                                        <a href="#" class="btn btn-block btn-primary">
-                                                            <i class="fab fa-facebook mr-2"></i>
-                                                            Sign up using Facebook
-                                                        </a>
-                                                        <a href="#" class="btn btn-block btn-danger">
-                                                            <i class="fab fa-google-plus mr-2"></i>
-                                                            Sign up using Google+
-                                                        </a>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -315,6 +290,36 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                      <asp:Button runat="server" ID="btnVerify" CssClass="btn btn-primary" Text="Verify" OnClick="btnVerify_Click" />
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <div class="modal fade" id="modal-emailverifyorg">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title text-center">Email Verification Code</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>An email verification code has been sent to <strong>
+                                                <asp:Label ID="lblEmailOrg" runat="server"></asp:Label></strong>. Please enter the code below:</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <asp:TextBox ID="txtCodeOrg" runat="server" placeholder="enter code"></asp:TextBox>
+                                            <asp:Label ID="lblErrorOrg" runat="server" ForeColor="Red"></asp:Label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                     <asp:Button runat="server" ID="btnVerifyOrg" CssClass="btn btn-primary" Text="Verify" OnClick="btnVerifyOrg_Click" />
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -490,6 +495,12 @@
         function showemailverify() {
             $('.modal-backdrop').remove();
             $('#modal-emailverify').modal('show');
+            return false;
+        };
+
+        function showemailverifyorg() {
+            $('.modal-backdrop').remove();
+            $('#modal-emailverifyorg').modal('show');
             return false;
         };
 

@@ -100,7 +100,6 @@ namespace GiveMED.Api.Controllers
 
             var loggedUserDto = (from A in _context.User
                                  join B in _context.HospitalMaster on A.UserName equals B.UserName
-                                 where A.UserName == userForLoginDto.UserName && A.Type == 3
                                  select new LoggedUserDto
                                  {
                                      UserName = A.UserName,
@@ -109,6 +108,47 @@ namespace GiveMED.Api.Controllers
                                      Type = A.Type,
                                      Status = A.Status,
                                      HospitalID = B.HospitalID,
+                                     TokenString = tokenString.ToString()
+                                 }).First();
+
+            return Ok(loggedUserDto);
+        }
+
+        [HttpPost]
+        [ActionName("HospitalRegistrationValidate")]
+        public async Task<IActionResult> HospitalRegistrationValidate([FromBody] UserForLoginDto userForLoginDto)
+        {
+            User userFromDb = await _repo.Login(userForLoginDto.UserName, userForLoginDto.Password);
+
+            if (userFromDb == null)
+                return Unauthorized();
+
+            //generate token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Token").Value);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, userFromDb.UserName)
+                }),
+                Issuer = "",
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            var loggedUserDto = (from A in _context.User
+                                 where A.UserName == userForLoginDto.UserName
+                                 select new LoggedUserDto
+                                 {
+                                     UserName = A.UserName,
+                                     FirstName = A.FirstName,
+                                     LastName = A.LastName,
+                                     Type = A.Type,
+                                     Status = A.Status,
                                      TokenString = tokenString.ToString()
                                  }).First();
 
@@ -182,6 +222,26 @@ namespace GiveMED.Api.Controllers
             isAvailable = _context.HospitalMaster.Where(x => x.UserName == UserName).Any();
 
             return isAvailable;
+        }
+
+        [HttpGet("{Email}")]
+        [ActionName("GetIsUserAvailability")]
+        public bool GetIsUserAvailability(string Email)
+        {
+            bool isAvailable = false;
+            isAvailable = _context.User.Where(x => x.UserName == Email).Any();
+
+            return isAvailable;
+        }
+
+        [HttpGet]
+        [ActionName("GetEmailConfiguration")]
+        public EmailConfiguration GetEmailConfiguration()
+        {
+            EmailConfiguration omail = new EmailConfiguration();
+            omail = _context.EmailConfiguration.FirstOrDefault();
+
+            return omail;
         }
     }
 }

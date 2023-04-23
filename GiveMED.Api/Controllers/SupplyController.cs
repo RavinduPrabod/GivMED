@@ -34,13 +34,13 @@ namespace GiveMED.Api.Controllers
             var conn = _context.Database.GetDbConnection();
             conn.Open();
             var comm = conn.CreateCommand();
-            comm.CommandText = "SELECT A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, B.SupplyItemQty, SUM(D.DonatedQty) as DonatedQty, A.SupplyStatus " +
+            comm.CommandText = "SELECT A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, SUM(B.SupplyItemQty) AS SupplyItemQty, SUM(D.DonatedQty) as DonatedQty, A.SupplyStatus " +
                 "FROM SupplyRequestHeader A " +
                 "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
                 "INNER JOIN HospitalMaster C ON A.HospitalID = C.HospitalID " +
                 "LEFT OUTER JOIN DonationDetails D ON A.SupplyID = D.SupplyID AND B.SupplyItemCat = D.ItemCategory AND B.SupplyItemID = D.ItemID " +
                 "WHERE A.SupplyStatus = 1 AND A.HospitalID = @HospitalID " +
-                "GROUP BY A.SupplyID,  A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, B.SupplyItemQty, A.SupplyStatus";
+                "GROUP BY A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, A.SupplyStatus";
 
             comm.Parameters.Add(id);
             var reader = comm.ExecuteReader();
@@ -338,7 +338,7 @@ namespace GiveMED.Api.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return Ok(); // Return the inserted record
+                return Ok(NewTempID); // Return the inserted record
 
 
             }
@@ -643,6 +643,16 @@ namespace GiveMED.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
             }
+        }
+
+        [HttpGet("{UserName}")]
+        [ActionName("GetAll")]
+        public bool GetIsDonorAvailability(string UserName)
+        {
+            bool isAvailable = false;
+            isAvailable = _context.DonorMaster.Where(x => x.UserName == UserName).Any();
+
+            return isAvailable;
         }
     }
 }

@@ -50,11 +50,16 @@ namespace GivMED.Pages.App.Profile
                     txtOrgName.Text = loggedUser.Type == 2 ? "" : loggedUser.FirstName;
                     btnSave.Visible = false;
                     btnSubmit.Visible = true;
+                    chkEmail.Enabled = false;
+                    chkPublicity.Enabled = false;
                 }
                 else
                 {
                     DonorMaster odata = oProfileService.GetDonorMaster(loggedUser.UserName);
+                    EmailUsers oEmail = oProfileService.GetEmailUser(loggedUser.UserName);
+
                     Session["DonorID"] = odata.DonorID;
+                    lblPdSubName.Text = odata.DonorID.ToString();
                     txtFirstName.Text = odata.DonorFirstName.ToString();
                     txtLastName.Text = odata.DonorLastName.ToString();
                     txtAddress.Text = odata.Address.ToString();
@@ -71,10 +76,13 @@ namespace GivMED.Pages.App.Profile
                         txtDesignation.Text = odata.Designation.ToString();
                         ddlOrgType.SelectedValue = odata.OrgType.ToString();
                     }
-                    chkAutoPublish.Checked = odata.PublicStatus == 1 ? true : false;
+                    chkPublicity.Checked = oEmail.Publicity == 1 ? true : false;
+                    chkEmail.Checked = oEmail.EmailNotification == 1 ? true : false;
                     txtDescription.Text = odata.Description.ToString();
                     btnSave.Visible = true;
                     btnSubmit.Visible = false;
+                    chkEmail.Enabled = true;
+                    chkPublicity.Enabled = true;
                 }
 
                 //txtFirstName.Attributes["value"] = "ravindu";
@@ -96,11 +104,6 @@ namespace GivMED.Pages.App.Profile
                 ScriptManager.RegisterStartupScript(this, GetType(), "ActivateSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').tab('show');" + "$('.tab-pane#settings').addClass('active');" + "});</script>", false);
             }
         }
-        protected void btnUpload_Click(object sender, EventArgs e)
-        {
-            Uploadfile();
-            ScriptManager.RegisterStartupScript(this, GetType(), "ActivateSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').tab('show');" + "$('.tab-pane#settings').addClass('active');" + "});</script>", false);
-        }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
@@ -109,11 +112,12 @@ namespace GivMED.Pages.App.Profile
 
             if (response.StatusCode == (int)StatusCode.Success)
             {
+                Session["DonorID"] = response.Result;
                 Session["donorisvalid"] = true;
                 ShowSuccessMessage(ResponseMessages.InsertSuccess);
                 btnSubmit.Visible = false;
                 btnSave.Visible = true;
-                Response.Redirect("~/Pages/App/Donor/Published_Needs.aspx");
+                ScriptManager.RegisterStartupScript(this, GetType(), "ShowOptional", "ShowOptional();", true);
             }
             else
             {
@@ -320,7 +324,7 @@ namespace GivMED.Pages.App.Profile
             oData.ZipCode = txtZipCode.Text.Trim();
             oData.Email = txtEmail.Text.Trim();
             oData.Description = txtDescription.Text.Trim();
-            oData.PublicStatus = chkAutoPublish.Checked == true ? 1 : 0;
+            oData.PublicStatus = (chkPublicityPop.Checked == true ? 1 : 2);
             oData.CreatedDateTime = DateTime.Now;
             oData.CreatedBy = "admin";
             oData.ModifiedDateTime = DateTime.Now;
@@ -362,7 +366,7 @@ namespace GivMED.Pages.App.Profile
             oData.ZipCode = txtZipCode.Text.Trim();
             oData.Email = txtEmail.Text.Trim();
             oData.Description = txtDescription.Text.Trim();
-            oData.PublicStatus = chkAutoPublish.Checked == true ? 1 : 0;
+            oData.PublicStatus = (chkPublicityPop.Checked == true ? 1 : 2);
             oData.ModifiedDateTime = DateTime.Now;
             oData.ModifiedBy = "admin";
             return oData;
@@ -497,5 +501,85 @@ namespace GivMED.Pages.App.Profile
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowErrorMessage('" + msg + "');", true);
         }
         #endregion Methods
+
+
+        protected void btnUploads_Click(object sender, EventArgs e)
+        {
+            Uploadfile();
+            ScriptManager.RegisterStartupScript(this, GetType(), "ActivateSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').tab('show');" + "$('.tab-pane#settings').addClass('active');" + "});</script>", false);
+        }
+
+        protected void btnSaveOption_Click(object sender, EventArgs e)
+        {
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+            EmailUsers ouser = new EmailUsers();
+
+            ouser.UserId = Convert.ToInt32(Session["DonorID"]);
+            ouser.UserName = loggedUser.UserName;
+            ouser.Email = txtEmail.Text.ToString();
+            ouser.Publicity = (chkPublicityPop.Checked == true ? 1 : 2);
+            ouser.EmailNotification = (chkEmailPop.Checked == true ? 1 : 2);
+            ouser.CreatedDateTime = DateTime.Now;
+            ouser.CreatedBy = "admin";
+            ouser.ModifiedDateTime = DateTime.Now;
+            ouser.ModifiedBy = "admin";
+
+            WebApiResponse response = new WebApiResponse();
+            response = oProfileService.PostEmailUser(ouser);
+
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'success', title: 'Saved!', text: 'Donor ID : '"+ Session["DonorID"].ToString() + "', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "ActivateSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').tab('show');" + "$('.tab-pane#settings').addClass('active');" + "});</script>", false);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'An error occurred!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "ActivateSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').tab('show');" + "$('.tab-pane#settings').addClass('active');" + "});</script>", false);
+            }
+            btnSave.Visible = true;
+            btnSubmit.Visible = false;
+            chkEmail.Enabled = true;
+            chkPublicity.Enabled = true;
+
+            chkPublicity.Checked = ouser.Publicity == 1 ? true : false;
+            chkEmail.Checked = ouser.EmailNotification == 1 ? true : false;
+        }
+
+        protected void chkPublicity_CheckedChanged(object sender, EventArgs e)
+        {
+            PutEmailUsers();
+
+        }
+
+        protected void chkEmail_CheckedChanged(object sender, EventArgs e)
+        {
+            PutEmailUsers();
+        }
+
+        private void PutEmailUsers()
+        {
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+            EmailUsers ouser = new EmailUsers();
+
+            ouser.UserId = Convert.ToInt32(Session["DonorID"]);
+            ouser.UserName = loggedUser.UserName;
+            ouser.Email = txtEmail.Text.ToString();
+            ouser.Publicity = (chkPublicity.Checked == true ? 1 : 2);
+            ouser.EmailNotification = (chkEmail.Checked == true ? 1 : 2);
+            ouser.CreatedDateTime = DateTime.Now;
+            ouser.CreatedBy = "admin";
+            ouser.ModifiedDateTime = DateTime.Now;
+            ouser.ModifiedBy = "admin";
+
+            WebApiResponse response = new WebApiResponse();
+            response = oProfileService.PutEmailUsers(ouser);
+            ShowSuccessMessage(ResponseMessages.UpdateSuccess);
+            ScriptManager.RegisterStartupScript(this, GetType(), "ActivateSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').tab('show');" + "$('.tab-pane#settings').addClass('active');" + "});</script>", false);
+        }
     }
 }

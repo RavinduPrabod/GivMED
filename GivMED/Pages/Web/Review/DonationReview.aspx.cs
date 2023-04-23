@@ -20,6 +20,7 @@ namespace GivMED.Pages.Web.Review
             if (!this.IsPostBack)
             {
                 PageLoad();
+                pnlNotFound.Visible = false;
             }
         }
 
@@ -374,5 +375,136 @@ namespace GivMED.Pages.Web.Review
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowErrorMessage('" + msg + "');", true);
         }
 
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            Search();
+        }
+
+        private void Search()
+        {
+            try
+            {
+                Session["NeedFilterList"] = null;
+                List<PublishedNeedsGridDto> records = Session["FilterList"] != null ? (List<PublishedNeedsGridDto>)Session["FilterList"] : new List<PublishedNeedsGridDto>();
+                if (!string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    List<PublishedNeedsGridDto> filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Split('-').Contains(txtSearch.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                    if (filterList.Count == 0)
+                    {
+                        filterList = records.Where(x => x.SearchIndex.Replace(" ", "").ToUpper().Contains(txtSearch.Text.Trim().Replace(" ", "").ToUpper())).ToList();
+                        pnlNotFound.Visible = true;
+                        lblShowCount.Visible = false;
+                    }
+                    gvNeedsList.DataSource = filterList;
+                    gvNeedsList.DataBind();
+                    if (filterList.Count > 0)
+                    {
+                        Session["NeedFilterList"] = filterList;
+                        pnlNotFound.Visible = false;
+                        lblShowCount.Visible = true;
+                    }
+
+                }
+                else
+                {
+                    gvNeedsList.DataSource = records;
+                    gvNeedsList.DataBind();
+                    if (records.Count > 0)
+                    {
+                        Session["NeedFilterList"] = records;
+                        pnlNotFound.Visible = false;
+                        lblShowCount.Visible = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void SearchforItemCat(int ItemCat)
+        {
+            try
+            {
+                Session["NeedFilterList"] = null;
+                List<PublishedNeedsGridDto> records = Session["FilterList"] != null ? (List<PublishedNeedsGridDto>)Session["FilterList"] : new List<PublishedNeedsGridDto>();
+                if (!string.IsNullOrEmpty(ItemCat.ToString()))
+                {
+                    List<PublishedNeedsGridDto> filterList = records.Where(x => x.SupplyItemCatIDText.Replace(" ", "").ToUpper().Split('-').Contains(ItemCat.ToString().Trim().Replace(" ", "").ToUpper())).ToList();
+                    if (filterList.Count == 0)
+                    {
+                        filterList = records.Where(x => x.SupplyItemCatIDText.Replace(" ", "").ToUpper().Contains(ItemCat.ToString().Trim().Replace(" ", "").ToUpper())).ToList();
+                        pnlNotFound.Visible = true;
+                        lblShowCount.Visible = false;
+                    }
+                    gvNeedsList.DataSource = filterList;
+                    gvNeedsList.DataBind();
+                    if (filterList.Count > 0)
+                    {
+                        Session["NeedFilterList"] = filterList;
+                        pnlNotFound.Visible = false;
+                        lblShowCount.Visible = true;
+                    }
+
+                }
+                else
+                {
+                    gvNeedsList.DataSource = records;
+                    gvNeedsList.DataBind();
+                    if (records.Count > 0)
+                    {
+                        Session["NeedFilterList"] = records;
+                        pnlNotFound.Visible = false;
+                        lblShowCount.Visible = true;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        protected void btnItemCat1_Click(object sender, EventArgs e)
+        {
+            SearchforItemCat(1);
+        }
+
+        protected void btnItemCat2_Click(object sender, EventArgs e)
+        {
+            SearchforItemCat(2);
+        }
+
+        protected void btnItemCat3_Click(object sender, EventArgs e)
+        {
+            SearchforItemCat(3);
+        }
+
+        protected void btnItemCat4_Click(object sender, EventArgs e)
+        {
+            SearchforItemCat(4);
+        }
+
+        protected void btnItemCat5_Click(object sender, EventArgs e)
+        {
+            SearchforItemCat(5);
+        }
+
+        protected void btnItemCat6_Click(object sender, EventArgs e)
+        {
+            SearchforItemCat(6);
+        }
+
+        protected void btnItemCat7_Click(object sender, EventArgs e)
+        {
+            SearchforItemCat(7);
+        }
+
+        protected void btnItemCat8_Click(object sender, EventArgs e)
+        {
+            SearchforItemCat(8);
+        }
     }
 }

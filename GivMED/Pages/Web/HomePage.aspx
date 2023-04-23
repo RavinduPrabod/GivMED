@@ -3,10 +3,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../../dist/css/GiveMEDHome.css" rel="stylesheet" />
     <link href="../../dist/js/animate/animate.min.css" rel="stylesheet" />
-    <%--   <link href="../../dist/js/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
-    <link href="../../dist/js/lightbox/css/lightbox.min.css" rel="stylesheet" />
-    <link href="../../dist/js/bootstrap.min.css" rel="stylesheet" />
-    <link href="../../dist/js/style.css" rel="stylesheet" />--%>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
@@ -39,9 +35,9 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- /.card -->
             <div class="card" style="background-color: navy">
                 <div class="card-body">
+                    <!-- /.card -->
                     <header class="banner-section">
                         <div class="banner-img" style="background-attachment: inherit;"></div>
                         <div class="container">
@@ -51,7 +47,7 @@
                                     </div>
                                     <div class="col-lg-10 wow zoomIn">
                                         <h1 style="font-weight: bold; color: azure">A Little Care Can Change the World.</h1>
-                                        <asp:Button CssClass="btn btn-success" runat="server" Text="Join Us!" OnClientClick="ShowJoinUs();" />
+                                        <asp:Button CssClass="btn btn-success" runat="server" Text="Join Us!" OnClientClick="return ShowJoinUs();" />
                                     </div>
                                     <div class="col-lg-1">
                                     </div>
@@ -83,7 +79,8 @@
                         <!-- small card -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3><asp:Label runat="server" ID="lblDonorCount"></asp:Label></h6></h3>
+                                <h3>
+                                    <asp:Label runat="server" ID="lblDonorCount"></asp:Label></h6></h3>
                                 <p>Total Active Donors</p>
                             </div>
                             <div class="icon">
@@ -91,7 +88,6 @@
                             </div>
                             <%--<asp:LinkButton ID="btnMore1" runat="server" CssClass="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i>
                             </asp:LinkButton>--%>
-
                         </div>
                     </div>
                     <!-- ./col -->
@@ -99,13 +95,14 @@
                         <!-- small card -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3><asp:Label runat="server" ID="lblHospitalCount"></asp:Label></h6></h3>
+                                <h3>
+                                    <asp:Label runat="server" ID="lblHospitalCount"></asp:Label></h6></h3>
                                 <p>Registed Hospitals</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-hospital-symbol"></i>
                             </div>
-                           <%-- <asp:LinkButton ID="btnMore2" runat="server" CssClass="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i>
+                            <%-- <asp:LinkButton ID="btnMore2" runat="server" CssClass="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i>
                             </asp:LinkButton>--%>
                         </div>
                     </div>
@@ -114,13 +111,14 @@
                         <!-- small card -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3><asp:Label runat="server" ID="lblNeedCount"></asp:Label></h6></h3>
+                                <h3>
+                                    <asp:Label runat="server" ID="lblNeedCount"></asp:Label></h6></h3>
                                 <p>Ongoing Supplies Needs</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-donate"></i>
                             </div>
-                           <%--  <asp:LinkButton ID="btnMore3" runat="server" CssClass="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i>
+                            <%--  <asp:LinkButton ID="btnMore3" runat="server" CssClass="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i>
                             </asp:LinkButton>--%>
                         </div>
                     </div>
@@ -129,14 +127,15 @@
                         <!-- small card -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                               <h3><asp:Label runat="server" ID="Label19">2023</asp:Label></h6></h3>
+                                <h3>
+                                    <asp:Label runat="server" ID="Label19">2023</asp:Label></h6></h3>
 
                                 <p>Annual Donation Report</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-chart-line"></i>
                             </div>
-                             <asp:LinkButton ID="btnMore4" runat="server" CssClass="small-box-footer">Download&nbsp<i class="fas fa-download"></i>
+                            <asp:LinkButton ID="btnMore4" runat="server" CssClass="small-box-footer">Download&nbsp<i class="fas fa-download"></i>
                             </asp:LinkButton>
                         </div>
                     </div>
@@ -187,10 +186,11 @@
                                                                         <label for="star1" title="text">1 star</label>
                                                                     </div>
                                                                 </div>
-                                                                 <div class="col-xs-4" style="color:gold; font-weight:bold">
-                                                                      <h8>GOLD
-                                                                          </h8>
-                                                                     </div>
+                                                                <div class="col-xs-4" style="color: gold; font-weight: bold">
+                                                                    <h8>
+                                                                        GOLD
+                                                                    </h8>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div>
@@ -239,10 +239,11 @@
                                                                         <input type="radio" id="star1" name="rate1" value="1" disabled />
                                                                         <label for="star1" title="text">1 star</label>
                                                                     </div>
-                                                                     <div class="col-xs-4" style="color:silver; font-weight:bold">
-                                                                      <h8>SILVER
-                                                                          </h8>
-                                                                     </div>
+                                                                    <div class="col-xs-4" style="color: silver; font-weight: bold">
+                                                                        <h8>
+                                                                            SILVER
+                                                                        </h8>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -292,10 +293,11 @@
                                                                         <input type="radio" id="star1" name="rate2" value="1" checked disabled />
                                                                         <label for="star1" title="text">1 star</label>
                                                                     </div>
-                                                                     <div class="col-xs-4" style="color:brown; font-weight:bold">
-                                                                      <h8>BRONZE
-                                                                          </h8>
-                                                                     </div>
+                                                                    <div class="col-xs-4" style="color: brown; font-weight: bold">
+                                                                        <h8>
+                                                                            BRONZE
+                                                                        </h8>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -478,17 +480,16 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
+
         function ShowJoinUs() {
+
             $('.modal-backdrop').remove();
             $('#modal-join').modal('show');
             return false;
         };
     </script>
     <script src="../../dist/js/wow/wow.min.js"></script>
-    <%--    <script src="../../dist/js/easing/easing.min.js"></script>
-    <script src="../../dist/js/waypoints/waypoints.min.js"></script>
-    <script src="../../dist/js/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../../dist/js/isotope/isotope.pkgd.min.js"></script>
-    <script src="../../dist/js/lightbox/js/lightbox.min.js"></script>--%>
     <script src="../../dist/js/main.js"></script>
 </asp:Content>

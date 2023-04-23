@@ -26,6 +26,35 @@ namespace GivMED.Service
 
                 HttpResponseMessage response = client.PostAsync(path, content).Result;
                 webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent;
+                }
+            }
+            return webApiResponse;
+        }
+
+        public WebApiResponse PostEmailUser(EmailUsers oData)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Registration/PostEmailUser";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(oData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent;
+                }
             }
             return webApiResponse;
         }
@@ -36,6 +65,23 @@ namespace GivMED.Service
             using (HttpClient client = new HttpClient())
             {
                 string path = "Registration/PutDonor";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(oData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PutAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+            }
+            return webApiResponse;
+        }
+
+        public WebApiResponse PutEmailUsers(EmailUsers oData)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Registration/PutEmailUsers";
                 client.BaseAddress = new Uri(GlobalData.BaseUri);
                 //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
                 var json = JsonConvert.SerializeObject(oData);
@@ -147,6 +193,34 @@ namespace GivMED.Service
                 throw;
             }
         }
+
+        public EmailUsers GetEmailUser(string UserName)
+        {
+            try
+            {
+                EmailUsers record = new EmailUsers();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Registration/GetEmailUser/" + UserName;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<EmailUsers>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
 
         public HospitalMaster GetHospitalMaster(string UserName)
         {

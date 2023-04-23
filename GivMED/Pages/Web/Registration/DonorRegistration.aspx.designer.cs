@@ -186,6 +186,42 @@ namespace GivMED.Pages.Web.Registration
         protected global::System.Web.UI.WebControls.Button btnVerify;
 
         /// <summary>
+        /// lblEmailOrg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEmailOrg;
+
+        /// <summary>
+        /// txtCodeOrg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCodeOrg;
+
+        /// <summary>
+        /// lblErrorOrg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorOrg;
+
+        /// <summary>
+        /// btnVerifyOrg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnVerifyOrg;
+
+        /// <summary>
         /// View2 control.
         /// </summary>
         /// <remarks>

@@ -2,6 +2,8 @@
 using GivMED.Dto;
 using GivMED.Models;
 using GivMED.Service;
+using MailKit.Net.Smtp;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,16 +20,25 @@ namespace GivMED.Pages.App.Hospital
     {
         SupplyService oSupplyService = new SupplyService();
         private ProfileService oProfileService = new ProfileService();
-
+        CommonService oCommonService = new CommonService();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
             {
+                EmailConfigurationLoad();
                 PageLoad();
                 mvDonorCont.ActiveViewIndex = 0;
                 pnlContact.Visible = false;
 
             }
+        }
+        private void EmailConfigurationLoad()
+        {
+            EmailConfiguration oEmailConfiguration = oCommonService.GetEmailConfiguration();
+            GlobalData.Port = oEmailConfiguration.Port;
+            GlobalData.SmtpAddress = oEmailConfiguration.SmtpAddress;
+            GlobalData.NoreplyEmail = oEmailConfiguration.EmailAddress;
+            GlobalData.NoreplyPassword = oEmailConfiguration.Password;
         }
         private void PageLoad()
         {
@@ -76,7 +87,7 @@ namespace GivMED.Pages.App.Hospital
                 Session["DonorContList"] = result;
         }
 
-            protected void gvDonorProgress_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void gvDonorProgress_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -136,6 +147,7 @@ namespace GivMED.Pages.App.Hospital
                 }
                 gvDonorNamelist.DataSource = orecordbyName;
                 gvDonorNamelist.DataBind();
+
             }
             catch (Exception ex)
             {
@@ -201,18 +213,6 @@ namespace GivMED.Pages.App.Hospital
                         LoadDonorsList();
                         mvDonorCont.ActiveViewIndex = 1;
                         break;
-
-                    //case "EditData":
-                    //    ViewState["index"] = e.CommandArgument.ToString();
-                    //    ViewRecord();
-                    //    btnPublish.Visible = false;
-                    //    btnRePublish.Visible = true;
-                    //    break;
-
-                    //case "DeleteData":
-                    //    ViewState["index"] = e.CommandArgument.ToString();
-                    //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDeleteConfirmation();", true);
-                    //    break;
                 }
             }
             catch (Exception ex)
@@ -324,6 +324,7 @@ namespace GivMED.Pages.App.Hospital
                     ShowErrorMessage(ResponseMessages.Error);
                 }
 
+                EmailSender(ofeed.DonorID);
                
             }
             else
@@ -333,6 +334,51 @@ namespace GivMED.Pages.App.Hospital
             }
         }
 
+        private void EmailSender(int DonorID)
+        {
+            try
+            {
+                LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+                List<DonationContributeGridDto> orecord = (List<DonationContributeGridDto>)Session["DonationContribute"];
+
+                DonationContributeGridDto singlerecord = orecord.Where(x => x.DonorID == DonorID).FirstOrDefault();
+
+                 var email = new MimeMessage();
+
+                email.From.Add(new MailboxAddress(loggedUser.FirstName, GlobalData.NoreplyEmail));
+                email.To.Add(new MailboxAddress(singlerecord.DonorName, singlerecord.UserName));
+
+                email.Subject = " Donation Confirmation - Medical Supplies";
+                email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+                {
+                    Text = $"Dear {singlerecord.DonorName}\n\n" +
+                    $"We would like to thank you for your recent donation of medical supplies to our hospital. Your\n" +
+                    $"donation will go a long way in helping us provide quality healthcare to our patients.\n\n" +
+                    $"We have received your donation and have already begun distributing it to the departments \n" +
+                    $"in need. Your generosity has helped us in our mission to provide the best possible care to our \n" +
+                    $"patients.\n\n" +
+                    $"We appreciate your contribution and look forward to continuing our partnership with you.\n" +
+                    $"Once again, thank you for your donation.\n\n" +
+                    $"Sincerely," +
+                    $"{loggedUser.FirstName}"
+                };
+
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect(GlobalData.SmtpAddress, GlobalData.Port);
+
+                    smtp.Authenticate(GlobalData.NoreplyEmail, GlobalData.NoreplyPassword);
+
+                    smtp.Send(email);
+                    smtp.Disconnect(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private void ShowSuccessMessage(string msg)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowSuccessMessage('" + msg + "');", true);

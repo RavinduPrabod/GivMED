@@ -6,7 +6,9 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
         <Triggers>
-            <asp:PostBackTrigger ControlID="btnUpload" />
+            <asp:PostBackTrigger ControlID="chkPublicity" />
+            <asp:PostBackTrigger ControlID="chkEmail" />
+            <asp:PostBackTrigger ControlID="btnUploads" />
         </Triggers>
         <ContentTemplate>
             <div class="row">
@@ -15,15 +17,18 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
                             <div class="text-center">
-                                <asp:Image runat="server" ID="imgPd" CssClass="profile-user-img img-fluid img-circle" ImageUrl="dist/img/user.png" Width="150px" Height="150px" />
+                                <asp:Image runat="server" ID="imgPd" CssClass="profile-user-img img-fluid img-circle" ImageUrl="dist/img/user.png" Width="150px" Height="155px" />
                             </div>
                             <div class="form-group row">
                             </div>
                             <div class="row">
-                                 <asp:FileUpload ID="FileUpload1" runat="server" CssClass="form-control" />
+                                <asp:FileUpload ID="FileUpload1" runat="server" CssClass="btn btn-success col fileinput-button dz-clickable" />
                             </div>
+                            &nbsp
                             <div class="form-group row">
-                                <asp:Button ID="btnUpload" runat="server" CssClass="btn btn-block btn-outline-warning btn-sm" Text="Upload" OnClick="btnUpload_Click" />
+                                <asp:LinkButton ID="btnUploads" runat="server" CssClass="btn btn-primary col start" OnClick="btnUploads_Click"><i class="fas fa-upload"></i>
+                                    <span>Set As Profile Image</span>
+                                </asp:LinkButton>
                             </div>
                             <h3 class="profile-username text-center">
                                 <asp:Label runat="server" ID="lblPdName" Text="Name"></asp:Label></h3>
@@ -32,45 +37,14 @@
                             </p>
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
-                                    <b>Followers</b> <a class="float-right">1,322</a>
+                                    <b>Publicity</b> <a class="float-right">
+                                        <asp:CheckBox runat="server" ID="chkPublicity" CssClass="icheck-danger" Text="." OnCheckedChanged="chkPublicity_CheckedChanged" AutoPostBack="true" /></a>
                                 </li>
                                 <li class="list-group-item">
-                                    <b>Following</b> <a class="float-right">543</a>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>Friends</b> <a class="float-right">13,287</a>
+                                    <b>Email Notification</b> <a class="float-right">
+                                        <asp:CheckBox runat="server" ID="chkEmail" CssClass="icheck-danger" Text="." OnCheckedChanged="chkEmail_CheckedChanged" AutoPostBack="true" /></a>
                                 </li>
                             </ul>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                    <!-- /.card -->
-                    <!-- About Me Box -->
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">About Me</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <strong><i class="fas fa-book mr-1"></i>Education</strong>
-                            <p class="text-muted">
-                                B.S. in Computer Science from the University of Tennessee at Knoxville
-                            </p>
-                            <hr>
-                            <strong><i class="fas fa-map-marker-alt mr-1"></i>Location</strong>
-                            <p class="text-muted">Malibu, California</p>
-                            <hr>
-                            <strong><i class="fas fa-pencil-alt mr-1"></i>Skills</strong>
-                            <p class="text-muted">
-                                <span class="tag tag-danger">UI Design</span>
-                                <span class="tag tag-success">Coding</span>
-                                <span class="tag tag-info">Javascript</span>
-                                <span class="tag tag-warning">PHP</span>
-                                <span class="tag tag-primary">Node.js</span>
-                            </p>
-                            <hr>
-                            <strong><i class="far fa-file-alt mr-1"></i>Notes</strong>
-
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -79,11 +53,38 @@
                 <!-- /.col -->
                 <div class="col-md-9">
                     <div class="card">
+                        <div class="modal fade" id="modal-Optional">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title text-center">Choose Optional Settings</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <<div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <asp:CheckBox runat="server" ID="chkPublicityPop" CssClass="icheck-primary" Text="Do you want your donations to be published for publicity?" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <asp:CheckBox runat="server" ID="chkEmailPop" CssClass="icheck-warning" Text="Do you want to receive notifications about hospital supply shortages via email?" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <asp:Button runat="server" ID="btnSaveOption" CssClass="btn btn-primary" Text="Save" OnClick="btnSaveOption_Click" />
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
                                 <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#changepwd" data-toggle="tab">Security</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
                             </ul>
                         </div>
                         <!-- /.card-header -->
@@ -95,9 +96,6 @@
                                             <label for="inputName" class="col-sm-2 col-form-label">User Name</label>
                                             <div class="col-sm-4">
                                                 <asp:Label runat="server" ID="lblUsername"></asp:Label>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <asp:CheckBox runat="server" ID="chkAutoPublish" CssClass="icheck-danger" Text="Do you like your donations publish for publicity ?" />
                                             </div>
                                         </div>
                                         <asp:Panel runat="server" ID="pnlOrg1">
@@ -187,7 +185,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <label for="inputSkills" class="col-sm-2 col-form-label">Email</label>
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-5">
                                                 <asp:TextBox runat="server" type="email" name="email" CssClass="form-control" ID="txtEmail"></asp:TextBox>
                                             </div>
                                             <label for="inputExperience" class="col-sm-1 col-form-label"></label>
@@ -286,6 +284,8 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
 
         $(document).ready(function () {
             Validate = function () {
@@ -295,14 +295,11 @@
                 $('#<% = txtAddress.ClientID %>').addClass('validate[required]');
                 $('#<% = txtTelephone.ClientID %>').addClass('validate[required]');
                 $('#<% = txtCity.ClientID %>').addClass('validate[required]');
-<%--                $('#<% = ddlState.ClientID %>').addClass('validate[required,custom[minCheckbox]]');
-                $('#<% = ddlCountry.ClientID %>').addClass('validate[required,custom[minCheckbox]]');--%>
                 $('#<% = txtZipCode.ClientID %>').addClass('validate[required]');
                 $('#<% = txtEmail.ClientID %>').addClass('validate[required]');
                 $('#<% = txtOrgName.ClientID %>').addClass('validate[required]');
                 $('#<% = txtContactPerson.ClientID %>').addClass('validate[required]');
                 $('#<% = txtDesignation.ClientID %>').addClass('validate[required]');
-<%--                $('#<% = txtDesignation.ClientID %>').addClass('validate[required,custom[email]]');--%>
                 var valid = $("#form1").validationEngine('validate');
                 var vars = $("#form1").serialize();
                 if (valid == true) {
@@ -331,46 +328,17 @@
             }
         });
 
+        function ShowOptional() {
+            $('.modal-backdrop').remove();
+            $('#modal-Optional').modal('show');
+            return false;
+        };
+
         function hideShowTabs() {
             $('.nav-tabs a[href="#settings"]').hide();
             $('.tab-pane#settings').removeClass('active');
             $('.nav-tabs a[href="#changepwd"]').tab('show');
             $('.tab-pane#changepwd').addClass('active');
         }
-
-        //$(document).ready(function () {
-        //    Validate = function () {
-        //        $("#form1").validate({
-        //            rules: {
-        //                terms: {
-        //                    required: true
-        //                },
-        //                must: {  // new validation rule
-        //                    required: true
-        //                }
-        //            },
-        //            messages: {
-        //                terms: "Please accept our terms",
-        //                must: "This field is required"  // new validation message
-        //            },
-        //            errorElement: 'span',
-        //            errorPlacement: function (error, element) {
-        //                if (element.attr("name") == "require") {  // new error placement for the "First Name" field
-        //                    error.addClass('invalid-feedback');
-        //                    error.insertAfter("#txtFirstName-error");
-        //                } else {
-        //                    error.addClass('invalid-feedback');
-        //                    element.closest('.form-group').append(error);
-        //                }
-        //            },
-        //            highlight: function (element, errorClass, validClass) {
-        //                $(element).addClass('is-invalid');
-        //            },
-        //            unhighlight: function (element, errorClass, validClass) {
-        //                $(element).removeClass('is-invalid');
-        //            }
-        //        });
-        //    }
-        //});
     </script>
 </asp:Content>

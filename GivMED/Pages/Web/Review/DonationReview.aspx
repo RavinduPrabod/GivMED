@@ -190,9 +190,7 @@
                                 <div class="input-group">
                                     <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control form-control-lg" placeholder="Type your keywords here"></asp:TextBox>
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-lg btn-default">
-                                            <i class="fa fa-search"></i>
-                                        </button>
+                                        <asp:Button runat="server" ID="btnSearch" CssClass="btn btn-lg btn-default" Text="Search" OnClick="btnSearch_Click" />
                                     </div>
                                 </div>
                             </div>
@@ -259,11 +257,14 @@
                                                         <div class="col-1">
                                                         </div>
                                                         <div class="col-11">
-                                                            <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server"><p>Personal Protective Equipment(PPE)</asp:LinkButton></p>
-                                                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server">Diagnostic and Monitoring Equipment</asp:LinkButton></p>
-                                                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server"><p>Treatment and Medication Supplies</i></asp:LinkButton></p>
-                                                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server"><p>Surgical Supplies</i></asp:LinkButton></p>
-                                                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server"><p>Laboratory Supplies</i></asp:LinkButton></p>
+                                                            <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnItemCat1" OnClick="btnItemCat1_Click"><p>Personal Protective Equipment(PPE)</asp:LinkButton></p>
+                                                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnItemCat2" OnClick="btnItemCat2_Click">Diagnostic and Monitoring Equipment</asp:LinkButton></p>
+                                                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnItemCat3" OnClick="btnItemCat3_Click"><p>Treatment and Medication Supplies</i></asp:LinkButton></p>
+                                                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnItemCat4" OnClick="btnItemCat4_Click"><p>Surgical Supplies</i></asp:LinkButton></p>
+                                                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnItemCat5" OnClick="btnItemCat5_Click"><p>Laboratory Supplies</i></asp:LinkButton></p>
+                                                            <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnItemCat6" OnClick="btnItemCat6_Click"><p>Medical devices for monitoring</i></asp:LinkButton></p>
+                                                            <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnItemCat7" OnClick="btnItemCat7_Click"><p>Medical imaging equipment</i></asp:LinkButton></p>
+                                                            <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnItemCat8" OnClick="btnItemCat8_Click"><p>Mobility aids</i></asp:LinkButton></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -357,6 +358,17 @@
                                                     </asp:TemplateField>
                                                 </Columns>
                                             </asp:GridView>
+                                            <asp:Panel ID="pnlNotFound" runat="server">
+                                                <div class="error-page">
+                                                    <h2 class="headline text-warning">404</h2>
+                                                    <div class="error-content">
+                                                        <h3><i class="fas fa-exclamation-triangle text-danger"></i>Oops! Something went wrong.</h3>
+                                                        <p>
+                                                            We did not find any result
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </asp:Panel>
                                         </div>
                                 </div>
                                 <!-- /.col -->

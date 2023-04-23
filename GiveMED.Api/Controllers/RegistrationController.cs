@@ -103,6 +103,28 @@ namespace GiveMED.Api.Controllers
                 _context.DonorMaster.Add(oData);
                 await _context.SaveChangesAsync();
 
+                return Ok(oData.DonorID); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
+        }
+
+        [HttpPost]
+        [ActionName("PostEmailUser")]
+        public async Task<IActionResult> PostEmailUser([FromBody] EmailUsers oData)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                _context.EmailUsers.Add(oData);
+                await _context.SaveChangesAsync();
+
                 return Ok(oData); // Return the inserted record
             }
             catch (Exception ex)
@@ -115,6 +137,35 @@ namespace GiveMED.Api.Controllers
         [HttpPut]
         [ActionName("PutDonor")]
         public async Task<IActionResult> PutDonor([FromBody] DonorMaster oData)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                //if (DocumentExists(oDocument.DocCode))
+                //    ModelState.AddModelError("DocCode", "DocCode already exists");
+
+                //if (!ModelState.IsValid)
+                //    return BadRequest(ModelState);
+
+                _context.Entry(oData).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(oData); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
+
+        }
+
+        [HttpPut]
+        [ActionName("PutEmailUsers")]
+        public async Task<IActionResult> PutEmailUsers([FromBody] EmailUsers oData)
         {
             try
             {
@@ -161,6 +212,37 @@ namespace GiveMED.Api.Controllers
         {
             return _context.HospitalMaster.Where(x => x.UserName == UserName).FirstOrDefault();
         }
+
+        [HttpGet("{UserName}")]
+        [ActionName("GetEmailUser")]
+        public EmailUsers GetEmailUser(string UserName)
+        {
+            return _context.EmailUsers.Where(x => x.UserName == UserName).FirstOrDefault();
+        }
+
+        [HttpGet()]
+        [ActionName("GetAllActiveEmailUsers")]
+        public List<EmailUsers> GetAllActiveEmailUsers()
+        {
+            return _context.EmailUsers.Where(x => x.EmailNotification == 1).ToList();
+        }
+
+        [HttpGet("{oDonationVolunteer}")]
+        [ActionName("GetAllAssignVolunteers")]
+        public List<VolunteerMaster> GetAllAssignVolunteers(List<DonationVolunteer> oDonationVolunteer)
+        {
+            List<VolunteerMaster> result = new List<VolunteerMaster>();
+
+            foreach (var item in oDonationVolunteer)
+            {
+                VolunteerMaster data = new VolunteerMaster();
+                data.VolEmail = _context.VolunteerMaster.FirstOrDefault(x => x.VolCode == item.VolunteerCode)?.VolCode;
+                result.Add(data);
+            }
+
+            return result;
+        }
+
         #endregion Donor
 
         #region Hospital

@@ -204,6 +204,15 @@ namespace GivMED.Pages.App.Donor
         protected global::System.Web.UI.WebControls.View View2;
 
         /// <summary>
+        /// btnBackPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnBackPage;
+
+        /// <summary>
         /// txtDealDate control.
         /// </summary>
         /// <remarks>
@@ -231,15 +240,6 @@ namespace GivMED.Pages.App.Donor
         protected global::System.Web.UI.WebControls.LinkButton btnSubmit;
 
         /// <summary>
-        /// lblSupplyIDin control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSupplyIDin;
-
-        /// <summary>
         /// lblhelp control.
         /// </summary>
         /// <remarks>
@@ -249,13 +249,13 @@ namespace GivMED.Pages.App.Donor
         protected global::System.Web.UI.WebControls.Label lblhelp;
 
         /// <summary>
-        /// btnBackPage control.
+        /// lblSupplyIDin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnBackPage;
+        protected global::System.Web.UI.WebControls.Label lblSupplyIDin;
 
         /// <summary>
         /// gvSupplyList control.
