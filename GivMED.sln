@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GivMED", "GivMED\GivMED.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiveMED.Api", "GiveMED.Api\GiveMED.Api.csproj", "{84AE3674-A139-4E1D-A253-335D06125A61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GivMED.Test2", "GivMED.Test2\GivMED.Test2.csproj", "{BE983321-A771-4148-B844-BEC093B17C07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{84AE3674-A139-4E1D-A253-335D06125A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84AE3674-A139-4E1D-A253-335D06125A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84AE3674-A139-4E1D-A253-335D06125A61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE983321-A771-4148-B844-BEC093B17C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE983321-A771-4148-B844-BEC093B17C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE983321-A771-4148-B844-BEC093B17C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE983321-A771-4148-B844-BEC093B17C07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

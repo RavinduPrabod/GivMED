@@ -33,6 +33,13 @@ namespace GiveMED.Api.Controllers
                 }
 
                 LastDocSerialNo record = _context.LastDocSerialNo.Where(x => x.DocCode == "VLT").FirstOrDefault();
+
+                if (record == null)
+                {
+                    // Handle the case where the record doesn't exist
+                    return NotFound();
+                }
+
                 record.DocCode = "VLT";
                 record.LastTxnSerialNo = record.LastTxnSerialNo + 1;
                 record.ModifiedBy = "admin";
@@ -65,9 +72,9 @@ namespace GiveMED.Api.Controllers
 
         [HttpGet("{VolCode}")]
         [ActionName("GetVolunteerMasterbyID")]
-        public VolunteerMaster GetVolunteerMasterbyID(string VolCode)
+        public async Task<VolunteerMaster> GetVolunteerMasterbyID(string VolCode)
         {
-            return _context.VolunteerMaster.Where(x => x.VolCode == VolCode).FirstOrDefault();
+            return await _context.VolunteerMaster.SingleOrDefaultAsync(x => x.VolCode == VolCode);
         }
 
         [HttpGet]

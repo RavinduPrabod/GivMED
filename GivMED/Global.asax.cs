@@ -15,9 +15,6 @@ namespace GivMED
     {
         void Application_Start(object sender, EventArgs e)
         {
-            //RouteConfig.RegisterRoutes(RouteTable.Routes);
-            //BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //string Constr = ConfigurationManager.ConnectionStrings["BloodDBConn"].ConnectionString;
             GlobalData.BaseUri = ConfigurationManager.AppSettings["BaseUri"].ToString();
         }
     }
