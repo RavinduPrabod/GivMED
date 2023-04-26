@@ -535,6 +535,29 @@ namespace GivMED.Service
             }
         }
 
+        public WebApiResponse Delete(DonationActivityDto VolID)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Supply/Delete";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(VolID);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Extract the NewDonationID from the response content
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent; // Set the NewDonationID as the response data
+                }
+            }
+            return webApiResponse;
+        }
 
     }
 }

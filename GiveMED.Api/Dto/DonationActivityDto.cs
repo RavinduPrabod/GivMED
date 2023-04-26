@@ -8,7 +8,7 @@ namespace GiveMED.Api.Dto
     public class DonationActivityDto
     {
         public string DonationID { get; set; }
-
+        public string SupplyID { get; set; }
         public DateTime DonationCreateDate { get; set; }
 
         public int HospitalID { get; set; }

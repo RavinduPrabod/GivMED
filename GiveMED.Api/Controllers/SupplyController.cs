@@ -447,7 +447,7 @@ namespace GiveMED.Api.Controllers
             var conn = _context.Database.GetDbConnection();
             conn.Open();
             var comm = conn.CreateCommand();
-            comm.CommandText = "SELECT A.DonationID, A.DonationCreateDate, A.HospitalID, B.HospitalName, B.Email, C.[Status] " +
+            comm.CommandText = "SELECT A.DonationID, A.SupplyID, A.DonationCreateDate, A.HospitalID, B.HospitalName, B.Email, C.[Status] " +
                 "FROM DonationHeader A " +
                 "INNER JOIN HospitalMaster B ON A.HospitalID = B.HospitalID " +
                 "LEFT OUTER JOIN DonationFeedback C On A.DonationID = C.DonationID " +
@@ -458,6 +458,7 @@ namespace GiveMED.Api.Controllers
             while (reader.Read())
             {
                 DonationActivityDto data = new DonationActivityDto();
+                data.SupplyID = Convert.IsDBNull(reader["SupplyID"]) ? "" : reader["SupplyID"].ToString();
                 data.DonationID = Convert.IsDBNull(reader["DonationID"]) ? "" : reader["DonationID"].ToString();
                 data.DonationCreateDate = Convert.IsDBNull(reader["DonationCreateDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["DonationCreateDate"]);
                 data.HospitalID = Convert.IsDBNull(reader["HospitalID"]) ? 0 : Convert.ToInt32(reader["HospitalID"]);
@@ -653,6 +654,42 @@ namespace GiveMED.Api.Controllers
             isAvailable = _context.DonorMaster.Where(x => x.UserName == UserName).Any();
 
             return isAvailable;
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> Delete([FromBody] DonationActivityDto oList)
+        {
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var donationHeader = _context.DonationHeader.FirstOrDefault(x => x.DonationID == oList.DonationID.ToString());
+                if (donationHeader != null)
+                {
+                    _context.DonationHeader.Remove(donationHeader);
+                }
+
+                var donationDetails = _context.DonationDetails.Where(x => x.DonationID == oList.DonationID.ToString());
+                if (donationDetails != null)
+                {
+                    _context.DonationDetails.RemoveRange(donationDetails);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while deleting the donation.");
+            }
+
         }
     }
 }

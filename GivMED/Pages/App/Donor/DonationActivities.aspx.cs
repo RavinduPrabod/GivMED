@@ -2,6 +2,8 @@
 using GivMED.Dto;
 using GivMED.Models;
 using GivMED.Service;
+using MailKit.Net.Smtp;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +17,30 @@ namespace GivMED.Pages.App.Donor
     public partial class DonationActivities : System.Web.UI.Page
     {
         SupplyService oSupplyService = new SupplyService();
+        private CommonService oCommonService = new CommonService();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
             {
-                int count =  LoaGridView();
-                GetInfoBoxCssClass(count);
+                PageLoad();
             }
         }
 
+        private void PageLoad()
+        {
+            EmailConfigurationLoad();
+            int count = LoaGridView();
+            GetInfoBoxCssClass(count);
+        }
+        private void EmailConfigurationLoad()
+        {
+            EmailConfiguration oEmailConfiguration = oCommonService.GetEmailConfiguration();
+            GlobalData.Port = oEmailConfiguration.Port;
+            GlobalData.SmtpAddress = oEmailConfiguration.SmtpAddress;
+            GlobalData.NoreplyEmail = oEmailConfiguration.EmailAddress;
+            GlobalData.NoreplyPassword = oEmailConfiguration.Password;
+        }
         private int LoaGridView()
         {
             Session["DonationActList"] = null;
@@ -33,10 +50,12 @@ namespace GivMED.Pages.App.Donor
 
             oBindList = oSupplyService.GetDonationHeaderDetails(loggedUser.UserName);
 
-            gvDonationList.DataSource = oBindList.OrderByDescending(x=>x.DonationCreateDate).ToList();
-            gvDonationList.DataBind();
             if (oBindList.Count > 0)
                 Session["DonationActList"] = oBindList;
+
+            oBindList = oBindList.Where(x => x.Status == 0).ToList();
+            gvDonationList.DataSource = oBindList.OrderByDescending(x=>x.DonationCreateDate).ToList();
+            gvDonationList.DataBind();
 
             int donationcount = oBindList.Count();
 
@@ -153,6 +172,11 @@ namespace GivMED.Pages.App.Donor
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowDetails", "ShowDetails();", true);
                         break;
 
+                    case "Cancel":
+                        ViewState["index"] = e.CommandArgument.ToString();
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowCancel", "ShowCancel();", true);
+                        break;
+
                     case "Contact":
                         ViewState["index"] = e.CommandArgument.ToString();
                         ViewFeedback();
@@ -222,6 +246,43 @@ namespace GivMED.Pages.App.Donor
             lblFeedbackText.Text = oresullt.FeedbackText.ToString();
         }
 
+        private void EmailSender(DonationActivityDto odata)
+        {
+            try
+            {
+                LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+                var donationID = odata.DonationID;
+                var supplyID = odata.SupplyID;
+                var donorName = loggedUser.Type == 1 ? loggedUser.FirstName + " " + loggedUser.LastName : loggedUser.FirstName;
+
+                var email = new MimeMessage();
+
+                email.From.Add(new MailboxAddress("Donation Cancellation Notice", GlobalData.NoreplyEmail));
+                email.To.Add(new MailboxAddress("User", odata.Email));
+
+                email.Subject = $"Donation Cancellation - Donation ID: {donationID}, Supply ID: {supplyID}";
+                email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+                {
+                    Text = $"Dear Hospital,\n\nWe regret to inform you that the donor '{donorName}' has canceled their donation.\n\nBelow are the details of the canceled donation:\n\nDonation ID: {donationID}\nSupply ID: {supplyID}\n\nPlease let us know if you have any questions or concerns.\n\nBest regards,\nGiveMed Donation Team"
+                };
+
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect(GlobalData.SmtpAddress, GlobalData.Port);
+
+                    smtp.Authenticate(GlobalData.NoreplyEmail, GlobalData.NoreplyPassword);
+
+                    smtp.Send(email);
+                    smtp.Disconnect(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         protected void gvDonationList_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
 
@@ -250,15 +311,71 @@ namespace GivMED.Pages.App.Donor
             {
                 Label lblStatus = (Label)e.Row.FindControl("lblStatus");
                 LinkButton btnFeedback = (LinkButton)e.Row.FindControl("btnFeedback");
+                LinkButton btnCancel = (LinkButton)e.Row.FindControl("btnCancel");
 
                 if (lblStatus.Text == "Pending")
                 {
                     btnFeedback.Visible = false;
+                    btnCancel.Visible = true;
                 }
                 else
                 {
                     btnFeedback.Visible = true;
+                    btnCancel.Visible = false;
                 }
+            }
+        }
+
+        protected void btnCanceltrue_Click(object sender, EventArgs e)
+        {
+            GridViewRow oGridViewRow = gvDonationList.Rows[Convert.ToInt32(ViewState["index"])];
+            Session["lblDonationID"] = ((Label)oGridViewRow.FindControl("lblDonationID")).Text.ToString();
+
+            DonationActivityDto odata = new DonationActivityDto();
+            odata.DonationID = Session["lblDonationID"].ToString();
+            odata.SupplyID = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
+            odata.Email = ((Label)oGridViewRow.FindControl("lblEmail")).Text.ToString();
+
+            WebApiResponse response = new WebApiResponse();
+            response = oSupplyService.Delete(odata);
+
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                PageLoad();
+                EmailSender(odata);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Donation ID:'"+ odata.DonationID .ToString()+ "' is Canceled ', text: 'Canceled', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Error!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+            }
+        }
+
+        protected void ddlSortResullt_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void ddlStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<DonationActivityDto> oBindList = (List<DonationActivityDto>)Session["DonationActList"];
+            if (ddlStatus.SelectedValue == "1")
+            {
+                oBindList = oBindList.Where(x => x.Status == 0).ToList();
+                gvDonationList.DataSource = oBindList.OrderByDescending(x => x.DonationCreateDate).ToList();
+                gvDonationList.DataBind();
+                //if (oBindList.Count > 0)
+                //    Session["DonationActList"] = oBindList;
+            }
+            else
+            {
+                oBindList = oBindList.Where(x => x.Status == 1).ToList();
+                gvDonationList.DataSource = oBindList.OrderByDescending(x => x.DonationCreateDate).ToList();
+                gvDonationList.DataBind();
+                //if (oBindList.Count > 0)
+                //    Session["DonationActList"] = oBindList;
             }
         }
     }

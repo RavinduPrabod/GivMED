@@ -99,6 +99,28 @@
                     </div>
                     <!-- /.modal-dialog -->
                 </div>
+                <div class="modal fade" id="modal-Cancel">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Cancel Donation</h4>
+                                &nbsp
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h8>Do yo want to cancel this donation ? </h8>
+                            </div>
+                            <div class="modal-footer">
+                                <asp:Button ID="btnClose" runat="server" Text="Close" data-dismiss="modal" CssClass="btn btn-secondary" />
+                                <asp:Button ID="btnCanceltrue" runat="server" Text="Cancel" CssClass="btn btn-danger" OnClick="btnCanceltrue_Click" />
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
                 <div class="card-header p-2">
                     <div class="row">
                         <div class="col-md-3 col-sm-6 col-12">
@@ -297,8 +319,23 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+                            <div class="input-group input-group-sm" style="width: 300px;">
+                                <div class="input-group-append">
+                                    <asp:DropDownList CssClass="form-control" runat="server" ID="ddlStatus" Font-Size="Small" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" AutoPostBack="true">
+                                        <asp:ListItem Selected="True" Value="1">Pending</asp:ListItem>
+                                        <asp:ListItem  Value="2">Confirmed</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                                 &nbsp
                             <asp:GridView ID="gvDonationList" runat="server" AutoGenerateColumns="False" CssClass="table table-hover text-nowrap table-bordered" AllowPaging="true" PageSize="10" OnRowDataBound="gvDonationList_RowDataBound" OnRowCommand="gvDonationList_RowCommand" OnPageIndexChanging="gvDonationList_PageIndexChanging">
                                 <Columns>
+                                    <asp:TemplateField HeaderText="SupplyID" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblSupplyID" runat="server" Text='<%# Bind("SupplyID") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ItemStyle Width="5%" />
+                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="DonationID">
                                         <ItemTemplate>
                                             <asp:Label ID="lblDonationID" runat="server" Text='<%# Bind("DonationID") %>'></asp:Label>
@@ -338,6 +375,8 @@
                                         <ItemTemplate>
                                             <asp:LinkButton ID="btnView" runat="server" CssClass="btn btn-primary" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-eye"></i>
                                             </asp:LinkButton>
+                                            <asp:LinkButton ID="btnCancel" runat="server" CssClass="btn btn-dangor" ToolTip="Cancel Donation" OnClientClick="return ShowCancel();"><i class="far fa-trash-alt"></i>
+                                            </asp:LinkButton>
                                             <asp:LinkButton ID="btnFeedback" runat="server" CssClass="btn btn-warning" ToolTip="View Feedback" CausesValidation="false" CommandName="Contact" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-star"></i>
                                             </asp:LinkButton>
                                         </ItemTemplate>
@@ -371,5 +410,12 @@
             return false;
         };
 
+        function ShowCancel() {
+            $('.modal-backdrop').remove();
+            $('#modal-Cancel').modal('show');
+            return false;
+        };
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
     </script>
 </asp:Content>
