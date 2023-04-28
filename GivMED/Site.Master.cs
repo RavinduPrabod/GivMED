@@ -24,15 +24,38 @@ namespace GivMED
 
             if (loggedUser.Type == 1)
             {
-                lblDProfileName.Text = loggedUser.FirstName.ToString() + " " + loggedUser.LastName.ToString();
-                pnlDSidebar.Visible = true;
-                pnlDProf.Visible = true;
+                string dpname = loggedUser.FirstName.ToString() + " " + loggedUser.LastName.ToString();
+                if(dpname.Length > 27)
+                {
+                    lblDProfileName.Text = dpname.Substring(0, 27);
+                    pnlDSidebar.Visible = true;
+                    pnlDProf.Visible = true;
+                }
+                else
+                {
+                    lblDProfileName.Text = dpname;
+                    pnlDSidebar.Visible = true;
+                    pnlDProf.Visible = true;
+                }
+                
             }
             if (loggedUser.Type == 2)
             {
-                lblDProfileName.Text = loggedUser.FirstName.ToString();
-                pnlDSidebar.Visible = true;
-                pnlDProf.Visible = true;
+                string dpname = loggedUser.FirstName.ToString();
+                if (dpname.Length > 27)
+                {
+                    dpname = loggedUser.FirstName.ToString();
+                    lblDProfileName.Text = dpname.Substring(0, 27);
+                    pnlDSidebar.Visible = true;
+                    pnlDProf.Visible = true;
+                }
+                else
+                {
+                    lblDProfileName.Text = dpname;
+                    pnlDSidebar.Visible = true;
+                    pnlDProf.Visible = true;
+                }
+                    
             }
             if (loggedUser.Type == 3)
             {

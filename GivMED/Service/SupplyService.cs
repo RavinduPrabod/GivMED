@@ -353,6 +353,8 @@ namespace GivMED.Service
             return webApiResponse;
         }
 
+       
+
         public WebApiResponse UseChatGPTFeedBack(string query)
         {
             WebApiResponse webApiResponse = new WebApiResponse();

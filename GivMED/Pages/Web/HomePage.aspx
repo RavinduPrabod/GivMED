@@ -1,11 +1,16 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Web.Master" AutoEventWireup="true" CodeBehind="HomePage.aspx.cs" Inherits="GivMED.Pages.Web.HomePage" %>
 
+<%@ Register Assembly="Microsoft.ReportViewer.WebForms" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../../dist/css/GiveMEDHome.css" rel="stylesheet" />
     <link href="../../dist/js/animate/animate.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
+        <Triggers>
+            <asp:PostBackTrigger ControlID="btnMore4" />
+        </Triggers>
         <ContentTemplate>
             <div class="modal fade" id="modal-join">
                 <div class="modal-dialog modal-lg">
@@ -80,8 +85,12 @@
                         <div class="small-box bg-danger">
                             <div class="inner">
                                 <h3>
-                                    <asp:Label runat="server" ID="lblDonorCount"></asp:Label></h6></h3>
-                                <p>Total Active Donors</p>
+                                    <asp:Label runat="server" ID="lblDonorCount"></asp:Label></h6>
+                                    <h3></h3>
+                                    <p>
+                                        Total Active Donors
+                                    </p>
+                                </h3>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-medkit"></i>
@@ -96,8 +105,12 @@
                         <div class="small-box bg-warning">
                             <div class="inner">
                                 <h3>
-                                    <asp:Label runat="server" ID="lblHospitalCount"></asp:Label></h6></h3>
-                                <p>Registed Hospitals</p>
+                                    <asp:Label runat="server" ID="lblHospitalCount"></asp:Label></h6>
+                                    <h3></h3>
+                                    <p>
+                                        Registed Hospitals
+                                    </p>
+                                </h3>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-hospital-symbol"></i>
@@ -112,8 +125,12 @@
                         <div class="small-box bg-success">
                             <div class="inner">
                                 <h3>
-                                    <asp:Label runat="server" ID="lblNeedCount"></asp:Label></h6></h3>
-                                <p>Ongoing Supplies Needs</p>
+                                    <asp:Label runat="server" ID="lblNeedCount"></asp:Label></h6>
+                                    <h3></h3>
+                                    <p>
+                                        Ongoing Supplies Needs
+                                    </p>
+                                </h3>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-donate"></i>
@@ -128,9 +145,13 @@
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3>
-                                    <asp:Label runat="server" ID="Label19">2023</asp:Label></h6></h3>
+                                    <asp:Label runat="server" ID="Label19">2023</asp:Label></h6>
+                                    <h3></h3>
+                                    <p>
+                                        Annual Donation Report
+                                    </p>
+                                </h3>
 
-                                <p>Annual Donation Report</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-chart-line"></i>
@@ -138,6 +159,9 @@
                             <asp:LinkButton ID="btnMore4" runat="server" CssClass="small-box-footer">Download&nbsp<i class="fas fa-download"></i>
                             </asp:LinkButton>
                         </div>
+                        <asp:Panel ID="Panel1" runat="server" Visible="false">
+                            <%--<rsweb:ReportViewer ID="ReportViewer1" runat="server"></rsweb:ReportViewer>--%>
+                        </asp:Panel>
                     </div>
                     <!-- ./col -->
                 </div>

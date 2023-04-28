@@ -25,6 +25,7 @@ namespace GivMED.Pages.App.Donor
         {
             if (!this.IsPostBack)
             {
+                SetFunctionName();
                 PageLoad();
                 pnlNotFound.Visible = false;
             }
@@ -543,7 +544,10 @@ namespace GivMED.Pages.App.Donor
                     oPostData.DonationHeader.DonationID = response.Result.ToString();
                     oPostData.DonorMaster = oProfileService.GetDonorMaster(loggedUser.UserName);
                     EmailSender(oPostData);
-                    EmailSenderToVolunteers(oPostData);
+                    if(oDonationVolunteer.Count != 0)
+                    {
+                        EmailSenderToVolunteers(oPostData);
+                    }
                     ShowDonationConfirm(response.Result);
                 }
                 else
@@ -557,7 +561,18 @@ namespace GivMED.Pages.App.Donor
                 throw ex;
             }
         }
-
+        private void SetFunctionName()
+        {
+            try
+            {
+                Label lblFunctionName = this.Master.FindControl("lblFuncationName") as Label;
+                lblFunctionName.Text = "Medical Supply Shortages (Live)";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private void EmailSender(PublishedNeedsPostDto odata)
         {
             try

@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using static GivMED.Common.Enums;
+using Microsoft.Reporting.WebForms;
 
 namespace GivMED.Pages.Web
 {
@@ -29,6 +30,7 @@ namespace GivMED.Pages.Web
                 Session["loggedUser"] = null;
                 Session["donorisvalid"] = null;
                 PageLoad();
+                LoadReport();
             }
         }
         private void EmailSender()
@@ -315,6 +317,83 @@ namespace GivMED.Pages.Web
                     }
                 }
             }
+        }
+
+        private void LoadReport()
+        {
+            List<DonationViewDto> olist = new List<DonationViewDto>();
+            List<ComboDTO> itemlist = new List<ComboDTO>();
+            List<DonationViewDto> lastresult = new List<DonationViewDto>();
+
+            olist = oHomeService.GetDonationView();
+
+            string result = string.Empty;
+            foreach(var item in olist)
+            {
+                ComboDTO odata = new ComboDTO();
+                odata.DataTextField = item.ItemName;
+                odata.DataValueField = item.DonatedQty.ToString();
+                itemlist.Add(odata);
+            }
+
+            
+
+            //WebApiResponse response = new WebApiResponse();
+            //response = oHomeService.UseChatGPTReport(result);
+            //string query = response.Result;
+
+
+            //string estimate = response.Result;
+            //foreach (var item in olist)
+            //{
+            //    DonationViewDto odata = new DonationViewDto();
+            //    odata.HospitalName = item.HospitalName;
+            //    odata.DonorFirstName = item.DonorFirstName;
+            //    odata.DonationCreateDate = item.DonationCreateDate;
+            //    //odata.DonatedQty = estimate[]
+            //}
+
+            //DataSet dsReprtData = new DataSet();
+            //dsReprtData.Merge(CommonService.ToDataTable(lastresult));
+
+            //ReportDataSource rds = new ReportDataSource();
+
+            //ds.Name = "DataSet2";
+            //rds.Value = dsReprtData;
+            //ReportViewer1.LocalReport.ReportPath = Server.MapPath("Report.rdlc");
+            //ReportViewer1.LocalReport.DataSources.Clear();
+            //ReportViewer1.LocalReport.DataSources.Add(rds);
+            //string Url = ConvertReportToPDF(ReportViewer1.LocalReport);
+            //System.Diagnostics.Process.Start(Url);
+        }
+
+        private string ConvertReportToPDF(LocalReport rep)
+        {
+            string reportType = "PDF";
+            string mimeType;
+            string encoding;
+
+            string deviceInfo = "<DeviceInfo>" +
+               "  <OutputFormat>PDF</OutputFormat>" +
+               "  <PageWidth>8.27in</PageWidth>" +
+               "  <PageHeight>6.0in</PageHeight>" +
+               "  <MarginTop>0.2in</MarginTop>" +
+               "  <MarginLeft>0.2in</MarginLeft>" +
+               "  <MarginRight>0.2in</MarginRight>" +
+               "  <MarginBottom>0.2in</MarginBottom>" +
+               "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streamIds;
+            string extension = string.Empty;
+
+            byte[] bytes = rep.Render(reportType, deviceInfo, out mimeType, out encoding, out extension, out streamIds, out warnings);
+            //string localPath = System.Configuration.ConfigurationManager.AppSettings["TempFiles"].ToString();  
+            string localPath = AppDomain.CurrentDomain.BaseDirectory;
+            string fileName = Guid.NewGuid().ToString() + ".pdf";
+            localPath = localPath + fileName;
+            System.IO.File.WriteAllBytes(localPath, bytes);
+            return localPath;
         }
     }
 }

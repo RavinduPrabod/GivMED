@@ -26,11 +26,23 @@ namespace GivMED.Pages.App.Hospital
         {
             if (!this.IsPostBack)
             {
+                SetFunctionName();
                 PageLoad();
             }
 
         }
-
+        private void SetFunctionName()
+        {
+            try
+            {
+                Label lblFunctionName = this.Master.FindControl("lblFuncationName") as Label;
+                lblFunctionName.Text = "Supply Needs Publish";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private void PageLoad()
         {
             mvSupply.ActiveViewIndex = 0;

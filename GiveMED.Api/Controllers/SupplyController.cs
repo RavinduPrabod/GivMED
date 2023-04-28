@@ -330,22 +330,32 @@ namespace GiveMED.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                int NewTempID = _context.ManageTemplate.Where(x => x.HospitalID == result.HospitalID).Select(x=>x.TemplateID).Max();
-                NewTempID = NewTempID + 1;
+                int? NewTempID = _context.ManageTemplate
+                    .Where(x => x.HospitalID == result.HospitalID)
+                    .Select(x => (int?)x.TemplateID)
+                    .Max();
 
-                result.TemplateID = NewTempID;
+                if (NewTempID == null)
+                {
+                    NewTempID = 1;
+                }
+                else
+                {
+                    NewTempID += 1;
+                }
+
+                result.TemplateID = NewTempID.Value;
                 _context.ManageTemplate.Add(result);
 
                 await _context.SaveChangesAsync();
 
                 return Ok(NewTempID); // Return the inserted record
-
-
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
             }
+
         }
 
         [HttpPost]
@@ -372,7 +382,7 @@ namespace GiveMED.Api.Controllers
                 result.DonationHeader.DonationID = NewDonationID;
                 result.DonationDetails.ForEach(x => x.DonationID = NewDonationID);
 
-                if (result.DonationVolunteer.Count > 0)
+                if (result.DonationVolunteer != null && result.DonationVolunteer.Count > 0)
                 {
                     result.DonationVolunteer.ForEach(x => x.DonationCode = NewDonationID);
                     result.DonationVolunteer.ForEach(x => x.HospitalID = result.DonationHeader.HospitalID);
@@ -434,6 +444,7 @@ namespace GiveMED.Api.Controllers
             return Ok(OutPutResult);
         }
 
+        
 
         //donationactivuty
 

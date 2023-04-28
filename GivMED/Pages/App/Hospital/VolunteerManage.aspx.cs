@@ -22,9 +22,21 @@ namespace GivMED.Pages.App.Hospital
             if (!this.IsPostBack)
             {
                 PageLoad();
+                SetFunctionName();
             }
         }
-
+        private void SetFunctionName()
+        {
+            try
+            {
+                Label lblFunctionName = this.Master.FindControl("lblFuncationName") as Label;
+                lblFunctionName.Text = "Volunteer Maintenance";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private void PageLoad()
         {
             LoadGridview();

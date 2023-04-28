@@ -27,6 +27,7 @@ namespace GivMED.Pages.App.Profile
         {
             if (!this.IsPostBack)
             {
+                SetFunctionName();
                 Page.Form.Enctype = "multipart/form-data";
 
                 LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
@@ -104,7 +105,18 @@ namespace GivMED.Pages.App.Profile
                 ScriptManager.RegisterStartupScript(this, GetType(), "ActivateSettingsTab", "<script>$(function() { " + "$('.nav-tabs a[href=\"#settings\"]').tab('show');" + "$('.tab-pane#settings').addClass('active');" + "});</script>", false);
             }
         }
-
+        private void SetFunctionName()
+        {
+            try
+            {
+                Label lblFunctionName = this.Master.FindControl("lblFuncationName") as Label;
+                lblFunctionName.Text = "Profile";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             WebApiResponse response = new WebApiResponse();
@@ -547,6 +559,8 @@ namespace GivMED.Pages.App.Profile
 
             chkPublicity.Checked = ouser.Publicity == 1 ? true : false;
             chkEmail.Checked = ouser.EmailNotification == 1 ? true : false;
+
+            Response.Redirect("~/Pages/App/Donor/Published_Needs.aspx");
         }
 
         protected void chkPublicity_CheckedChanged(object sender, EventArgs e)

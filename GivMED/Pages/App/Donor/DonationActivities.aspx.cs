@@ -23,10 +23,22 @@ namespace GivMED.Pages.App.Donor
         {
             if (!this.IsPostBack)
             {
+                SetFunctionName();
                 PageLoad();
             }
         }
-
+        private void SetFunctionName()
+        {
+            try
+            {
+                Label lblFunctionName = this.Master.FindControl("lblFuncationName") as Label;
+                lblFunctionName.Text = "Donor Activities";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private void PageLoad()
         {
             EmailConfigurationLoad();

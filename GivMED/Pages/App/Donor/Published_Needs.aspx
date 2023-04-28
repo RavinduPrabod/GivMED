@@ -313,9 +313,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
-                                                <div class="col-4">
-                                                    <asp:TextBox ID="txtDealDate" runat="server" autocomplete="off" CssClass="form-control" TabIndex="1" placeholder="Enter Deal Date"></asp:TextBox>
-                                                </div>
+                                                
                                             </div>
                                             &nbsp
                                     <div class="row">
@@ -370,6 +368,9 @@
                                     </div>
                                         </div>
                                         <div class="modal-footer">
+                                            <div class="col-4">
+                                                    <asp:TextBox ID="txtDealDate" runat="server" autocomplete="off" CssClass="form-control" TabIndex="1" placeholder="Enter Deal Date"></asp:TextBox>
+                                                </div>
                                             <asp:LinkButton ID="btnSubmit" runat="server" CssClass="btn btn-sm btn-success" OnClick="btnSubmit_Click" OnClientClick="return validate();"><i class="fas fa-shield-alt"></i> 
                                          Submit
                                             </asp:LinkButton>
@@ -523,14 +524,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer">
+                                        <%--<div class="card-footer">
                                             <div class="text-right">
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-sm bg-teal"><i class="fas fa-comments"></i>
                                                 </asp:LinkButton>
                                                 <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn btn-sm btn-primary"><i class="fas fa-hospital-symbol"></i> View Profile
                                                 </asp:LinkButton>
                                             </div>
-                                        </div>
+                                        </div>--%>
                                     </div>
                                 </div>
                             </div>

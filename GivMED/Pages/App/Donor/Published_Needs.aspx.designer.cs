@@ -213,15 +213,6 @@ namespace GivMED.Pages.App.Donor
         protected global::System.Web.UI.WebControls.LinkButton btnBackPage;
 
         /// <summary>
-        /// txtDealDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDealDate;
-
-        /// <summary>
         /// gvVolunteer control.
         /// </summary>
         /// <remarks>
@@ -229,6 +220,15 @@ namespace GivMED.Pages.App.Donor
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvVolunteer;
+
+        /// <summary>
+        /// txtDealDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDealDate;
 
         /// <summary>
         /// btnSubmit control.
@@ -373,24 +373,6 @@ namespace GivMED.Pages.App.Donor
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblWeb;
-
-        /// <summary>
-        /// LinkButton1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
-
-        /// <summary>
-        /// LinkButton2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton2;
 
         /// <summary>
         /// txtDescription control.

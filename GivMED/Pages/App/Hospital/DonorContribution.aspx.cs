@@ -25,11 +25,24 @@ namespace GivMED.Pages.App.Hospital
         {
             if (!this.IsPostBack)
             {
+                SetFunctionName();
                 EmailConfigurationLoad();
                 PageLoad();
                 mvDonorCont.ActiveViewIndex = 0;
                 pnlContact.Visible = false;
 
+            }
+        }
+        private void SetFunctionName()
+        {
+            try
+            {
+                Label lblFunctionName = this.Master.FindControl("lblFuncationName") as Label;
+                lblFunctionName.Text = "Donor Contribution";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
         private void EmailConfigurationLoad()

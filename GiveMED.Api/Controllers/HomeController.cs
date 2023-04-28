@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using OpenAI_API;
+using OpenAI_API.Completions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,5 +100,55 @@ namespace GiveMED.Api.Controllers
 
             return odata;
         }
+
+        [HttpGet]
+        [ActionName("GetDonationView")]
+        public IEnumerable<DonationViewDto> GetDonationView()
+        {
+            List<DonationViewDto> Records = new List<DonationViewDto>();
+
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT * FROM [DonationView]";
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                DonationViewDto data = new DonationViewDto();
+                data.HospitalID = Convert.IsDBNull(reader["HospitalID"]) ? 0 : Convert.ToInt32(reader["HospitalID"]);
+                data.HospitalName = Convert.IsDBNull(reader["HospitalName"]) ? "" : reader["HospitalName"].ToString();
+                data.DonationID = Convert.IsDBNull(reader["DonationID"]) ? "" : reader["DonationID"].ToString();
+                data.ItemID = Convert.IsDBNull(reader["ItemID"]) ? 0 : Convert.ToInt32(reader["ItemID"]);
+                data.ItemName = Convert.IsDBNull(reader["ItemName"]) ? "" : reader["ItemName"].ToString();
+                data.DonorFirstName = Convert.IsDBNull(reader["DonorFirstName"]) ? "" : reader["DonorFirstName"].ToString();
+                data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
+                data.DonationCreateDate = Convert.IsDBNull(reader["DonationCreateDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["DonationCreateDate"]);
+                Records.Add(data);
+            }
+            conn.Close();
+
+            return Records;
+        }
+
+        [HttpPost]
+        [ActionName("UseChatGPTreport")]
+        public async Task<IActionResult> UseChatGPTreport([FromBody] string query)
+        {
+            string OutPutResult = "";
+            var openai = new OpenAIAPI("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");
+            CompletionRequest completionRequest = new CompletionRequest();
+            completionRequest.Prompt = "What are these supplies total Estimate Price of LKR " + query + "? (provide me numbers only)";
+            completionRequest.Model = OpenAI_API.Models.Model.DavinciText;
+            completionRequest.MaxTokens = 2048; // Limit the response length to 2048 tokens
+
+            var completions = await openai.Completions.CreateCompletionAsync(completionRequest);
+
+            // Get the first completion as the result
+            var completion = completions.Completions[0];
+            OutPutResult = completion.Text;
+
+            return Ok(OutPutResult);
+        }
+
     }
 }

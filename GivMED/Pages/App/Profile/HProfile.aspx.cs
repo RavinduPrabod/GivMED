@@ -23,6 +23,7 @@ namespace GivMED.Pages.App.Profile
         {
             if (!this.IsPostBack)
             {
+                SetFunctionName();
                 LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
                 Session["HospitalID"] = null;
 
@@ -90,7 +91,7 @@ namespace GivMED.Pages.App.Profile
                 LoggedUserDto loggedUser = new LoggedUserDto();
                 using (HttpClient client = new HttpClient())
                 {
-                    string path = "Authentication/Login";
+                    string path = "Authentication/HLogin";
                     client.BaseAddress = new Uri(GlobalData.BaseUri);
 
                     var json = JsonConvert.SerializeObject(loginDto);
@@ -116,6 +117,18 @@ namespace GivMED.Pages.App.Profile
 
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        private void SetFunctionName()
+        {
+            try
+            {
+                Label lblFunctionName = this.Master.FindControl("lblFuncationName") as Label;
+                lblFunctionName.Text = "Profile";
             }
             catch (Exception ex)
             {
