@@ -276,8 +276,10 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <p>An email verification code has been sent to <strong>
-                                                <asp:Label ID="lblEmail" runat="server"></asp:Label></strong>. Please enter the code below:</p>
+                                            <p>
+                                                An email verification code has been sent to <strong>
+                                                    <asp:Label ID="lblEmail" runat="server"></asp:Label></strong>. Please enter the code below:
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -289,7 +291,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                     <asp:Button runat="server" ID="btnVerify" CssClass="btn btn-primary" Text="Verify" OnClick="btnVerify_Click" />
+                                    <asp:Button runat="server" ID="btnVerify" CssClass="btn btn-primary" Text="Verify" OnClick="btnVerify_Click" />
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -306,8 +308,10 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <p>An email verification code has been sent to <strong>
-                                                <asp:Label ID="lblEmailOrg" runat="server"></asp:Label></strong>. Please enter the code below:</p>
+                                            <p>
+                                                An email verification code has been sent to <strong>
+                                                    <asp:Label ID="lblEmailOrg" runat="server"></asp:Label></strong>. Please enter the code below:
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -319,7 +323,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                     <asp:Button runat="server" ID="btnVerifyOrg" CssClass="btn btn-primary" Text="Verify" OnClick="btnVerifyOrg_Click" />
+                                    <asp:Button runat="server" ID="btnVerifyOrg" CssClass="btn btn-primary" Text="Verify" OnClick="btnVerifyOrg_Click" />
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -336,9 +340,19 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p class="card-text">
-                                        "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
-                                    </p>
+                                    <p>By registering as an organization donor in our web application, you agree to the following terms and conditions:</p>
+                                    <ol>
+                                        <li>The organization should be a registered entity and must provide proof of registration upon request.</li>
+                                        <li>The organization should provide accurate and up-to-date information regarding the supplies they wish to donate.</li>
+                                        <li>The organization should ensure that the donated supplies are safe and meet all applicable standards and regulations.</li>
+                                        <li>The organization should bear the cost of transporting the donated supplies to the designated facility.</li>
+                                        <li>The organization should ensure that the donated supplies are properly packaged and labeled with the necessary information.</li>
+                                        <li>The organization should allow our representatives to conduct an inspection of the donated supplies before acceptance.</li>
+                                        <li>The organization should agree that the donated supplies will be used for the intended purposes and that the designated facility has the right to dispose of any unused supplies.</li>
+                                        <li>The organization should agree that any personal information collected during the registration process will be used solely for the purpose of donation management and will not be shared with any third parties without consent.</li>
+                                        <li>The organization should indemnify and hold harmless the designated facility, its officers, and employees from any liability arising out of the donation or use of the donated supplies.</li>
+                                        <li>The organization should agree to comply with all applicable laws and regulations related to the donation of medical supplies.</li>
+                                    </ol>
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -355,8 +369,23 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p class="card-text">
-                                        "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
+                                    <p>
+                                        <ol>
+                                            <li>Donations must be new, unused, and in their original packaging.</li>
+                                            <li>Donations will be inspected before acceptance.</li>
+                                            <li>Donors are responsible for delivering the donations to the designated drop-off location.</li>
+                                            <li>The donation becomes the property of the recipient hospital or healthcare facility upon acceptance.</li>
+                                            <li>The donor releases all liability related to the donation.</li>
+                                            <li>The recipient hospital or healthcare facility reserves the right to decline any donation.</li>
+                                            <li>The donor will not receive any financial compensation or tax deduction for the donation.</li>
+                                            <li>The donor confirms that they have not been exposed to COVID-19 or any other communicable disease within the past 14 days.</li>
+                                            <li>The donor confirms that they are not experiencing any COVID-19 symptoms.</li>
+                                            <li>The donor agrees to comply with all local, state, and federal laws and regulations related to the donation.</li>
+                                        </ol>
+                                        <p>
+                                        </p>
+                                        <p>
+                                        </p>
                                     </p>
                                 </div>
                             </div>
@@ -373,9 +402,18 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p class="card-text">
-                                        "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
-                                    </p>
+                                    <p>By registering as a donor on our web application for medical supply donations, you agree to the following terms and conditions:</p>
+                                    <ul>
+                                        <li>You certify that all information provided in the registration process is accurate and complete.</li>
+                                        <li>You confirm that you are authorized to make donations on behalf of the organization or entity that you represent.</li>
+                                        <li>You understand that all donated medical supplies must be new and unused, unless specifically requested otherwise.</li>
+                                        <li>You agree that all donated medical supplies are given voluntarily and without expectation of compensation or benefit.</li>
+                                        <li>You acknowledge that donated supplies may be subject to inspection and quality control measures.</li>
+                                        <li>You understand that the organization receiving the donated supplies may have specific requirements or restrictions for certain items, and you agree to comply with these requirements.</li>
+                                        <li>You release the organization receiving the donated supplies from any liability or responsibility for any injury, illness, or harm that may result from the use of donated supplies.</li>
+                                        <li>You agree to indemnify and hold harmless the organization receiving the donated supplies from any claims or damages arising from the donation or use of the donated supplies.</li>
+                                        <li>You understand that the organization receiving the donated supplies reserves the right to refuse any donation, for any reason, at their discretion.</li>
+                                    </ul>
                                 </div>
                             </div>
                             <!-- /.modal-content -->

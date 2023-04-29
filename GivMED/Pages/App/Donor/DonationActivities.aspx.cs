@@ -65,7 +65,7 @@ namespace GivMED.Pages.App.Donor
             if (oBindList.Count > 0)
                 Session["DonationActList"] = oBindList;
 
-            oBindList = oBindList.Where(x => x.Status == 0).ToList();
+            oBindList = oBindList.Where(x => x.Status == 1).ToList();
             gvDonationList.DataSource = oBindList.OrderByDescending(x=>x.DonationCreateDate).ToList();
             gvDonationList.DataBind();
 
@@ -293,8 +293,54 @@ namespace GivMED.Pages.App.Donor
             {
                 throw ex;
             }
+        }
+
+        private void EmailSenderDelivery(DeliveryDataDto odata)
+        {
+            try
+            {
+                LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+                var donorName = loggedUser.Type == 1 ? loggedUser.FirstName + " " + loggedUser.LastName : loggedUser.FirstName;
+
+                var email = new MimeMessage();
+
+                email.From.Add(new MailboxAddress("Donation Delivery Notice", GlobalData.NoreplyEmail));
+                email.To.Add(new MailboxAddress("User", odata.email));
+
+                email.Subject = $"Donation Delivery Received - Vehicle No. {odata.VehicleNo}";
+                email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+                {
+                    Text = $"Dear Hospital Staff,\n\nI am pleased to inform you that we have received a donation delivery today." +
+                    $" The details of the delivery are as follows:\n\n" +
+                    $"Vehicle No.: {odata.VehicleNo}\n" +
+                    $"Driver Name: {odata.DriverName}\n" +
+                    $"Driver Telephone: {odata.Telephone}\n" +
+                    $"Date: {odata.Date}\n" +
+                    $"Time: {odata.Time}\n\nThe donation was safely delivered to our facility, and we have confirmed its completeness." +
+                    $" We would like to express our sincere gratitude to the generous donor for their support.\n\n" +
+                    $"Thank you for your attention to this matter. Please let us know if you have any questions or concerns.\n\n" +
+                    $"Best regards,\n\n" +
+                    $"{donorName}"
+                };
+
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect(GlobalData.SmtpAddress, GlobalData.Port);
+
+                    smtp.Authenticate(GlobalData.NoreplyEmail, GlobalData.NoreplyPassword);
+
+                    smtp.Send(email);
+                    smtp.Disconnect(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
         }
+
         protected void gvDonationList_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
 
@@ -309,12 +355,18 @@ namespace GivMED.Pages.App.Donor
                 switch (Status)
                 {
                     case "1":
-                        lblStatus.Text = "Confirmed";
-                        lblStatus.CssClass = "badge badge-success";
-                        break;
-                    case "0":
-                        lblStatus.Text = "Pending";
+                        lblStatus.Text = "Processing";
                         lblStatus.CssClass = "badge badge-warning";
+                        break;
+
+                    case "2":
+                        lblStatus.Text = "Delivered";
+                        lblStatus.CssClass = "badge badge-primary";
+                        break;
+
+                    case "3":
+                        lblStatus.Text = "Complete";
+                        lblStatus.CssClass = "badge badge-success";
                         break;
                 }
             }
@@ -324,16 +376,25 @@ namespace GivMED.Pages.App.Donor
                 Label lblStatus = (Label)e.Row.FindControl("lblStatus");
                 LinkButton btnFeedback = (LinkButton)e.Row.FindControl("btnFeedback");
                 LinkButton btnCancel = (LinkButton)e.Row.FindControl("btnCancel");
+                LinkButton btnReady = (LinkButton)e.Row.FindControl("btnReady");
 
-                if (lblStatus.Text == "Pending")
+                if (lblStatus.Text == "Processing")
                 {
                     btnFeedback.Visible = false;
                     btnCancel.Visible = true;
+                    btnReady.Visible = true;
+                }
+                else if(lblStatus.Text == "Delivered")
+                {
+                    btnFeedback.Visible = false;
+                    btnCancel.Visible = false;
+                    btnReady.Visible = false;
                 }
                 else
                 {
                     btnFeedback.Visible = true;
                     btnCancel.Visible = false;
+                    btnReady.Visible = false;
                 }
             }
         }
@@ -373,21 +434,44 @@ namespace GivMED.Pages.App.Donor
         protected void ddlStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             List<DonationActivityDto> oBindList = (List<DonationActivityDto>)Session["DonationActList"];
-            if (ddlStatus.SelectedValue == "1")
+            oBindList = oBindList.Where(x => x.Status == Convert.ToInt32(ddlStatus.SelectedValue.ToString())).ToList();
+            gvDonationList.DataSource = oBindList.OrderByDescending(x => x.DonationCreateDate).ToList();
+            gvDonationList.DataBind();
+        }
+
+        protected void btnDeliveryNow_Click(object sender, EventArgs e)
+        {
+            GridViewRow oGridViewRow = gvDonationList.Rows[Convert.ToInt32(ViewState["index"])];
+            Session["lblDonationID"] = ((Label)oGridViewRow.FindControl("lblDonationID")).Text.ToString();
+
+
+            lblDonationIDpop.Text = Session["lblDonationID"].ToString();
+
+            DeliveryDataDto odata = new DeliveryDataDto();
+            odata.VehicleNo = txtVehicleNo.Text.ToString();
+            odata.DriverName = txtDriverName.Text.ToString();
+            odata.Telephone = txtTelephone.Text.ToString();
+            odata.Date = Convert.ToDateTime(txtDate.Text.ToString()).Date;
+            odata.Time = txtTime.Text.ToString();
+            odata.email = ((Label)oGridViewRow.FindControl("lblEmail")).Text.ToString();
+            odata.donationid = Session["lblDonationID"].ToString();
+            odata.supplyid = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
+            odata.Status = 2;
+            WebApiResponse response = new WebApiResponse();
+            response = oSupplyService.PutDonationupdate(odata);
+
+            if (response.StatusCode == (int)StatusCode.Success)
             {
-                oBindList = oBindList.Where(x => x.Status == 0).ToList();
-                gvDonationList.DataSource = oBindList.OrderByDescending(x => x.DonationCreateDate).ToList();
-                gvDonationList.DataBind();
-                //if (oBindList.Count > 0)
-                //    Session["DonationActList"] = oBindList;
+                PageLoad();
+                EmailSenderDelivery(odata);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Donation ID:'" + lblDonationIDpop.ToString() + "' is Successfully Deliverd ', text: 'Deliverd', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+
             }
             else
             {
-                oBindList = oBindList.Where(x => x.Status == 1).ToList();
-                gvDonationList.DataSource = oBindList.OrderByDescending(x => x.DonationCreateDate).ToList();
-                gvDonationList.DataBind();
-                //if (oBindList.Count > 0)
-                //    Session["DonationActList"] = oBindList;
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Error!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
             }
         }
     }

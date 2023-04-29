@@ -30,7 +30,6 @@
                             <ul class="nav nav-pills">
                                 <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#changepwd" data-toggle="tab">Security</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
                             </ul>
                         </div>
                         <!-- /.card-header -->

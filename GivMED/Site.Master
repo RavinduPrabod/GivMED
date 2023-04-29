@@ -55,7 +55,8 @@
 
     <link href="Content/alertifyjs/alertify.min.css" rel="stylesheet" />
     <link href="Content/alertifyjs/themes/default.min.css" rel="stylesheet" />
-
+    <link href="dist/css/timepicker.css" rel="stylesheet" />
+    <link href="dist/css/timepicker.min.css" rel="stylesheet" />
     <script src='<%=ResolveClientUrl("plugins/jquery/jquery.min.js")%>' type="text/javascript"></script>
 
     <!-- ChartJS -->
@@ -206,7 +207,7 @@
 
                 <asp:Panel ID="pnlHProf" runat="server">
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                        <div class="info ml-3">
+                        <div class="info ml-1">
                             <a href="/Pages/App/Profile/HProfile.aspx" class="d-block">
                                 <asp:Label ID="lblHProfileName" runat="server" Text="" ForeColor="White" Font-Bold="true"></asp:Label>
                             </a>
@@ -409,7 +410,7 @@
     <script src='<%=ResolveClientUrl("dist/js/demo.js")%>' type="text/javascript"></script>
 
     <script src='<%=ResolveClientUrl("Scripts/alertify.min.js")%>' type="text/javascript"></script>
-
-
+    <script src='<%=ResolveClientUrl("dist/js/timepicker.js")%>' type="text/javascript"></script>
+    <script src='<%=ResolveClientUrl("dist/js/timepicker.min.js")%>' type="text/javascript"></script>
 </body>
 </html>

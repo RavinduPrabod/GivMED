@@ -167,6 +167,33 @@ namespace GivMED.Service
             }
         }
 
+        public List<HospitalSupplyNeedsGridDto> GetSupplyNeedHeaderlist2(int HospitalID)
+        {
+            try
+            {
+                List<HospitalSupplyNeedsGridDto> record = new List<HospitalSupplyNeedsGridDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Supply/GetSupplyNeedHeaderlist2/" + HospitalID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<HospitalSupplyNeedsGridDto>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<PublishedNeedsGridDto> GetSupplyNeedHeaderWithDetails()
         {
             try
@@ -557,6 +584,23 @@ namespace GivMED.Service
                     var responseContent = response.Content.ReadAsStringAsync().Result;
                     webApiResponse.Result = responseContent; // Set the NewDonationID as the response data
                 }
+            }
+            return webApiResponse;
+        }
+
+        public WebApiResponse PutDonationupdate(DeliveryDataDto oData)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Supply/PutDonationupdate";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(oData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PutAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
             }
             return webApiResponse;
         }

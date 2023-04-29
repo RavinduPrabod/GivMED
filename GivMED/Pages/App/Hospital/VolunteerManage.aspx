@@ -7,9 +7,10 @@
         <ContentTemplate>
             <asp:MultiView ID="mvVol" runat="server">
                 <asp:View ID="View1" runat="server">
-                    &nbsp
+                       &nbsp
+                     <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-sm" Text="Add New Volunteer here" OnClick="btnCreate_Click" />
+                        &nbsp
                     <div class="card">
-                        <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-sm" Text="Add New Volunteer here" OnClick="btnCreate_Click" />
                         <div class="card-header">
                             <h3 class="card-title">Volunteer Maintanace</h3>
                             <div class="card-tools">
@@ -80,6 +81,7 @@
                     </div>
                 </asp:View>
                 <asp:View ID="View2" runat="server">
+                    &nbsp
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Volunteer Maintanace</h3>

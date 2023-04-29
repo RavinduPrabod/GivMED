@@ -212,6 +212,8 @@
     <Content Include="dist\css\bootstrap-datetimepicker.min.css" />
     <Content Include="dist\css\datepicker3.css" />
     <Content Include="dist\css\GiveMEDHome.css" />
+    <Content Include="dist\css\timepicker.css" />
+    <Content Include="dist\css\timepicker.min.css" />
     <Content Include="dist\css\validationEngine.jquery.css" />
     <Content Include="dist\img\1.png" />
     <Content Include="dist\img\2.png" />
@@ -312,6 +314,8 @@
     <Content Include="dist\js\pages\dashboard2.js" />
     <Content Include="dist\js\pages\dashboard3.js" />
     <Content Include="dist\js\style.css" />
+    <Content Include="dist\js\timepicker.js" />
+    <Content Include="dist\js\timepicker.min.js" />
     <Content Include="dist\js\waypoints\links.php" />
     <Content Include="dist\js\waypoints\waypoints.min.js" />
     <Content Include="dist\js\wow\wow.js" />
@@ -2326,6 +2330,7 @@
     <Compile Include="Dto\ArchivementsDto.cs" />
     <Compile Include="Dto\ChangePwdDto.cs" />
     <Compile Include="Dto\ComboDTO.cs" />
+    <Compile Include="Dto\DeliveryDataDto.cs" />
     <Compile Include="Dto\DonationActivityDto.cs" />
     <Compile Include="Dto\DonationContributeGridDto.cs" />
     <Compile Include="Dto\DonationReviewFeedbackDto.cs" />

@@ -10,7 +10,7 @@
                     <!-- /.login-logo -->
                     <div class="card card-outline card-primary">
                         <div class="card-header text-center">
-                            <a href="../../index2.html" class="h1"><b>Give</b>MED</a>
+                            <a href="../../index2.html" class="h1"><b>Donor</b> Login</a>
                         </div>
                         <div class="card-body">
                             <p class="login-box-msg">Sign in to start your session</p>
@@ -47,7 +47,7 @@
                             </div>
                             <!-- /.social-auth-links -->
                             <p class="mb-0">
-                                <a href="/Pages/Web/Registration/FundraiserRegistration.aspx" class="text-center">Register a new Donor</a><br>
+                                <a href="/Pages/Web/Registration/DonorRegistration.aspx" class="text-center">Register a new Donor</a><br>
                                 <a href="/Pages/Web/HomePage.aspx" class="text-center" style="font-weight:bold">Back to Home</a>
                             </p>
                         </div>

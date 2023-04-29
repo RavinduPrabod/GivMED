@@ -624,7 +624,7 @@ namespace GivMED.Pages.App.Hospital
                 switch (supplyStatus)
                 {
                     case "1":
-                        lblSupplyStatus.Text = "Processing";
+                        lblSupplyStatus.Text = "Not Complete";
                         lblSupplyStatus.CssClass = "badge badge-warning";
                         break;
                     case "2":

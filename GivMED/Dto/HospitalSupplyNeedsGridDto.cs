@@ -35,6 +35,10 @@ namespace GivMED.Dto
 
         public int pendingcount { get; set; }
 
+        public int completecount { get; set; }
+
+        public int processcount { get; set; }
+
         public string SearchIndex => $"{SupplyID} {"-"} {SupplyPriorityLevel} {"-"} {SupplyType}";
     }
 }

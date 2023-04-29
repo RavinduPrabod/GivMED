@@ -34,5 +34,9 @@ namespace GiveMED.Api.Dto
         public int DonorCount { get; set; }
 
         public int pendingcount { get; set; }
+
+        public int completecount { get; set; }
+
+        public int processcount { get; set; }
     }
 }

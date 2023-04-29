@@ -87,10 +87,9 @@
                                                         </div>
                                                     </div>
                                                     <asp:TextBox ID="txtHospitalEmail" runat="server" CssClass="form-control" placeholder="Hospital Email" TextMode="Email"></asp:TextBox>
-                                                     &nbsp&nbsp&nbsp<asp:Button ID="btnVerify" runat="server" Text="Verify" CssClass="btn btn-primary" OnClientClick="return Validate();" OnClick="btnVerify_Click" />
+                                                    &nbsp&nbsp&nbsp<asp:Button ID="btnVerify" runat="server" Text="Verify" CssClass="btn btn-primary" OnClientClick="return Validate();" OnClick="btnVerify_Click" />
                                                 </div>
                                                 <div class="col-sm-3">
-                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -125,7 +124,7 @@
                                             </div>
                                             <div class="col-sm-3">
                                             </div>
-                                        </div>--%>    
+                                        </div>--%>
                                     </div>
                                 </div>
                                 <div class="card-footer">
@@ -158,7 +157,7 @@
                                                 </asp:DropDownList>
                                             </div>
                                             <div class="col-sm-2">
-                                                <asp:TextBox ID="txtYearsofEs" runat="server" CssClass="form-control"></asp:TextBox>
+                                                <asp:TextBox ID="txtYearsofEs" runat="server" CssClass="form-control" placeholder="Year Establish"></asp:TextBox>
                                             </div>
                                             <div class="col-sm-2">
                                                 <asp:TextBox ID="txtNoofbeds" runat="server" CssClass="form-control" placeholder="No.of Beds"></asp:TextBox>
@@ -293,9 +292,24 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p class="card-text">
-                                "Please read and check the boxes to confirm that you agree with the following terms and conditions:"
-                            </p>
+                            <p>By registering with our hospital, you agree to the following terms and conditions:</p>
+
+                            <p>1. You agree to provide accurate and complete information about yourself and your medical history.</p>
+
+                            <p>2. You agree to follow the rules and regulations of the hospital, including those related to patient care, confidentiality, and safety.</p>
+
+                            <p>3. You understand that your treatment and care will be based on your medical needs, and that the hospital reserves the right to make decisions about your treatment and care based on medical necessity.</p>
+
+                            <p>4. You agree to pay for any services or treatments received at the hospital, either directly or through insurance.</p>
+
+                            <p>5. You understand that the hospital may use your personal and medical information for purposes such as billing, research, and quality improvement.</p>
+
+                            <p>6. You agree to notify the hospital of any changes to your contact or insurance information.</p>
+
+                            <p>7. You understand that the hospital may terminate your registration or refuse to provide services if you violate these terms and conditions or fail to follow hospital rules and regulations.</p>
+
+                            <p>By clicking the "Register" button, you acknowledge that you have read and agree to these terms and conditions.</p>
+
                         </div>
                     </div>
                     <!-- /.modal-content -->

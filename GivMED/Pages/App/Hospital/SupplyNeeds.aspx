@@ -10,8 +10,9 @@
                     &nbsp
                     <div class="row">
                         <div class="col-12">
+                              <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-md" Text="Create New publish here" OnClick="btnCreate_Click" />
+                                &nbsp
                             <div class="card">
-                                 <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-md" Text="Create New publish here" OnClick="btnCreate_Click" />
                                 <div class="card-header">
                                     <h3 class="card-title">Supplies Needs Publications</h3>
                                     <div class="card-tools">
@@ -100,9 +101,10 @@
                     </div>
                 </asp:View>
                 <asp:View ID="View2" runat="server">
+                    &nbsp
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Supply Needs Publish Form</h3>
+                            <h3 class="card-title">Supplies Needs Publications Form</h3>
                         </div>
                         <div class="card-body">
                             <div class="modal fade" id="modal-Show">

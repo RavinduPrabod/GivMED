@@ -64,7 +64,7 @@ namespace GivMED.Pages.App.Hospital
             LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
             List<HospitalSupplyNeedsGridDto> olist = new List<HospitalSupplyNeedsGridDto>();
-            olist = oSupplyService.GetSupplyNeedHeaderlist(loggedUser.HospitalID);
+            olist = oSupplyService.GetSupplyNeedHeaderlist2(loggedUser.HospitalID);
 
             List<HospitalSupplyNeedsGridDto> result = new List<HospitalSupplyNeedsGridDto>();
 
@@ -80,7 +80,9 @@ namespace GivMED.Pages.App.Hospital
                 odata.SupplyExpireDate = item.SupplyExpireDate;
                 odata.SupplyPriorityLevel = item.SupplyPriorityLevel;
                 odata.pendingcount = item.pendingcount;
-
+                odata.processcount = item.processcount;
+                odata.completecount = item.completecount;
+                odata.SupplyStatus = item.SupplyStatus;
                 requestedQty = item.RequestQty;
                 donatedQty = item.DonatedQty;
 
@@ -94,7 +96,7 @@ namespace GivMED.Pages.App.Hospital
                 result.Add(odata);
             }
 
-            gvDonorProgress.DataSource = result;
+            gvDonorProgress.DataSource = result.Where(x=>x.SupplyStatus == 1).ToList();
             gvDonorProgress.DataBind();
             if (result.Count > 0)
                 Session["DonorContList"] = result;
@@ -104,19 +106,19 @@ namespace GivMED.Pages.App.Hospital
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Label lblSupplyStatus = (Label)e.Row.FindControl("lblSupplyStatus");
-                string supplyStatus = DataBinder.Eval(e.Row.DataItem, "SupplyStatus").ToString();
-                switch (supplyStatus)
-                {
-                    case "1":
-                        lblSupplyStatus.Text = "Processing";
-                        lblSupplyStatus.CssClass = "badge badge-warning";
-                        break;
-                    case "2":
-                        lblSupplyStatus.Text = "Complete";
-                        lblSupplyStatus.CssClass = "badge badge-success";
-                        break;
-                }
+                //Label lblSupplyStatus = (Label)e.Row.FindControl("lblSupplyStatus");
+                //string supplyStatus = DataBinder.Eval(e.Row.DataItem, "SupplyStatus").ToString();
+                //switch (supplyStatus)
+                //{
+                //    case "1":
+                //        lblSupplyStatus.Text = "Processing";
+                //        lblSupplyStatus.CssClass = "badge badge-warning";
+                //        break;
+                //    case "2":
+                //        lblSupplyStatus.Text = "Complete";
+                //        lblSupplyStatus.CssClass = "badge badge-success";
+                //        break;
+                //}
 
                 Label lblSupplyPriorityLevel = (Label)e.Row.FindControl("lblSupplyPriorityLevel");
                 string SupplyPriorityLevel = DataBinder.Eval(e.Row.DataItem, "SupplyPriorityLevel").ToString();
@@ -265,6 +267,10 @@ namespace GivMED.Pages.App.Hospital
                 {
                     btnConfirm.Visible = false;
                 }
+                else if (lblStatus.Text == "3")
+                {
+                    btnConfirm.Visible = false;
+                }
                 else
                 {
                     btnConfirm.Visible = true;
@@ -322,7 +328,13 @@ namespace GivMED.Pages.App.Hospital
                 ofeed.CreatedBy = "admin";
                 ofeed.CreatedDateTime = DateTime.Now;
 
+                DeliveryDataDto odata = new DeliveryDataDto();
+                odata.supplyid = lblSupplyCode.Text.ToString();
+                odata.donationid = Session["DonationCode"].ToString();
+                odata.Status = 3;
+
                 WebApiResponse response = new WebApiResponse();
+                response = oSupplyService.PutDonationupdate(odata);
                 response = oSupplyService.PostFeedBack(ofeed);
 
                 if (response.StatusCode == (int)StatusCode.Success)
@@ -526,6 +538,17 @@ namespace GivMED.Pages.App.Hospital
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        protected void ddlStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<HospitalSupplyNeedsGridDto> olist =  (List<HospitalSupplyNeedsGridDto>)Session["DonorContList"];
+            olist = olist.Where(x => x.SupplyStatus == Convert.ToInt32(ddlStatus.SelectedValue)).ToList();
+            if (olist.Count > 0)
+            {
+                gvDonorProgress.DataSource = olist;
+                gvDonorProgress.DataBind();
             }
         }
     }

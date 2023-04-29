@@ -64,7 +64,16 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Donor Contribution</h3>
+                                    <div class="card-title">
+                                        <div class="input-group input-group-sm" style="width: 300px;">
+                                            <div class="input-group-append">
+                                                <asp:DropDownList CssClass="form-control" BackColor="MenuBar" Font-Bold="true" runat="server" ID="ddlStatus" Font-Size="Small" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" AutoPostBack="true">
+                                                    <asp:ListItem Selected="True" Value="1">Ongoing</asp:ListItem>
+                                                    <asp:ListItem Value="2">Complete</asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 300px;">
                                             <asp:TextBox runat="server" CssClass="form-control float-right" ID="txtSearch" placeholder="Search" TextMode="Search"></asp:TextBox>
@@ -93,31 +102,47 @@
                                             <asp:TemplateField HeaderText="Donations Progress" ItemStyle-CssClass="project_progress">
                                                 <ItemTemplate>
                                                     <div class="progress">
-                                                        <div class="progress-bar bg-green" role="progressbar"
+                                                        <div class="progress-bar bg-primary progress-bar-striped" role="progressbar"
                                                             aria-valuemin="0" aria-valuemax="100"
                                                             style='<%# "width:" + Eval("Proceprecent") + "%;" %>'>
                                                         </div>
                                                     </div>
                                                     <span class="badge  bg-warning"><%# Eval("Proceprecent") + "%" %></span>
                                                 </ItemTemplate>
-                                                <ItemStyle Width="10%" />
+                                                <ItemStyle Width="20%" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Priority Level">
+                                            <asp:TemplateField HeaderText="P.Level">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblSupplyPriorityLevel" runat="server"></asp:Label>
                                                 </ItemTemplate>
                                                 <ItemStyle Width="1%" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Pending Confirmations & Authorize" HeaderStyle-CssClass="right-align">
+                                            <asp:TemplateField HeaderText="Complete" HeaderStyle-CssClass="right-align">
+                                                <ItemTemplate>
+                                                    <span class="badge bg-success"><%# Eval("completecount")%></span>
+                                                </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Right" Width="3%" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Processing" HeaderStyle-CssClass="right-align">
+                                                <ItemTemplate>
+                                                    <span class="badge bg-warning"><%# Eval("processcount")%></span>
+                                                </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Right" Width="3%" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Arriving" HeaderStyle-CssClass="right-align">
+                                                <ItemTemplate>
+                                                    <span class="badge bg-info"><%# Eval("pendingcount")%></span>
+                                                </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Right" Width="3%" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Confirm" HeaderStyle-CssClass="right-align">
                                                 <ItemTemplate>
                                                     <div class="text-right">
-                                                        <span class="badge bg-info"><%# Eval("pendingcount") %></span>
-                                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                                         <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" ToolTip="View Donors Details" CausesValidation="false" CommandName="View" CommandArgument="<%# Container.DisplayIndex %>"><i class="fas fa-shield-alt"></i>
                                                         </asp:LinkButton>
                                                     </div>
                                                 </ItemTemplate>
-                                                <ItemStyle HorizontalAlign="Right" Width="10%" />
+                                                <ItemStyle HorizontalAlign="Right" Width="3%" />
                                             </asp:TemplateField>
                                         </Columns>
                                     </asp:GridView>
@@ -263,11 +288,11 @@
                                                                                     <asp:Label ID="lblHeader1Status" runat="server" Text='<%# Bind("Status") %>'></asp:Label>
                                                                                 </ItemTemplate>
                                                                             </asp:TemplateField>
-                                                                            <asp:TemplateField HeaderText="Received Confirm" HeaderStyle-CssClass="text-green" HeaderStyle-HorizontalAlign="Right">
+                                                                            <asp:TemplateField HeaderText="Action" HeaderStyle-CssClass="text-green" HeaderStyle-HorizontalAlign="Right">
                                                                                 <ItemTemplate>
-                                                                                    <%# Convert.ToInt32(Eval("Status")) == 1 ? "<span class='badge bg-danger'>Submitted</span>" : "" %>
+                                                                                    <%# Convert.ToInt32(Eval("Status")) == 1 ? "<span class='badge bg-warning'>Processing</span>" : Convert.ToInt32(Eval("Status")) == 3 ? "<span class='badge bg-danger'>Complete</span>" : "" %>
                                                                                     <asp:LinkButton ID="btnConfirm" runat="server" CssClass="btn btn-sm btn-success" CausesValidation="false" CommandName="ShowConfirm" CommandArgument="<%# Container.DisplayIndex %>"
-                                                                                        Enabled='<%# Convert.ToInt32(Eval("Status")) != 1 %>'><i class="fas fa-gift"></i> Confirm
+                                                                                        Enabled='<%# Convert.ToInt32(Eval("Status")) == 2 %>'><i class="fas fa-gift"></i> Confirm
                                                                                     </asp:LinkButton>
                                                                                 </ItemTemplate>
                                                                                 <ItemStyle Width="20%" />

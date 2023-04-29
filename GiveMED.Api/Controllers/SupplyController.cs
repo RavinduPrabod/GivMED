@@ -39,8 +39,9 @@ namespace GiveMED.Api.Controllers
                 "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
                 "INNER JOIN HospitalMaster C ON A.HospitalID = C.HospitalID " +
                 "LEFT OUTER JOIN DonationDetails D ON A.SupplyID = D.SupplyID AND B.SupplyItemCat = D.ItemCategory AND B.SupplyItemID = D.ItemID " +
-                "WHERE A.SupplyStatus = 1 AND A.HospitalID = @HospitalID " +
-                "GROUP BY A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, A.SupplyStatus";
+                "WHERE A.HospitalID = @HospitalID " +
+                "GROUP BY A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, A.SupplyStatus " +
+                "ORDER BY A.SupplyCreateDate DESC";
 
             comm.Parameters.Add(id);
             var reader = comm.ExecuteReader();
@@ -76,6 +77,64 @@ namespace GiveMED.Api.Controllers
 
             return Records;
         }
+
+        [HttpGet("{HospitalID}")]
+        [ActionName("GetSupplyNeedHeaderlist2")]
+        public List<HospitalSupplyNeedsGridDto> GetSupplyNeedHeaderlist2(int HospitalID)
+        {
+            List<HospitalSupplyNeedsGridDto> Records = new List<HospitalSupplyNeedsGridDto>();
+
+            var id = new SqlParameter("HospitalID", HospitalID);
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, 0 AS SupplyItemQty, " +
+                "SUM(D.DonatedQty) as DonatedQty, A.SupplyStatus FROM SupplyRequestHeader A " +
+                "INNER JOIN SupplyRequestDetails B ON A.SupplyID = B.SupplyID " +
+                "INNER JOIN HospitalMaster C ON A.HospitalID = C.HospitalID INNER JOIN DonationDetails D ON A.SupplyID = D.SupplyID " +
+                "AND B.SupplyItemCat = D.ItemCategory AND B.SupplyItemID = D.ItemID WHERE A.HospitalID = @HospitalID " +
+                "GROUP BY A.SupplyID, A.SupplyCreateDate, A.SupplyExpireDate, A.SupplyPriorityLevel, A.SupplyStatus";
+
+            comm.Parameters.Add(id);
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                HospitalSupplyNeedsGridDto data = new HospitalSupplyNeedsGridDto();
+                data.SupplyID = Convert.IsDBNull(reader["SupplyID"]) ? "" : reader["SupplyID"].ToString();
+                data.SupplyPriorityLevel = Convert.IsDBNull(reader["SupplyPriorityLevel"]) ? 0 : Convert.ToInt32(reader["SupplyPriorityLevel"]);
+                data.SupplyCreateDate = Convert.IsDBNull(reader["SupplyCreateDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyCreateDate"]);
+                data.SupplyExpireDate = Convert.IsDBNull(reader["SupplyExpireDate"]) ? DateTime.MinValue : Convert.ToDateTime(reader["SupplyExpireDate"]);
+                data.RequestQty = Convert.IsDBNull(reader["SupplyItemQty"]) ? 0 : Convert.ToInt64(reader["SupplyItemQty"]);
+                data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
+                data.SupplyStatus = Convert.IsDBNull(reader["SupplyStatus"]) ? 0 : Convert.ToInt32(reader["SupplyStatus"]);
+                Records.Add(data);
+            }
+            conn.Close();
+
+            foreach (var item in Records)
+            {
+                HospitalSupplyNeedsGridDto odata = new HospitalSupplyNeedsGridDto();
+                int pendingcount = _context.DonationHeader.Where(z => z.SupplyID == item.SupplyID && z.DonationStatus == 2).Count();
+                int processcount = _context.DonationHeader.Where(x => x.SupplyID == item.SupplyID && x.DonationStatus == 1).Count();
+                int completecount = _context.DonationHeader.Where(x => x.SupplyID == item.SupplyID && x.DonationStatus == 3).Count();
+
+                //int result = headercount - feedcount;
+
+                Records.ForEach(obj => {
+                    if (obj.SupplyID == item.SupplyID)
+                    {
+                        obj.pendingcount = pendingcount;
+                        obj.processcount = processcount;
+                        obj.completecount = completecount;
+                    }
+                });
+
+                int requestQty = Convert.ToInt32(_context.SupplyRequestDetails.Where(x => x.SupplyID == item.SupplyID).Sum(x => x.SupplyItemQty));
+                Records.Where(g => g.SupplyID == item.SupplyID).ToList().ForEach(x => x.RequestQty = requestQty);
+            }
+
+            return Records;
+            }
 
         [HttpGet]
         [ActionName("GetSupplyNeedHeaderWithDetails")]
@@ -458,10 +517,9 @@ namespace GiveMED.Api.Controllers
             var conn = _context.Database.GetDbConnection();
             conn.Open();
             var comm = conn.CreateCommand();
-            comm.CommandText = "SELECT A.DonationID, A.SupplyID, A.DonationCreateDate, A.HospitalID, B.HospitalName, B.Email, C.[Status] " +
+            comm.CommandText = "SELECT A.DonationID, A.SupplyID, A.DonationCreateDate, A.HospitalID, B.HospitalName, B.Email, A.DonationStatus " +
                 "FROM DonationHeader A " +
                 "INNER JOIN HospitalMaster B ON A.HospitalID = B.HospitalID " +
-                "LEFT OUTER JOIN DonationFeedback C On A.DonationID = C.DonationID " +
                 "WHERE A.UserName = @UserName";
 
             comm.Parameters.Add(id);
@@ -475,7 +533,7 @@ namespace GiveMED.Api.Controllers
                 data.HospitalID = Convert.IsDBNull(reader["HospitalID"]) ? 0 : Convert.ToInt32(reader["HospitalID"]);
                 data.HospitalName = Convert.IsDBNull(reader["HospitalName"]) ? "" : reader["HospitalName"].ToString();
                 data.Email = Convert.IsDBNull(reader["Email"]) ? "" : reader["Email"].ToString();
-                data.Status = Convert.IsDBNull(reader["Status"]) ? 0 : Convert.ToInt32(reader["Status"]);
+                data.Status = Convert.IsDBNull(reader["DonationStatus"]) ? 0 : Convert.ToInt32(reader["DonationStatus"]);
                 Records.Add(data);
             }
             conn.Close();
@@ -566,13 +624,12 @@ namespace GiveMED.Api.Controllers
             comm.CommandText = "SELECT " +
                 "CASE " +
                 "WHEN C.DonorType = 1 THEN CONCAT(C.DonorFirstName,' ', C.DonorLastName) " +
-                "WHEN C.DonorType = 2 THEN C.DonorFirstName END As DonorName,C.UserName,C.DonorID, A.DonationID, D.ItemCatName, E.ItemName, B.DonatedQty, F.[Status] " +
+                "WHEN C.DonorType = 2 THEN C.DonorFirstName END As DonorName,C.UserName,C.DonorID, A.DonationID, D.ItemCatName, E.ItemName, B.DonatedQty, A.DonationStatus " +
                 "FROM DonationHeader A " +
                 "INNER JOIN DonorMaster C ON A.DonorID = C.DonorID " +
                 "INNER JOIN DonationDetails B ON B.DonationID = A.DonationID " +
                 "INNER JOIN ItemCatMaster D ON B.ItemCategory = D.ItemCatID " +
                 "INNER JOIN ItemMaster E ON B.ItemID = E.ItemID " +
-                "LEFT OUTER JOIN DonationFeedback F On A.DonationID = F.DonationID " +
                 "WHERE A.SupplyID = @SupplyID";
 
             comm.Parameters.Add(id);
@@ -587,7 +644,7 @@ namespace GiveMED.Api.Controllers
                 data.SupplyItemCat = Convert.IsDBNull(reader["ItemCatName"]) ? "" : reader["ItemCatName"].ToString();
                 data.SupplyItemName = Convert.IsDBNull(reader["ItemName"]) ? "" : reader["ItemName"].ToString();
                 data.DonatedQty = Convert.IsDBNull(reader["DonatedQty"]) ? 0 : Convert.ToInt64(reader["DonatedQty"]);
-                data.Status = Convert.IsDBNull(reader["Status"]) ? 0 : Convert.ToInt32(reader["Status"]);
+                data.Status = Convert.IsDBNull(reader["DonationStatus"]) ? 0 : Convert.ToInt32(reader["DonationStatus"]);
                 Records.Add(data);
             }
             conn.Close();
@@ -641,6 +698,23 @@ namespace GiveMED.Api.Controllers
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
+                }
+
+                int reqestqtysum = Convert.ToInt32(_context.SupplyRequestDetails.Where(x => x.SupplyID == result.SupplyCode).Sum(x => x.SupplyItemQty));
+                int donatedqty = Convert.ToInt32(_context.DonationDetails.GroupBy(x => new { x.SupplyID, x.ItemID, x.ItemCategory }).Where(x => x.Key.SupplyID == result.SupplyCode).Sum(x => x.Sum(y => y.DonatedQty)));
+
+                if (reqestqtysum == donatedqty)
+                {
+                    bool istrue = _context.DonationDetails.Where(x => x.SupplyID == result.SupplyCode).All(x => x.DonationStatus == 3);
+                    if (istrue == true)
+                    {
+                        SupplyRequestHeader record = _context.SupplyRequestHeader.Where(x => x.SupplyID == result.SupplyCode).FirstOrDefault();
+                        record.SupplyStatus = 2;
+                        record.ModifiedBy = "admin";
+                        record.ModifiedDateTime = DateTime.Now;
+
+                        _context.Entry(record).State = EntityState.Modified;
+                    }
                 }
 
                 _context.DonationFeedback.Add(result);
@@ -699,6 +773,46 @@ namespace GiveMED.Api.Controllers
             {
                 // Log the exception
                 return StatusCode(500, "An error occurred while deleting the donation.");
+            }
+
+        }
+
+
+        [HttpPut]
+        [ActionName("PutDonationupdate")]
+        public async Task<IActionResult> PutDonationupdate([FromBody] DeliveryDataDto oData)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                DonationHeader record = _context.DonationHeader.Where(x => x.DonationID == oData.donationid && x.SupplyID == oData.supplyid).FirstOrDefault();
+                record.DonationStatus = oData.Status;
+                record.ModifiedBy = "admin";
+                record.ModifiedDateTime = DateTime.Now;
+
+                _context.Entry(record).State = EntityState.Modified;
+
+                List<DonationDetails> records = _context.DonationDetails.Where(x => x.DonationID == oData.donationid && x.SupplyID == oData.supplyid).ToList();
+
+                foreach (var item in records)
+                {
+                    item.DonationStatus = oData.Status;
+                    item.ModifiedBy = "admin";
+                    item.ModifiedDateTime = DateTime.Now;
+
+                    _context.Entry(item).State = EntityState.Modified;
+                }
+                await _context.SaveChangesAsync();
+
+                return Ok(oData); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
             }
 
         }
