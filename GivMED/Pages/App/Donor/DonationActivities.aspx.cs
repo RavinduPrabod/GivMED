@@ -53,6 +53,7 @@ namespace GivMED.Pages.App.Donor
             GlobalData.NoreplyEmail = oEmailConfiguration.EmailAddress;
             GlobalData.NoreplyPassword = oEmailConfiguration.Password;
         }
+
         private int LoaGridView()
         {
             Session["DonationActList"] = null;
@@ -61,15 +62,21 @@ namespace GivMED.Pages.App.Donor
             List<DonationActivityDto> oBindList = new List<DonationActivityDto>();
 
             oBindList = oSupplyService.GetDonationHeaderDetails(loggedUser.UserName);
+            //Please be kind enough to purchase items with a long expiry date. (at least one year)
+            lblTotdonation.Text = oBindList.Count().ToString();
+            lblprocessing.Text = oBindList.Where(x => x.Status == 1).Count().ToString();
+            lblDeliverd.Text = oBindList.Where(x => x.Status == 2).Count().ToString();
+            lblComplete.Text = oBindList.Where(x => x.Status == 3).Count().ToString();
+
+            int donationcount = oBindList.Where(x => x.Status == 3).Count();
 
             if (oBindList.Count > 0)
                 Session["DonationActList"] = oBindList;
 
+
             oBindList = oBindList.Where(x => x.Status == 1).ToList();
             gvDonationList.DataSource = oBindList.OrderByDescending(x=>x.DonationCreateDate).ToList();
             gvDonationList.DataBind();
-
-            int donationcount = oBindList.Count();
 
             return donationcount;
         }
@@ -114,11 +121,10 @@ namespace GivMED.Pages.App.Donor
                 throw ex;
             }
         }
+
         private void GetInfoBoxCssClass(int count)
         {
             int score = count * 5;
-
-            lblTotdonation.Text = count.ToString();
 
             lblScore.Text = score.ToString() + " Points";
             //lblprogresbar.Text = score.ToString();

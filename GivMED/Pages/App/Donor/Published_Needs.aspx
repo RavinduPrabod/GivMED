@@ -263,7 +263,7 @@
                                                                     <asp:Label ID="lblSupplyExpireDate" runat="server" ForeColor="red" Text='<%# Bind("SupplyExpireDate", "{0:d}") %>'></asp:Label></small>
                                                                     </div>
                                                                     <div class="col-2">
-                                                                        <asp:LinkButton ID="btnDonateNow" runat="server" CssClass="btn btn-sm btn-success" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>"><i class="fas fa-medkit"></i> Donate Now
+                                                                        <asp:LinkButton ID="btnDonateNow" runat="server" CssClass="btn btn-sm btn-success" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>"><i class="fas fa-medkit"></i> Items In Need
                                                                         </asp:LinkButton>
                                                                     </div>
                                                                 </div>
@@ -369,7 +369,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <div class="col-4">
-                                                    <asp:TextBox ID="txtDealDate" runat="server" autocomplete="off" CssClass="form-control" TabIndex="1" placeholder="Enter Deal Date"></asp:TextBox>
+                                                    <asp:TextBox ID="txtDealDate" runat="server" autocomplete="off" CssClass="form-control" TabIndex="1" placeholder="Enter Confirmation Date"></asp:TextBox>
                                                 </div>
                                             <asp:LinkButton ID="btnSubmit" runat="server" CssClass="btn btn-sm btn-success" OnClick="btnSubmit_Click" OnClientClick="return validate();"><i class="fas fa-shield-alt"></i> 
                                          Submit

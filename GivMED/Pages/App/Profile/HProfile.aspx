@@ -206,7 +206,7 @@
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-4">
-                                            <asp:Button ID="btnUpdateSec" runat="server" Text="Update" CssClass="btn btn-primary" OnClientClick="return Validate2();" OnClick="btnUpdateSec_Click" />
+                                            <asp:Button ID="btnUpdateSec" runat="server" Text="Change Password" CssClass="btn btn-primary" OnClientClick="return Validate2();" OnClick="btnUpdateSec_Click" />
                                         </div>
                                     </div>
                                 </div>

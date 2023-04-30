@@ -188,33 +188,46 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="card card-info">
+                            <div class="card card-primary card-outline">
                                 <div class="card-header">
-                                    <h3 class="card-title">Line Chart</h3>
+                                    <h3 class="card-title">
+                                        <i class="far fa-chart-bar"></i>
+                                        Bar Chart
+                                    </h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                        <%--<button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
                                             <i class="fas fa-times"></i>
-                                        </button>--%>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="chart">
-                                        <div class="chartjs-size-monitor">
-                                            <div class="chartjs-size-monitor-expand">
-                                                <div class=""></div>
-                                            </div>
-                                            <div class="chartjs-size-monitor-shrink">
-                                                <div class=""></div>
-                                            </div>
-                                        </div>
-                                        <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block;" width="391" height="250" class="chartjs-render-monitor"></canvas>
+                                    <div id="bar-chart" style="height: 300px; padding: 0px; position: relative;">
+                                        <canvas class="flot-base" width="391" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 391px; height: 300px;"></canvas>
+                                        <canvas class="flot-overlay" width="391" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 391px; height: 300px;"></canvas>
+                                        <div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;">
+                                            <svg style="width: 100%; height: 100%;">
+                                                <g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;">
+                                                    <text x="145.6349431818182" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">March</text>
+                                                    <text x="209.7400568181818" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">April</text>
+                                                    <text x="271.60640092329544" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">May</text>
+                                                    <text x="19.301180752840907" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">January</text>
+                                                    <text x="328.52303799715907" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">June</text>
+                                                </g>
+                                                <g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;">
+                                                    <text x="8.9521484375" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0</text>
+                                                    <text x="8.9521484375" y="205.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">5</text>
+                                                    <text x="1" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">20</text>
+                                                    <text x="1" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">10</text>
+                                                    <text x="1" y="78.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">15</text>
+                                                </g>
+                                            </svg></div>
                                     </div>
                                 </div>
-                                <!-- /.card-body -->
+                                <!-- /.card-body-->
                             </div>
                         </div>
                         <div class="col-md-4">

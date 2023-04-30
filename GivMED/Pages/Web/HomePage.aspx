@@ -173,6 +173,154 @@
                                 <section class="section-bg" id="campaigns">
                                     <div class="container">
                                         <div class="d-lg-flex align-items-center wow zoomIn">
+                                            <asp:Image runat="server" ImageUrl="../../dist/img/trending.png" ID="Image6" CssClass="img-circle" Width="50px" Height="50px" />
+                                            <h2 class="text-center text-lg-left">Trending Donations</h2>
+                                            <div class="mx-auto mr-lg-0 search-box mt-4 mt-lg-0">
+                                                <form action="/Search">
+                                                    <input name="q" placeholder="Click and Find Donations" disabled type="text">
+                                                    <button onclick="location.href='/Pages/Web/Review/DonationReview.aspx'">
+                                                        <i class="fa fa-caret-right"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-5 ">
+                                            <div class="col-lg-4 col-md-6 wow zoomIn">
+                                                <div class="campaign-card">
+                                                    <div class="camp-top">
+                                                        <h6>#<asp:Label runat="server" ID="Label9" Text='<%# Bind("DonationIDD1") %>'>DTN 001</asp:Label></h6>
+                                                    </div>
+                                                    <div class="camp-top">
+                                                        <span>
+                                                            <asp:Label runat="server" ID="lbltemp" Font-Bold="true" Font-Size="Smaller" Text="Supplies Need Prority : "></asp:Label>
+                                                            <asp:Label runat="server" ID="lblPriorityD1" Font-Bold="true" Text='<%# Bind("PriorityD1") %>'></asp:Label>
+                                                        </span>
+                                                        &nbsp
+                                                    <div>
+                                                        <asp:Image runat="server" ImageUrl="../../dist/img/hurry.png" ID="Image3" CssClass="img-circle" Width="100px" Height="100px" /><br>
+                                                    </div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-animated bg-orange" role="progressbar"
+                                                            aria-valuemin="0" aria-valuemax="100"
+                                                            style='<%# "width:" + Eval("DonationPrecentatgeD1") + "%;" %>'>
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-value">
+                                                        Contributor Count :
+                                                    <asp:Label runat="server" ID="Label10" Font-Bold="true" Text='<%# Bind("DonorCountD1") %>'>Contributor Count : 5</asp:Label>
+                                                        <div class="camp-percent">
+                                                            <asp:Label runat="server" Font-Bold="true" ID="Label11" Text='<%# Bind("DonationPrecentatgeD1") %>'>Donation %</asp:Label>%
+                                                        </div>
+                                                    </div>
+                                                    <p class="camp-text pt-4 pb-2">
+                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-hospital"></i></span>
+                                                                <asp:Label runat="server" ID="Label23" Font-Bold="true" ForeColor="Blue" Text='<%# Bind("HospitalNameD1") %>'>Lanka Hospital</asp:Label><br />
+                                                            </li>
+                                                            <br>
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked"></i></span>
+                                                                <asp:Label runat="server" ID="Label24" Text='<%# Bind("HLocationD1") %>'>Colombo</asp:Label>
+                                                            </li>
+                                                        </ul>
+                                                    </p>
+                                                    <a href="/kendall-lily?form=popup#donate/35">
+                                                        <button class="btn-block mb-3">Contribute Now</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 wow zoomIn">
+                                                <div class="campaign-card">
+                                                    <div class="camp-top">
+                                                        <h6>#<asp:Label runat="server" ID="Label12" Text='<%# Bind("DonationIDD2") %>'>DTN 001</asp:Label></h6>
+                                                    </div>
+                                                    <div class="camp-top">
+                                                        <span>
+                                                            <asp:Label runat="server" ID="Label13" Font-Bold="true" Font-Size="Smaller" Text="Supplies Need Prority : "></asp:Label>
+                                                            <asp:Label runat="server" ID="lblPriorityD2" Font-Bold="true" Text='<%# Bind("PriorityD2") %>'></asp:Label>
+                                                        </span>
+                                                        &nbsp
+                                                    <div>
+                                                        <asp:Image runat="server" ImageUrl="../../dist/img/hurry.png" ID="Image4" CssClass="img-circle" Width="100px" Height="100px" /><br>
+                                                    </div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-blue" role="progressbar"
+                                                            aria-valuemin="0" aria-valuemax="100"
+                                                            style='<%# "width:" + Eval("DonationPrecentatgeD2") + "%;" %>'>
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-value">
+                                                        Contributor Count :
+                                                    <asp:Label runat="server" ID="Label14" Font-Bold="true" Text='<%# Bind("DonorCountD2") %>'>Contributor Count : 5</asp:Label>
+                                                        <div class="camp-percent">
+                                                            <asp:Label runat="server" Font-Bold="true" ID="Label26" Text='<%# Bind("DonationPrecentatgeD2") %>'>Donation %</asp:Label>%
+                                                        </div>
+                                                    </div>
+                                                    <p class="camp-text pt-4 pb-2">
+                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-hospital"></i></span>
+                                                                <asp:Label runat="server" ID="Label27" Font-Bold="true" ForeColor="Blue" Text='<%# Bind("HospitalNameD2") %>'>Lanka Hospital</asp:Label><br />
+                                                            </li>
+                                                            <br>
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked"></i></span>
+                                                                <asp:Label runat="server" ID="Label28" Text='<%# Bind("HLocationD2") %>'>Colombo</asp:Label>
+                                                            </li>
+                                                        </ul>
+                                                    </p>
+                                                    <a href="/kendall-lily?form=popup#donate/35">
+                                                        <button class="btn-block mb-3">Contribute Now</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 wow zoomIn">
+                                                <div class="campaign-card">
+                                                    <div class="camp-top">
+                                                        <h6>#<asp:Label runat="server" ID="Label15" Text='<%# Bind("DonationIDD3") %>'>DTN 001</asp:Label></h6>
+                                                    </div>
+                                                    <div class="camp-top">
+                                                        <span>
+                                                            <asp:Label runat="server" ID="Label16" Font-Bold="true" Font-Size="Smaller" Text="Supplies Need Prority : "></asp:Label>
+                                                            <asp:Label runat="server" ID="lblPriorityD3" Font-Bold="true" Text='<%# Bind("PriorityD3") %>'></asp:Label>
+                                                        </span>
+                                                        &nbsp
+                                                    <div>
+                                                        <asp:Image runat="server" ImageUrl="../../dist/img/hurry.png" ID="Image5" CssClass="img-circle" Width="100px" Height="100px" /><br>
+                                                    </div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-blue" role="progressbar"
+                                                            aria-valuemin="0" aria-valuemax="100"
+                                                            style='<%# "width:" + Eval("DonationPrecentatgeD3") + "%;" %>'>
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-value">
+                                                        Contributor Count :
+                                                    <asp:Label runat="server" Font-Bold="true" ID="Label17" Text='<%# Bind("DonorCountD3") %>'>Contributor Count : 5</asp:Label>
+                                                        <div class="camp-percent">
+                                                            <asp:Label runat="server" Font-Bold="true" ID="Label29" Text='<%# Bind("DonationPrecentatgeD3") %>'>Donation %</asp:Label>%
+                                                        </div>
+                                                    </div>
+                                                    <p class="camp-text pt-4 pb-2">
+                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-hospital"></i></span>
+                                                                <asp:Label runat="server" ID="Label30" Font-Bold="true" ForeColor="Blue" Text='<%# Bind("HospitalNameD3") %>'>Lanka Hospital</asp:Label><br />
+                                                            </li>
+                                                            <br>
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked"></i></span>
+                                                                <asp:Label runat="server" ID="Label31" Text='<%# Bind("HLocationD3") %>'>Colombo</asp:Label>
+                                                            </li>
+                                                        </ul>
+                                                    </p>
+                                                    <a href="/kendall-lily?form=popup#donate/35">
+                                                        <button class="btn-block mb-3">Contribute Now</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        &nbsp
+                                        &nbsp
+                                        <div class="d-lg-flex align-items-center wow zoomIn">
                                             <h2 class="text-center text-lg-left">Top Rating Donors</h2>
                                             <div class="mx-auto mr-lg-0 search-box mt-4 mt-lg-0">
                                                 <form action="/Search">
@@ -347,160 +495,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        &nbsp
-                                    &nbsp
-                                    <div class="d-lg-flex align-items-center wow zoomIn">
-                                        <asp:Image runat="server" ImageUrl="../../dist/img/trending.png" ID="Image6" CssClass="img-circle" Width="50px" Height="50px" />
-                                        <h2 class="text-center text-lg-left">Trending Donations</h2>
-                                        <div class="mx-auto mr-lg-0 search-box mt-4 mt-lg-0">
-                                            <form action="/Search">
-                                                <input name="q" placeholder="Click and Find Donations" disabled type="text">
-                                                <button onclick="location.href='/Pages/Web/Review/DonationReview.aspx'">
-                                                    <i class="fa fa-caret-right"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                        <div class="row pt-5 ">
-                                            <div class="col-lg-4 col-md-6 wow zoomIn">
-                                                <div class="campaign-card">
-                                                    <div class="camp-top">
-                                                        <h6>#<asp:Label runat="server" ID="Label9" Text='<%# Bind("DonationIDD1") %>'>DTN 001</asp:Label></h6>
-                                                    </div>
-                                                    <div class="camp-top">
-                                                        <span>
-                                                            <asp:Label runat="server" ID="lbltemp" Font-Bold="true" Font-Size="Smaller" Text="Supplies Need Prority : "></asp:Label>
-                                                            <asp:Label runat="server" ID="lblPriorityD1" Font-Bold="true" Text='<%# Bind("PriorityD1") %>'></asp:Label>
-                                                        </span>
-                                                        &nbsp
-                                                    <div>
-                                                        <asp:Image runat="server" ImageUrl="../../dist/img/hurry.png" ID="Image3" CssClass="img-circle" Width="100px" Height="100px" /><br>
-                                                    </div>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-animated bg-orange" role="progressbar"
-                                                            aria-valuemin="0" aria-valuemax="100"
-                                                            style='<%# "width:" + Eval("DonationPrecentatgeD1") + "%;" %>'>
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress-value">
-                                                        Contributor Count :
-                                                    <asp:Label runat="server" ID="Label10" Font-Bold="true" Text='<%# Bind("DonorCountD1") %>'>Contributor Count : 5</asp:Label>
-                                                        <div class="camp-percent">
-                                                            <asp:Label runat="server" Font-Bold="true" ID="Label11" Text='<%# Bind("DonationPrecentatgeD1") %>'>Donation %</asp:Label>%
-                                                        </div>
-                                                    </div>
-                                                    <p class="camp-text pt-4 pb-2">
-                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-hospital"></i></span>
-                                                                <asp:Label runat="server" ID="Label23" Font-Bold="true" ForeColor="Blue" Text='<%# Bind("HospitalNameD1") %>'>Lanka Hospital</asp:Label><br />
-                                                            </li>
-                                                            <br>
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked"></i></span>
-                                                                <asp:Label runat="server" ID="Label24" Text='<%# Bind("HLocationD1") %>'>Colombo</asp:Label>
-                                                            </li>
-                                                        </ul>
-                                                    </p>
-                                                    <a href="/kendall-lily?form=popup#donate/35">
-                                                        <button class="btn-block mb-3">Contribute Now</button>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-6 wow zoomIn">
-                                                <div class="campaign-card">
-                                                    <div class="camp-top">
-                                                        <h6>#<asp:Label runat="server" ID="Label12" Text='<%# Bind("DonationIDD2") %>'>DTN 001</asp:Label></h6>
-                                                    </div>
-                                                    <div class="camp-top">
-                                                        <span>
-                                                            <asp:Label runat="server" ID="Label13" Font-Bold="true" Font-Size="Smaller" Text="Supplies Need Prority : "></asp:Label>
-                                                            <asp:Label runat="server" ID="lblPriorityD2" Font-Bold="true" Text='<%# Bind("PriorityD2") %>'></asp:Label>
-                                                        </span>
-                                                        &nbsp
-                                                    <div>
-                                                        <asp:Image runat="server" ImageUrl="../../dist/img/hurry.png" ID="Image4" CssClass="img-circle" Width="100px" Height="100px" /><br>
-                                                    </div>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-blue" role="progressbar"
-                                                            aria-valuemin="0" aria-valuemax="100"
-                                                            style='<%# "width:" + Eval("DonationPrecentatgeD2") + "%;" %>'>
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress-value">
-                                                        Contributor Count :
-                                                    <asp:Label runat="server" ID="Label14" Font-Bold="true" Text='<%# Bind("DonorCountD2") %>'>Contributor Count : 5</asp:Label>
-                                                        <div class="camp-percent">
-                                                            <asp:Label runat="server" Font-Bold="true" ID="Label26" Text='<%# Bind("DonationPrecentatgeD2") %>'>Donation %</asp:Label>%
-                                                        </div>
-                                                    </div>
-                                                    <p class="camp-text pt-4 pb-2">
-                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-hospital"></i></span>
-                                                                <asp:Label runat="server" ID="Label27" Font-Bold="true" ForeColor="Blue" Text='<%# Bind("HospitalNameD2") %>'>Lanka Hospital</asp:Label><br />
-                                                            </li>
-                                                            <br>
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked"></i></span>
-                                                                <asp:Label runat="server" ID="Label28" Text='<%# Bind("HLocationD2") %>'>Colombo</asp:Label>
-                                                            </li>
-                                                        </ul>
-                                                    </p>
-                                                    <a href="/kendall-lily?form=popup#donate/35">
-                                                        <button class="btn-block mb-3">Contribute Now</button>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-6 wow zoomIn">
-                                                <div class="campaign-card">
-                                                    <div class="camp-top">
-                                                        <h6>#<asp:Label runat="server" ID="Label15" Text='<%# Bind("DonationIDD3") %>'>DTN 001</asp:Label></h6>
-                                                    </div>
-                                                    <div class="camp-top">
-                                                        <span>
-                                                            <asp:Label runat="server" ID="Label16" Font-Bold="true" Font-Size="Smaller" Text="Supplies Need Prority : "></asp:Label>
-                                                            <asp:Label runat="server" ID="lblPriorityD3" Font-Bold="true" Text='<%# Bind("PriorityD3") %>'></asp:Label>
-                                                        </span>
-                                                        &nbsp
-                                                    <div>
-                                                        <asp:Image runat="server" ImageUrl="../../dist/img/hurry.png" ID="Image5" CssClass="img-circle" Width="100px" Height="100px" /><br>
-                                                    </div>
-                                                    </div>
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-blue" role="progressbar"
-                                                            aria-valuemin="0" aria-valuemax="100"
-                                                            style='<%# "width:" + Eval("DonationPrecentatgeD3") + "%;" %>'>
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress-value">
-                                                        Contributor Count :
-                                                    <asp:Label runat="server" Font-Bold="true" ID="Label17" Text='<%# Bind("DonorCountD3") %>'>Contributor Count : 5</asp:Label>
-                                                        <div class="camp-percent">
-                                                            <asp:Label runat="server" Font-Bold="true" ID="Label29" Text='<%# Bind("DonationPrecentatgeD3") %>'>Donation %</asp:Label>%
-                                                        </div>
-                                                    </div>
-                                                    <p class="camp-text pt-4 pb-2">
-                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-hospital"></i></span>
-                                                                <asp:Label runat="server" ID="Label30" Font-Bold="true" ForeColor="Blue" Text='<%# Bind("HospitalNameD3") %>'>Lanka Hospital</asp:Label><br />
-                                                            </li>
-                                                            <br>
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-map-marked"></i></span>
-                                                                <asp:Label runat="server" ID="Label31" Text='<%# Bind("HLocationD3") %>'>Colombo</asp:Label>
-                                                            </li>
-                                                        </ul>
-                                                    </p>
-                                                    <a href="/kendall-lily?form=popup#donate/35">
-                                                        <button class="btn-block mb-3">Contribute Now</button>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </section>
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
+            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">

@@ -16,6 +16,7 @@
                             </span>--%>
                 </div>
             </div>
+            &nbsp
             <div class="row">
                 <div class="col-md-3 col-sm-6 col-12">
                     <div class="info-box bg-success" runat="server" id="infoBox">
@@ -37,12 +38,26 @@
                     </div>
                     <!-- /.info-box -->
                 </div>
-                <div class="col-md-3 col-sm-6 col-12">
+                <div class="col-md-8 col-sm-8 col-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+                        <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">
-                                <asp:Label ID="lblText" runat="server" Text="Total Donations"></asp:Label>
+                                <asp:Label ID="Label2" runat="server" Font-Bold="true" Text="Earn 5 Points for Every Donation"></asp:Label>
+                            </span>
+                            <span class="info-box-number">
+                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnviewarchdetails" OnClick="btnviewarchdetails_Click"><p>View Medal Archivements Details</i></asp:LinkButton></p>
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-4 col-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-primary"><i class="far fa-flag"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">
+                                <asp:Label ID="lblText" runat="server" Text="Total Contribution"></asp:Label>
                             </span>
                             <span class="info-box-number">
                                 <asp:Label ID="lblTotdonation" runat="server" Text=""></asp:Label>
@@ -52,15 +67,43 @@
                     </div>
 
                 </div>
-                <div class="col-md-6 col-sm-6 col-12">
+                <div class="col-md-3 col-sm-4 col-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
+                        <span class="info-box-icon bg-warning"><i class="fa fa-box-open"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">
-                                <asp:Label ID="Label2" runat="server" Font-Bold="true" Text="Earn 5 Points for Every Donation"></asp:Label>
+                                <asp:Label ID="Label1" runat="server" Text="Processing"></asp:Label>
                             </span>
                             <span class="info-box-number">
-                                <asp:LinkButton CssClass="text-primary" Font-Size="Medium" runat="server" ID="btnviewarchdetails" OnClick="btnviewarchdetails_Click"><p>View Medle Archivements Details</i></asp:LinkButton></p>
+                                <asp:Label ID="lblprocessing" runat="server" Text=""></asp:Label>
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-4 col-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-danger"><i class="fa fa-truck-moving"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">
+                                <asp:Label ID="Label4" runat="server" Text="Deliverd"></asp:Label>
+                            </span>
+                            <span class="info-box-number">
+                                <asp:Label ID="lblDeliverd" runat="server" Text=""></asp:Label>
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-4 col-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-success"><i class="fa fa-thumbs-up"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">
+                                <asp:Label ID="Label6" runat="server" Text="Complete"></asp:Label>
+                            </span>
+                            <span class="info-box-number">
+                                <asp:Label ID="lblComplete" runat="server" Text=""></asp:Label>
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -186,7 +229,7 @@
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Donation is Ready to Delivery</h4>
+                            <h4 class="modal-title">Donation is Ready</h4>
                             &nbsp
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -421,11 +464,11 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Action">
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="btnView" runat="server" CssClass="btn btn-primary" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-eye"></i>
+                                            <asp:LinkButton ID="btnView" runat="server" CssClass="btn btn-dark" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-eye"></i>
                                             </asp:LinkButton>
                                             <asp:LinkButton ID="btnFeedback" runat="server" CssClass="btn btn-warning" ToolTip="View Feedback" CausesValidation="false" CommandName="Contact" CommandArgument="<%# Container.DisplayIndex %>"><i class="far fa-star"></i>
                                             </asp:LinkButton>
-                                            <asp:LinkButton ID="btnReady" runat="server" CssClass="btn btn-success" ToolTip="Donation is Ready" OnClientClick="return ShowDelivery();"><i class="fa fa-truck-pickup"></i>
+                                            <asp:LinkButton ID="btnReady" runat="server" CssClass="btn btn-success" ToolTip="Donation is Ready" OnClientClick="return ShowDelivery();"><i class="fa fa-check"></i>
                                             </asp:LinkButton>
                                             <asp:LinkButton ID="btnCancel" runat="server" CssClass="btn btn-danger" ToolTip="Cancel Donation" OnClientClick="return ShowCancel();"><i class="fa fa-trash"></i>
                                             </asp:LinkButton>

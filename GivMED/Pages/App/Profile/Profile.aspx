@@ -13,6 +13,7 @@
         <ContentTemplate>
             <div class="row">
                 <div class="col-md-3">
+                    &nbsp
                     <!-- Profile Image -->
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
@@ -52,6 +53,7 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-md-9">
+                                            &nbsp
                     <div class="card">
                         <div class="modal fade" id="modal-Optional">
                             <div class="modal-dialog modal-lg">
@@ -266,7 +268,7 @@
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-4">
-                                            <asp:Button ID="btnUpdateSec" runat="server" Text="Update" CssClass="btn btn-primary" OnClick="btnUpdateSec_Click" OnClientClick="return Validate2();" />
+                                            <asp:Button ID="btnUpdateSec" runat="server" Text="Change Password" CssClass="btn btn-primary" OnClick="btnUpdateSec_Click" OnClientClick="return Validate2();" />
                                         </div>
                                     </div>
                                 </div>
