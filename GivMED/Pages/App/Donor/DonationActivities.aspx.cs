@@ -190,11 +190,6 @@ namespace GivMED.Pages.App.Donor
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowDetails", "ShowDetails();", true);
                         break;
 
-                    case "Cancel":
-                        ViewState["index"] = e.CommandArgument.ToString();
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowCancel", "ShowCancel();", true);
-                        break;
-
                     case "Contact":
                         ViewState["index"] = e.CommandArgument.ToString();
                         ViewFeedback();
@@ -276,7 +271,7 @@ namespace GivMED.Pages.App.Donor
 
                 var email = new MimeMessage();
 
-                email.From.Add(new MailboxAddress("Donation Cancellation Notice", GlobalData.NoreplyEmail));
+                email.From.Add(new MailboxAddress("GiveMED", GlobalData.NoreplyEmail));
                 email.To.Add(new MailboxAddress("User", odata.Email));
 
                 email.Subject = $"Donation Cancellation - Donation ID: {donationID}, Supply ID: {supplyID}";
@@ -311,20 +306,20 @@ namespace GivMED.Pages.App.Donor
 
                 var email = new MimeMessage();
 
-                email.From.Add(new MailboxAddress("Donation Delivery Notice", GlobalData.NoreplyEmail));
+                email.From.Add(new MailboxAddress("GiveMED", GlobalData.NoreplyEmail));
                 email.To.Add(new MailboxAddress("User", odata.email));
 
-                email.Subject = $"Donation Delivery Received - Vehicle No. {odata.VehicleNo}";
+                email.Subject = $"Supply Needs are on the way - Vehicle No. {odata.VehicleNo}";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
                 {
-                    Text = $"Dear Hospital Staff,\n\nI am pleased to inform you that we have received a donation delivery today." +
+                    Text = $"Dear Hospital Staff,\n\nI am pleased to inform you that Medical Supplies is on the way, ready to donation collect." +
                     $" The details of the delivery are as follows:\n\n" +
                     $"Vehicle No.: {odata.VehicleNo}\n" +
                     $"Driver Name: {odata.DriverName}\n" +
                     $"Driver Telephone: {odata.Telephone}\n" +
-                    $"Date: {odata.Date}\n" +
-                    $"Time: {odata.Time}\n\nThe donation was safely delivered to our facility, and we have confirmed its completeness." +
-                    $" We would like to express our sincere gratitude to the generous donor for their support.\n\n" +
+                    $"Date: {Convert.ToDateTime(odata.Date).ToString("yyyy/MM/dd")}\n" +
+                    $"Arrival Time: {odata.Time}\n\nThe donation will be safely delivered to your facility, We would like to express our sincere \n\n" +
+                    $"gratitude to the generous donor for their support.\n\n" +
                     $"Thank you for your attention to this matter. Please let us know if you have any questions or concerns.\n\n" +
                     $"Best regards,\n\n" +
                     $"{donorName}"
@@ -407,29 +402,7 @@ namespace GivMED.Pages.App.Donor
 
         protected void btnCanceltrue_Click(object sender, EventArgs e)
         {
-            GridViewRow oGridViewRow = gvDonationList.Rows[Convert.ToInt32(ViewState["index"])];
-            Session["lblDonationID"] = ((Label)oGridViewRow.FindControl("lblDonationID")).Text.ToString();
-
-            DonationActivityDto odata = new DonationActivityDto();
-            odata.DonationID = Session["lblDonationID"].ToString();
-            odata.SupplyID = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
-            odata.Email = ((Label)oGridViewRow.FindControl("lblEmail")).Text.ToString();
-
-            WebApiResponse response = new WebApiResponse();
-            response = oSupplyService.Delete(odata);
-
-            if (response.StatusCode == (int)StatusCode.Success)
-            {
-                PageLoad();
-                EmailSender(odata);
-                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Donation ID:'"+ odata.DonationID .ToString()+ "' is Canceled ', text: 'Canceled', confirmButtonText: 'Ok'});", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Error!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
-            }
+            
         }
 
         protected void ddlSortResullt_SelectedIndexChanged(object sender, EventArgs e)
@@ -473,6 +446,35 @@ namespace GivMED.Pages.App.Donor
                 ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Donation ID:'" + lblDonationIDpop.ToString() + "' is Successfully Deliverd ', text: 'Deliverd', confirmButtonText: 'Ok'});", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
 
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Error!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+            }
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            GridViewRow oGridViewRow = gvDonationList.Rows[Convert.ToInt32(ViewState["index"])];
+            Session["lblDonationID"] = ((Label)oGridViewRow.FindControl("lblDonationID")).Text.ToString();
+            Session["lblSupplyID"] = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
+            Session["lblEmail"] = ((Label)oGridViewRow.FindControl("lblEmail")).Text.ToString();
+
+            DonationActivityDto odata = new DonationActivityDto();
+            odata.DonationID = Session["lblDonationID"].ToString();
+            odata.SupplyID = Session["lblSupplyID"].ToString();
+            odata.Email = Session["lblEmail"].ToString();
+
+            WebApiResponse response = new WebApiResponse();
+            response = oSupplyService.Delete(odata);
+
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                PageLoad();
+                EmailSender(odata);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Donation ID:'" + odata.DonationID.ToString() + "' is Canceled ', text: 'Canceled', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
             }
             else
             {

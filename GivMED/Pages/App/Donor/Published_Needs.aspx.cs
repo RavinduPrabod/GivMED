@@ -566,7 +566,7 @@ namespace GivMED.Pages.App.Donor
             try
             {
                 Label lblFunctionName = this.Master.FindControl("lblFuncationName") as Label;
-                lblFunctionName.Text = "Medical Supply Shortages (Live)";
+                lblFunctionName.Text = "Medical Supply Needs (Live)";
             }
             catch (Exception ex)
             {
@@ -579,10 +579,10 @@ namespace GivMED.Pages.App.Donor
             {
                 var email = new MimeMessage();
 
-                email.From.Add(new MailboxAddress("Donation Confirmation Notice", GlobalData.NoreplyEmail));
+                email.From.Add(new MailboxAddress("GiveMED", GlobalData.NoreplyEmail));
                 email.To.Add(new MailboxAddress("User", "givemed.donation@gmail.com"));
 
-                email.Subject = "We are pleased to inform you that the donation for the '" + odata.DonationHeader.SupplyID.ToString() + "' has been confirmed by the donor.";
+                email.Subject = "Donation Confirmation Notice - We are pleased to inform you that the donation for the '" + odata.DonationHeader.SupplyID.ToString() + "' has been confirmed by the donor.";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
                 {
                     Text = $"Below are the details of the donation:\n\nDonation ID: {odata.DonationHeader.DonationID}\n" +
@@ -615,8 +615,8 @@ namespace GivMED.Pages.App.Donor
                 LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
                 var email = new MimeMessage();
-                email.From.Add(new MailboxAddress("GiveMED Notice", GlobalData.NoreplyEmail));
-                email.Subject = "Urgent request for Medical Supply Donations";
+                email.From.Add(new MailboxAddress("GiveMED", GlobalData.NoreplyEmail));
+                email.Subject = "Need your contribution for donation";
 
                 StringBuilder suppliesText = new StringBuilder();
                 foreach (var supply in Supply.DonationDetails)

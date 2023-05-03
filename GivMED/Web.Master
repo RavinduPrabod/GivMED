@@ -33,6 +33,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script src='<%=ResolveClientUrl("plugins/jquery/jquery.min.js")%>' type="text/javascript"></script>
 
+     <script src='<%=ResolveClientUrl("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js")%>' type="text/javascript"></script>
+
+    <script src='<%=ResolveClientUrl("dist/js/demo.js")%>' type="text/javascript"></script>
+
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>

@@ -16,7 +16,7 @@ namespace GivMED.Pages.App.Hospital
             if (!this.IsPostBack)
             {
                 SetFunctionName();
-                ScriptManager.RegisterStartupScript(this, GetType(), "BindChart", "BindBarChart();", true);
+                //ScriptManager.RegisterStartupScript(this, GetType(), "BindChart", "BindBarChart();", true);s
 
                 List<ChartData> chartData = new List<ChartData>();
                 chartData.Add(new ChartData() { Label = "Urgent", Value = 20 });

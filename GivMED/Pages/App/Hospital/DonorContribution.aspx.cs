@@ -374,7 +374,7 @@ namespace GivMED.Pages.App.Hospital
                 email.From.Add(new MailboxAddress(loggedUser.FirstName, GlobalData.NoreplyEmail));
                 email.To.Add(new MailboxAddress(singlerecord.DonorName, singlerecord.UserName));
 
-                email.Subject = "Feedback for Donation Contribute - Medical Supplies";
+                email.Subject = "Feedback for Donation";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
                 {
                     Text = $"Dear {singlerecord.DonorName}\n\n" +

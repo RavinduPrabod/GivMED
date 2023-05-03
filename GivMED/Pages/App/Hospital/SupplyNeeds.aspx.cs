@@ -504,7 +504,7 @@ namespace GivMED.Pages.App.Hospital
                 LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
                 var email = new MimeMessage();
-                email.From.Add(new MailboxAddress("GiveMED Urgent Notice", GlobalData.NoreplyEmail));
+                email.From.Add(new MailboxAddress("GiveMED Shortage Notice", GlobalData.NoreplyEmail));
                 if (Supply.SupplyRequestHeader.SupplyPriorityLevel == 1)
                 {
                     email.Subject = "Urgent Notice - Medical Supplies Shortage in '" + loggedUser.FirstName + "'";

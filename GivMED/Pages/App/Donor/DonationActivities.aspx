@@ -470,7 +470,7 @@
                                             </asp:LinkButton>
                                             <asp:LinkButton ID="btnReady" runat="server" CssClass="btn btn-success" ToolTip="Donation is Ready" OnClientClick="return ShowDelivery();"><i class="fa fa-check"></i>
                                             </asp:LinkButton>
-                                            <asp:LinkButton ID="btnCancel" runat="server" CssClass="btn btn-danger" ToolTip="Cancel Donation" OnClientClick="return ShowCancel();"><i class="fa fa-trash"></i>
+                                            <asp:LinkButton ID="btnCancel" runat="server" CssClass="btn btn-danger" ToolTip="Cancel Donation" OnClientClick="ShowDeleteConfirmationPop();"><i class="fa fa-trash"></i>
                                             </asp:LinkButton>
                                         </ItemTemplate>
                                         <ItemStyle Width="10%" />
@@ -480,6 +480,7 @@
                     </div>
                 </div>
             </div>
+            <asp:Button ID="btnCancel" runat="server" Text="Delete" Style="display: none" OnClick="btnCancel_Click"  />
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
@@ -499,6 +500,16 @@
                 });
             })
         }
+        function ShowDeleteConfirmationPop() {
+            alertify.confirm("Are you sure you want to Cancel this Donation?", function (e) {
+                if (e) {
+                    jQuery("[ID$=btnDelete]").click();
+                } else {
+                    alertify.error("OK!");
+                }
+            }).setHeader('<h3> Donation Cancel Confirmation </h3> ');;
+            return flag;
+        };
         function showarch() {
             $('.modal-backdrop').remove();
             $('#modal-arch').modal('show');

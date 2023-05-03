@@ -78,9 +78,9 @@
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <div class="project-actions text-center">
-                                                       <%-- <asp:LinkButton CssClass="btn btn-primary btn-sm" runat="server" Text="View" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>">
-                                                            <i class="fas fa-eye"></i>
-                                                        </asp:LinkButton>--%>
+                                                       <asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" Text="View" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>">
+                                                            <i class="fas fa-eye">
+                                                        </asp:LinkButton>
                                                         <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" Text="Edit" CausesValidation="false" CommandName="EditData" CommandArgument="<%# Container.DisplayIndex %>">
                                                             <i class="fas fa-pencil-alt"></i>
                                                         </asp:LinkButton>

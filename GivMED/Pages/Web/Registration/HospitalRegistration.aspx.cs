@@ -251,13 +251,13 @@ namespace GivMED.Pages.Web.Registration
 
                 var email = new MimeMessage();
 
-                email.From.Add(new MailboxAddress("GiveMED email verification", GlobalData.NoreplyEmail));
+                email.From.Add(new MailboxAddress("GiveMED Security", GlobalData.NoreplyEmail));
                 email.To.Add(new MailboxAddress("User", useremail));
 
-                email.Subject = "GiveMED Password Reset Confirmation - Check your email for instructions";
+                email.Subject = "GiveMED email verification - Check your email for instructions";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
                 {
-                    Text = $"Dear {name},A password reset request has been received for your account.\n " +
+                    Text = $"Dear {name},A temporary password has been received for your account.\n " +
                     $"Your new password is:{password}\n\n" +
                     $"Please use this password to login to your account and reset your password. If you did not request this password reset, please contact our support team immediately.\n" +
                     $"Best regards,\n" +

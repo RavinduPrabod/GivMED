@@ -98,7 +98,7 @@ namespace GivMED.Pages.Web.Registration
 
                 var email = new MimeMessage();
 
-                email.From.Add(new MailboxAddress("GiveMED email verification", GlobalData.NoreplyEmail));
+                email.From.Add(new MailboxAddress("GiveMED Security", GlobalData.NoreplyEmail));
                 email.To.Add(new MailboxAddress("User", emailuser));
 
                 email.Subject = "Your verification code";
