@@ -1,4 +1,5 @@
 ﻿using GiveMED.Api.Data;
+using GiveMED.Api.Dto;
 using GiveMED.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -225,6 +226,20 @@ namespace GiveMED.Api.Controllers
         public List<EmailUsers> GetAllActiveEmailUsers()
         {
             return _context.EmailUsers.Where(x => x.EmailNotification == 1).ToList();
+        }
+
+        [HttpGet("{SupplyID}")]
+        [ActionName("GetDoantionEmailUsersbySupplyID")]
+        public List<DeliveryDataDto> GetDoantionEmailUsersbySupplyID(string SupplyID)
+        {
+            return (from A in _context.DonationHeader
+                    join B in _context.EmailUsers on A.UserName equals B.UserName
+                    where A.DonationStatus == 4
+                    select new DeliveryDataDto
+                    {
+                        donationid = A.DonationID,
+                        email = B.Email
+                    }).ToList();
         }
 
         [HttpGet("{oDonationVolunteer}")]

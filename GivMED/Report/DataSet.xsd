@@ -3,8 +3,39 @@
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-        <Connections />
-        <Tables />
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="db_GiveMEDConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="db_GiveMEDConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.db_GiveMEDConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="VwAnnualreportTableAdapter" GeneratorDataComponentClassName="VwAnnualreportTableAdapter" Name="VwAnnualreport" UserDataComponentName="VwAnnualreportTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="db_GiveMEDConnectionString (Web.config)" DbObjectName="db_GiveMED.dbo.VwAnnualreport" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT VwAnnualreport.*
+FROM     VwAnnualreport</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="HospitalID" DataSetColumn="HospitalID" />
+              <Mapping SourceColumn="SupplyID" DataSetColumn="SupplyID" />
+              <Mapping SourceColumn="HospitalName" DataSetColumn="HospitalName" />
+              <Mapping SourceColumn="City" DataSetColumn="City" />
+              <Mapping SourceColumn="ItemCatName" DataSetColumn="ItemCatName" />
+              <Mapping SourceColumn="SupplyItemQty" DataSetColumn="SupplyItemQty" />
+              <Mapping SourceColumn="SupplyItemID" DataSetColumn="SupplyItemID" />
+              <Mapping SourceColumn="SupplyItemCat" DataSetColumn="SupplyItemCat" />
+              <Mapping SourceColumn="SupplyItemName" DataSetColumn="SupplyItemName" />
+              <Mapping SourceColumn="SupplyCreateDate" DataSetColumn="SupplyCreateDate" />
+              <Mapping SourceColumn="SupplyExpireDate" DataSetColumn="SupplyExpireDate" />
+              <Mapping SourceColumn="SupplyPriorityLevel" DataSetColumn="SupplyPriorityLevel" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
         <Sources />
       </DataSource>
     </xs:appinfo>
@@ -16,9 +47,83 @@
           <xs:complexType>
             <xs:sequence>
               <xs:element name="HospitalName" msprop:Generator_ColumnVarNameInTable="columnHospitalName" msprop:Generator_ColumnPropNameInRow="HospitalName" msprop:Generator_ColumnPropNameInTable="HospitalNameColumn" msprop:Generator_UserColumnName="HospitalName" type="xs:string" minOccurs="0" />
-              <xs:element name="DonationCreateDate" msprop:Generator_ColumnVarNameInTable="columnDonationCreateDate" msprop:Generator_ColumnPropNameInRow="DonationCreateDate" msprop:Generator_ColumnPropNameInTable="DonationCreateDateColumn" msprop:Generator_UserColumnName="DonationCreateDate" type="xs:string" minOccurs="0" />
+              <xs:element name="SupplyCreateDate" msprop:Generator_ColumnVarNameInTable="columnSupplyCreateDate" msprop:Generator_ColumnPropNameInRow="SupplyCreateDate" msprop:Generator_ColumnPropNameInTable="SupplyCreateDateColumn" msprop:Generator_UserColumnName="SupplyCreateDate" type="xs:string" minOccurs="0" />
+              <xs:element name="SupplyExpireDate" msprop:Generator_ColumnVarNameInTable="columnSupplyExpireDate" msprop:Generator_ColumnPropNameInRow="SupplyExpireDate" msprop:Generator_ColumnPropNameInTable="SupplyExpireDateColumn" msprop:Generator_UserColumnName="SupplyExpireDate" type="xs:string" minOccurs="0" />
+              <xs:element name="SupplyPriorityLevel" msprop:Generator_ColumnVarNameInTable="columnSupplyPriorityLevel" msprop:Generator_ColumnPropNameInRow="SupplyPriorityLevel" msprop:Generator_ColumnPropNameInTable="SupplyPriorityLevelColumn" msprop:Generator_UserColumnName="SupplyPriorityLevel" type="xs:string" minOccurs="0" />
+              <xs:element name="SupplyItemName" msprop:Generator_ColumnVarNameInTable="columnSupplyItemName" msprop:Generator_ColumnPropNameInRow="SupplyItemName" msprop:Generator_ColumnPropNameInTable="SupplyItemNameColumn" msprop:Generator_UserColumnName="SupplyItemName" type="xs:string" minOccurs="0" />
+              <xs:element name="SupplyItemQty" msprop:Generator_ColumnVarNameInTable="columnSupplyItemQty" msprop:Generator_ColumnPropNameInRow="SupplyItemQty" msprop:Generator_ColumnPropNameInTable="SupplyItemQtyColumn" msprop:Generator_UserColumnName="SupplyItemQty" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_RowClassName="DataTable2Row" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="HospitalName" msprop:Generator_ColumnVarNameInTable="columnHospitalName" msprop:Generator_ColumnPropNameInRow="HospitalName" msprop:Generator_ColumnPropNameInTable="HospitalNameColumn" msprop:Generator_UserColumnName="HospitalName" type="xs:string" minOccurs="0" />
+              <xs:element name="RegistrationNo" msprop:Generator_ColumnVarNameInTable="columnRegistrationNo" msprop:Generator_ColumnPropNameInRow="RegistrationNo" msprop:Generator_ColumnPropNameInTable="RegistrationNoColumn" msprop:Generator_UserColumnName="RegistrationNo" type="xs:string" minOccurs="0" />
+              <xs:element name="City" msprop:Generator_ColumnVarNameInTable="columnCity" msprop:Generator_ColumnPropNameInRow="City" msprop:Generator_ColumnPropNameInTable="CityColumn" msprop:Generator_UserColumnName="City" type="xs:string" minOccurs="0" />
+              <xs:element name="Email" msprop:Generator_ColumnVarNameInTable="columnEmail" msprop:Generator_ColumnPropNameInRow="Email" msprop:Generator_ColumnPropNameInTable="EmailColumn" msprop:Generator_UserColumnName="Email" type="xs:string" minOccurs="0" />
+              <xs:element name="NoOfBeds" msprop:Generator_ColumnVarNameInTable="columnNoOfBeds" msprop:Generator_ColumnPropNameInRow="NoOfBeds" msprop:Generator_ColumnPropNameInTable="NoOfBedsColumn" msprop:Generator_UserColumnName="NoOfBeds" type="xs:string" minOccurs="0" />
+              <xs:element name="TypeofHosptal" msprop:Generator_ColumnVarNameInTable="columnTypeofHosptal" msprop:Generator_ColumnPropNameInRow="TypeofHosptal" msprop:Generator_ColumnPropNameInTable="TypeofHosptalColumn" msprop:Generator_UserColumnName="TypeofHosptal" type="xs:string" minOccurs="0" />
+              <xs:element name="CreateDateTime" msprop:Generator_ColumnVarNameInTable="columnCreateDateTime" msprop:Generator_ColumnPropNameInRow="CreateDateTime" msprop:Generator_ColumnPropNameInTable="CreateDateTimeColumn" msprop:Generator_UserColumnName="CreateDateTime" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable3" msprop:Generator_TableClassName="DataTable3DataTable" msprop:Generator_TableVarName="tableDataTable3" msprop:Generator_RowChangedName="DataTable3RowChanged" msprop:Generator_TablePropName="DataTable3" msprop:Generator_RowDeletingName="DataTable3RowDeleting" msprop:Generator_RowChangingName="DataTable3RowChanging" msprop:Generator_RowEvHandlerName="DataTable3RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable3RowDeleted" msprop:Generator_RowClassName="DataTable3Row" msprop:Generator_UserTableName="DataTable3" msprop:Generator_RowEvArgName="DataTable3RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
               <xs:element name="DonorFirstName" msprop:Generator_ColumnVarNameInTable="columnDonorFirstName" msprop:Generator_ColumnPropNameInRow="DonorFirstName" msprop:Generator_ColumnPropNameInTable="DonorFirstNameColumn" msprop:Generator_UserColumnName="DonorFirstName" type="xs:string" minOccurs="0" />
-              <xs:element name="EstimatePrice" msprop:Generator_ColumnVarNameInTable="columnEstimatePrice" msprop:Generator_ColumnPropNameInRow="EstimatePrice" msprop:Generator_ColumnPropNameInTable="EstimatePriceColumn" msprop:Generator_UserColumnName="EstimatePrice" type="xs:string" minOccurs="0" />
+              <xs:element name="City" msprop:Generator_ColumnVarNameInTable="columnCity" msprop:Generator_ColumnPropNameInRow="City" msprop:Generator_ColumnPropNameInTable="CityColumn" msprop:Generator_UserColumnName="City" type="xs:string" minOccurs="0" />
+              <xs:element name="Country" msprop:Generator_ColumnVarNameInTable="columnCountry" msprop:Generator_ColumnPropNameInRow="Country" msprop:Generator_ColumnPropNameInTable="CountryColumn" msprop:Generator_UserColumnName="Country" type="xs:string" minOccurs="0" />
+              <xs:element name="DonorType" msprop:Generator_ColumnVarNameInTable="columnDonorType" msprop:Generator_ColumnPropNameInRow="DonorType" msprop:Generator_ColumnPropNameInTable="DonorTypeColumn" msprop:Generator_UserColumnName="DonorType" type="xs:string" minOccurs="0" />
+              <xs:element name="CreateDateTime" msprop:Generator_ColumnVarNameInTable="columnCreateDateTime" msprop:Generator_ColumnPropNameInRow="CreateDateTime" msprop:Generator_ColumnPropNameInTable="CreateDateTimeColumn" msprop:Generator_UserColumnName="CreateDateTime" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="VwAnnualreport" msprop:Generator_TableClassName="VwAnnualreportDataTable" msprop:Generator_TableVarName="tableVwAnnualreport" msprop:Generator_TablePropName="VwAnnualreport" msprop:Generator_RowDeletingName="VwAnnualreportRowDeleting" msprop:Generator_RowChangingName="VwAnnualreportRowChanging" msprop:Generator_RowEvHandlerName="VwAnnualreportRowChangeEventHandler" msprop:Generator_RowDeletedName="VwAnnualreportRowDeleted" msprop:Generator_UserTableName="VwAnnualreport" msprop:Generator_RowChangedName="VwAnnualreportRowChanged" msprop:Generator_RowEvArgName="VwAnnualreportRowChangeEvent" msprop:Generator_RowClassName="VwAnnualreportRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="HospitalID" msprop:Generator_ColumnVarNameInTable="columnHospitalID" msprop:Generator_ColumnPropNameInRow="HospitalID" msprop:Generator_ColumnPropNameInTable="HospitalIDColumn" msprop:Generator_UserColumnName="HospitalID" type="xs:int" />
+              <xs:element name="SupplyID" msprop:Generator_ColumnVarNameInTable="columnSupplyID" msprop:Generator_ColumnPropNameInRow="SupplyID" msprop:Generator_ColumnPropNameInTable="SupplyIDColumn" msprop:Generator_UserColumnName="SupplyID">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="HospitalName" msprop:Generator_ColumnVarNameInTable="columnHospitalName" msprop:Generator_ColumnPropNameInRow="HospitalName" msprop:Generator_ColumnPropNameInTable="HospitalNameColumn" msprop:Generator_UserColumnName="HospitalName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="City" msprop:Generator_ColumnVarNameInTable="columnCity" msprop:Generator_ColumnPropNameInRow="City" msprop:Generator_ColumnPropNameInTable="CityColumn" msprop:Generator_UserColumnName="City">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ItemCatName" msprop:Generator_ColumnVarNameInTable="columnItemCatName" msprop:Generator_ColumnPropNameInRow="ItemCatName" msprop:Generator_ColumnPropNameInTable="ItemCatNameColumn" msprop:Generator_UserColumnName="ItemCatName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SupplyItemQty" msprop:Generator_ColumnVarNameInTable="columnSupplyItemQty" msprop:Generator_ColumnPropNameInRow="SupplyItemQty" msprop:Generator_ColumnPropNameInTable="SupplyItemQtyColumn" msprop:Generator_UserColumnName="SupplyItemQty" type="xs:long" />
+              <xs:element name="SupplyItemID" msprop:Generator_ColumnVarNameInTable="columnSupplyItemID" msprop:Generator_ColumnPropNameInRow="SupplyItemID" msprop:Generator_ColumnPropNameInTable="SupplyItemIDColumn" msprop:Generator_UserColumnName="SupplyItemID" type="xs:int" />
+              <xs:element name="SupplyItemCat" msprop:Generator_ColumnVarNameInTable="columnSupplyItemCat" msprop:Generator_ColumnPropNameInRow="SupplyItemCat" msprop:Generator_ColumnPropNameInTable="SupplyItemCatColumn" msprop:Generator_UserColumnName="SupplyItemCat" type="xs:int" />
+              <xs:element name="SupplyItemName" msprop:Generator_ColumnVarNameInTable="columnSupplyItemName" msprop:Generator_ColumnPropNameInRow="SupplyItemName" msprop:Generator_ColumnPropNameInTable="SupplyItemNameColumn" msprop:Generator_UserColumnName="SupplyItemName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SupplyCreateDate" msprop:Generator_ColumnVarNameInTable="columnSupplyCreateDate" msprop:Generator_ColumnPropNameInRow="SupplyCreateDate" msprop:Generator_ColumnPropNameInTable="SupplyCreateDateColumn" msprop:Generator_UserColumnName="SupplyCreateDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="SupplyExpireDate" msprop:Generator_ColumnVarNameInTable="columnSupplyExpireDate" msprop:Generator_ColumnPropNameInRow="SupplyExpireDate" msprop:Generator_ColumnPropNameInTable="SupplyExpireDateColumn" msprop:Generator_UserColumnName="SupplyExpireDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="SupplyPriorityLevel" msprop:Generator_ColumnVarNameInTable="columnSupplyPriorityLevel" msprop:Generator_ColumnPropNameInRow="SupplyPriorityLevel" msprop:Generator_ColumnPropNameInTable="SupplyPriorityLevelColumn" msprop:Generator_UserColumnName="SupplyPriorityLevel" type="xs:int" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

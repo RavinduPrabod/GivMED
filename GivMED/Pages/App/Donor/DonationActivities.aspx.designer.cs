@@ -78,13 +78,13 @@ namespace GivMED.Pages.App.Donor
         protected global::System.Web.UI.WebControls.LinkButton btnviewarchdetails;
 
         /// <summary>
-        /// lblText control.
+        /// Label3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblText;
+        protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
         /// lblTotdonation control.
@@ -94,6 +94,24 @@ namespace GivMED.Pages.App.Donor
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTotdonation;
+
+        /// <summary>
+        /// lblText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblText;
+
+        /// <summary>
+        /// lblCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCancel;
 
         /// <summary>
         /// Label1 control.
@@ -292,6 +310,15 @@ namespace GivMED.Pages.App.Donor
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDeliveryNow;
+
+        /// <summary>
+        /// lblSupplyCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSupplyCode;
 
         /// <summary>
         /// gvPopSuppliesShow control.

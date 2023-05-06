@@ -10,8 +10,8 @@
                     &nbsp
                     <div class="row">
                         <div class="col-12">
-                              <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-md" Text="Create New publish here" OnClick="btnCreate_Click" />
-                                &nbsp
+                            <asp:Button runat="server" ID="btnCreate" CssClass="btn btn-block btn-outline-primary btn-md" Text="Create New publish here" OnClick="btnCreate_Click" />
+                            &nbsp
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Supplies Needs Publications</h3>
@@ -58,7 +58,7 @@
                                                 </ItemTemplate>
                                                 <ItemStyle Width="8%" />
                                             </asp:TemplateField>
-<%--                                            <asp:TemplateField HeaderText="Progress" ItemStyle-CssClass="project_progress">
+                                            <%--                                            <asp:TemplateField HeaderText="Progress" ItemStyle-CssClass="project_progress">
                                                 <ItemTemplate>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-green" role="progressbar"
@@ -69,7 +69,7 @@
                                                 </ItemTemplate>
                                                 <ItemStyle Width="10%" />
                                             </asp:TemplateField>--%>
-<%--                                            <asp:TemplateField HeaderText="">
+                                            <%--                                            <asp:TemplateField HeaderText="">
                                                 <ItemTemplate>
                                                    <span class="badge bg-danger"><%# Eval("Proceprecent") + "%" %></span>
                                                 </ItemTemplate>
@@ -78,13 +78,13 @@
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <div class="project-actions text-center">
-                                                       <asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" Text="View" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>">
-                                                            <i class="fas fa-eye">
-                                                        </asp:LinkButton>
-                                                        <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" Text="Edit" CausesValidation="false" CommandName="EditData" CommandArgument="<%# Container.DisplayIndex %>">
+                                                        <%--<asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" Text="View" CausesValidation="false" CommandName="ViewData" CommandArgument="<%# Container.DisplayIndex %>">
+                                                            <i class="fas fa-eye"></i>
+                                                        </asp:LinkButton>--%>
+                                                        <asp:LinkButton ID="btnEdit" CssClass="btn btn-info btn-sm" runat="server" Text="Edit" CausesValidation="false" CommandName="EditData" CommandArgument="<%# Container.DisplayIndex %>">
                                                             <i class="fas fa-pencil-alt"></i>
                                                         </asp:LinkButton>
-                                                        <asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" Text="Delete" CausesValidation="false" CommandName="DeleteData" CommandArgument="<%# Container.DisplayIndex %>">
+                                                        <asp:LinkButton ID="btnDelete" CssClass="btn btn-danger btn-sm" runat="server" Text="Delete" CausesValidation="false" CommandName="DeleteData" CommandArgument="<%# Container.DisplayIndex %>">
                                                             <i class="fas fa-trash"></i>
                                                         </asp:LinkButton>
                                                     </div>
@@ -111,7 +111,7 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h4 class="modal-title">Manage template</h4> 
+                                            <h4 class="modal-title">Manage template</h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -289,11 +289,21 @@
                             </div>
                         </div>
                     </div>
+                    <asp:Button ID="btnCancel" runat="server" Text="Delete" Style="display: none" OnClick="btnCancel_Click" />
                 </asp:View>
             </asp:MultiView>
         </ContentTemplate>
     </asp:UpdatePanel>
-   <script type="text/javascript">
+    <script type="text/javascript">
+        function ShowDeleteConfirmationPop() {
+            alertify.confirm("Are you sure you want to Cancel this Supply?", function (e) {
+                if (e) {
+                    jQuery("[ID$=btnCancel]").click();
+                } else {
+                    alertify.error("OK!");
+                }
+            }).setHeader('<h3> Supply Cancel Confirmation </h3>');
+        };
 
         Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
         function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }

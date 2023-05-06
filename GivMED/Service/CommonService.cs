@@ -246,6 +246,33 @@ namespace GivMED.Service
             }
         }
 
+        public List<DeliveryDataDto> GetDoantionEmailUsersbySupplyID(string SupplyID)
+        {
+            try
+            {
+                List<DeliveryDataDto> record = new List<DeliveryDataDto>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Registration/GetDoantionEmailUsersbySupplyID/" + SupplyID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<DeliveryDataDto>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<VolunteerMaster> GetAllAssignVolunteers(List<DonationVolunteer> oDonationVolunteer)
         {
             try

@@ -67,12 +67,12 @@ namespace GivMED.Pages.App.Donor
             lblprocessing.Text = oBindList.Where(x => x.Status == 1).Count().ToString();
             lblDeliverd.Text = oBindList.Where(x => x.Status == 2).Count().ToString();
             lblComplete.Text = oBindList.Where(x => x.Status == 3).Count().ToString();
+            lblCancel.Text = oBindList.Where(x => x.Status == 4).Count().ToString();
 
             int donationcount = oBindList.Where(x => x.Status == 3).Count();
 
             if (oBindList.Count > 0)
                 Session["DonationActList"] = oBindList;
-
 
             oBindList = oBindList.Where(x => x.Status == 1).ToList();
             gvDonationList.DataSource = oBindList.OrderByDescending(x=>x.DonationCreateDate).ToList();
@@ -164,11 +164,11 @@ namespace GivMED.Pages.App.Donor
         {
             GridViewRow oGridViewRow = gvDonationList.Rows[Convert.ToInt32(ViewState["index"])];
             string DonationID = ((Label)oGridViewRow.FindControl("lblDonationID")).Text.ToString();
-
+            string SupplyCode = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
             List<SupplyNeedGridDto> record = oSupplyService.GetDonationNeedGridForID(DonationID);
 
             record.GroupBy(x => x.SupplyItemCat).Where(g => g.Count() > 1).SelectMany(g => g.Skip(1)).ToList().ForEach(x => x.ItemCatName = "");
-
+            lblSupplyCode.Text = SupplyCode.ToString();
             gvPopSuppliesShow.DataSource = record.OrderByDescending(x => x.SupplyItemCat);
             gvPopSuppliesShow.DataBind();
         }
@@ -194,6 +194,11 @@ namespace GivMED.Pages.App.Donor
                         ViewState["index"] = e.CommandArgument.ToString();
                         ViewFeedback();
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowContactDetails", "ShowContactDetails();", true);
+                        break;
+
+                    case "CancelData":
+                        ViewState["index"] = e.CommandArgument.ToString();
+                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDeleteConfirmationPop();", true);
                         break;
                 }
             }
@@ -259,20 +264,20 @@ namespace GivMED.Pages.App.Donor
             lblFeedbackText.Text = oresullt.FeedbackText.ToString();
         }
 
-        private void EmailSender(DonationActivityDto odata)
+        private void EmailSender(DeliveryDataDto odata)
         {
             try
             {
                 LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
 
-                var donationID = odata.DonationID;
-                var supplyID = odata.SupplyID;
+                var donationID = odata.donationid;
+                var supplyID = odata.supplyid;
                 var donorName = loggedUser.Type == 1 ? loggedUser.FirstName + " " + loggedUser.LastName : loggedUser.FirstName;
 
                 var email = new MimeMessage();
 
                 email.From.Add(new MailboxAddress("GiveMED", GlobalData.NoreplyEmail));
-                email.To.Add(new MailboxAddress("User", odata.Email));
+                email.To.Add(new MailboxAddress("User", odata.email));
 
                 email.Subject = $"Donation Cancellation - Donation ID: {donationID}, Supply ID: {supplyID}";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
@@ -369,6 +374,11 @@ namespace GivMED.Pages.App.Donor
                         lblStatus.Text = "Complete";
                         lblStatus.CssClass = "badge badge-success";
                         break;
+
+                    case "4":
+                        lblStatus.Text = "Canceled";
+                        lblStatus.CssClass = "badge badge-danger";
+                        break;
                 }
             }
 
@@ -391,9 +401,15 @@ namespace GivMED.Pages.App.Donor
                     btnCancel.Visible = false;
                     btnReady.Visible = false;
                 }
-                else
+                else if(lblStatus.Text == "Complete")
                 {
                     btnFeedback.Visible = true;
+                    btnCancel.Visible = false;
+                    btnReady.Visible = false;
+                }
+                else
+                {
+                    btnFeedback.Visible = false;
                     btnCancel.Visible = false;
                     btnReady.Visible = false;
                 }
@@ -461,19 +477,19 @@ namespace GivMED.Pages.App.Donor
             Session["lblSupplyID"] = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
             Session["lblEmail"] = ((Label)oGridViewRow.FindControl("lblEmail")).Text.ToString();
 
-            DonationActivityDto odata = new DonationActivityDto();
-            odata.DonationID = Session["lblDonationID"].ToString();
-            odata.SupplyID = Session["lblSupplyID"].ToString();
-            odata.Email = Session["lblEmail"].ToString();
-
+            DeliveryDataDto odata = new DeliveryDataDto();
+            odata.donationid = Session["lblDonationID"].ToString();
+            odata.supplyid = Session["lblSupplyID"].ToString();
+            odata.email = Session["lblEmail"].ToString();
+            odata.Status = 4;
             WebApiResponse response = new WebApiResponse();
-            response = oSupplyService.Delete(odata);
+            response = oSupplyService.PutDonationupdate(odata);
 
             if (response.StatusCode == (int)StatusCode.Success)
             {
                 PageLoad();
                 EmailSender(odata);
-                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Donation ID:'" + odata.DonationID.ToString() + "' is Canceled ', text: 'Canceled', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Donation ID:'" + odata.donationid.ToString() + "' is Canceled ', text: 'Canceled', confirmButtonText: 'Ok'});", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
             }
             else
@@ -481,6 +497,11 @@ namespace GivMED.Pages.App.Donor
                 ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Error!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
             }
+        }
+
+        protected void gvDonationList_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+
         }
     }
 }

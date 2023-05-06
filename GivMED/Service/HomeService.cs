@@ -144,5 +144,102 @@ namespace GivMED.Service
             }
             return webApiResponse;
         }
+
+        public List<DonorMaster> GetAllDonors()
+        {
+            try
+            {
+                List<DonorMaster> record = new List<DonorMaster>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Home/GetAllDonors";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<DonorMaster>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public List<HospitalMaster> GetAllHospitals()
+        {
+            try
+            {
+                List<HospitalMaster> record = new List<HospitalMaster>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Home/GetAllHospitals";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<HospitalMaster>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<VwAnnualreport> GetAllRequestHeader()
+        {
+            try
+            {
+                List<VwAnnualreport> record = new List<VwAnnualreport>();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Home/GetAllRequestHeader";
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<List<VwAnnualreport>>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public WebApiResponse PostComplaint(Complaint oData)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Home/PostComplaint";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(oData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+            }
+            return webApiResponse;
+        }
     }
 }

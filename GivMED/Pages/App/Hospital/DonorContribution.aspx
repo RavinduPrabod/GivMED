@@ -146,6 +146,15 @@
                                             </asp:TemplateField>
                                         </Columns>
                                     </asp:GridView>
+                                    <asp:Panel ID="pnlNodata" runat="server">
+                                        <div class="error-page">
+                                            <h2 class="headline text-danger">Empty</h2>
+
+                                            <div class="error-content">
+                                                <h3><i class="fas fa-exclamation-triangle text-danger"></i>No records found.</h3>
+                                            </div>
+                                        </div>
+                                    </asp:Panel>
                                 </div>
                                 <!-- /.card-body -->
                             </div>

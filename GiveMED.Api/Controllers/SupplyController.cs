@@ -117,6 +117,7 @@ namespace GiveMED.Api.Controllers
                 int pendingcount = _context.DonationHeader.Where(z => z.SupplyID == item.SupplyID && z.DonationStatus == 2).Count();
                 int processcount = _context.DonationHeader.Where(x => x.SupplyID == item.SupplyID && x.DonationStatus == 1).Count();
                 int completecount = _context.DonationHeader.Where(x => x.SupplyID == item.SupplyID && x.DonationStatus == 3).Count();
+                int Cancelcount = _context.DonationHeader.Where(x => x.SupplyID == item.SupplyID && x.DonationStatus == 4).Count();
 
                 //int result = headercount - feedcount;
 
@@ -126,6 +127,7 @@ namespace GiveMED.Api.Controllers
                         obj.pendingcount = pendingcount;
                         obj.processcount = processcount;
                         obj.completecount = completecount;
+                        obj.Cancelcount = Cancelcount;
                     }
                 });
 
@@ -134,7 +136,7 @@ namespace GiveMED.Api.Controllers
             }
 
             return Records;
-            }
+        }
 
         [HttpGet]
         [ActionName("GetSupplyNeedHeaderWithDetails")]
@@ -468,7 +470,7 @@ namespace GiveMED.Api.Controllers
         public async Task<IActionResult> UseChatGPT([FromBody] string query)
         {
             string OutPutResult = "";
-            var openai = new OpenAIAPI("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");
+            var openai = new OpenAIAPI("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");
             CompletionRequest completionRequest = new CompletionRequest();
             completionRequest.Prompt = "What is the " + query + "?";
             completionRequest.Prompt += "\nAverage Price of LKR " + query + " is:";
@@ -814,7 +816,56 @@ namespace GiveMED.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
             }
+        }
 
+        [HttpPut]
+        [ActionName("PutDonationupdatebysupply")]
+        public async Task<IActionResult> PutDonationupdatebysupply([FromBody] DeliveryDataDto oData)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                SupplyRequestHeader SHrecord = _context.SupplyRequestHeader.Where(x => x.SupplyID == oData.supplyid).FirstOrDefault();
+                SHrecord.SupplyStatus = oData.Status;
+                SHrecord.ModifiedBy = "admin";
+                SHrecord.ModifiedDateTime = DateTime.Now;
+
+                _context.Entry(SHrecord).State = EntityState.Modified;
+
+
+                List<DonationHeader> DHrecord = _context.DonationHeader.Where(x=> x.SupplyID == oData.supplyid).ToList();
+                foreach (var item in DHrecord)
+                {
+                    item.DonationStatus = oData.Status;
+                    item.ModifiedBy = "admin";
+                    item.ModifiedDateTime = DateTime.Now;
+
+                    _context.Entry(DHrecord).State = EntityState.Modified;
+                }
+
+                List<DonationDetails> DDrecords = _context.DonationDetails.Where(x=>x.SupplyID == oData.supplyid).ToList();
+
+                foreach (var item in DDrecords)
+                {
+                    item.DonationStatus = oData.Status;
+                    item.ModifiedBy = "admin";
+                    item.ModifiedDateTime = DateTime.Now;
+
+                    _context.Entry(item).State = EntityState.Modified;
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(oData); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
         }
     }
 }

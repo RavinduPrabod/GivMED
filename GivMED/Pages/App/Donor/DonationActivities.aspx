@@ -38,7 +38,7 @@
                     </div>
                     <!-- /.info-box -->
                 </div>
-                <div class="col-md-8 col-sm-8 col-12">
+                <div class="col-md-6 col-sm-6 col-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
                         <div class="info-box-content">
@@ -52,12 +52,12 @@
                         <!-- /.info-box-content -->
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-4 col-12">
+                <div class="col-md-2 col-sm-2 col-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-primary"><i class="far fa-flag"></i></span>
+                        <span class="info-box-icon bg-primary"><i class="fa fa-donate"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">
-                                <asp:Label ID="lblText" runat="server" Text="Total Contribution"></asp:Label>
+                                <asp:Label ID="Label3" runat="server" Text="Total Contribution"></asp:Label>
                             </span>
                             <span class="info-box-number">
                                 <asp:Label ID="lblTotdonation" runat="server" Text=""></asp:Label>
@@ -65,7 +65,20 @@
                         </div>
                         <!-- /.info-box-content -->
                     </div>
-
+                </div>
+                <div class="col-md-3 col-sm-4 col-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-danger"><i class="fa fa-flag"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">
+                                <asp:Label ID="lblText" runat="server" Text="Canceled"></asp:Label>
+                            </span>
+                            <span class="info-box-number">
+                                 <asp:Label ID="lblCancel" runat="server" Text=""></asp:Label>
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
                 </div>
                 <div class="col-md-3 col-sm-4 col-12">
                     <div class="info-box">
@@ -83,7 +96,7 @@
                 </div>
                 <div class="col-md-3 col-sm-4 col-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-danger"><i class="fa fa-truck-moving"></i></span>
+                        <span class="info-box-icon bg-info"><i class="fa fa-truck-moving"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">
                                 <asp:Label ID="Label4" runat="server" Text="Deliverd"></asp:Label>
@@ -298,6 +311,12 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row">
+                                    <div class="col-4">
+                                        <h6>Supply Code : #<asp:Label ID="lblSupplyCode" runat="server" Font-Bold="true"></asp:Label></h6>
+                                    </div>
+                                </div>
+                                &nbsp
+                                <div class="row">
                                     <div class="col-8">
                                         <asp:GridView ID="gvPopSuppliesShow" runat="server" class="table table-striped table-bordered table-hover" AutoGenerateColumns="False">
                                             <Columns>
@@ -415,11 +434,12 @@
                                     <asp:ListItem Selected="True" Value="1">Prcessing</asp:ListItem>
                                     <asp:ListItem Value="2">Delivered</asp:ListItem>
                                     <asp:ListItem Value="3">Complete</asp:ListItem>
+                                    <asp:ListItem Value="4">Canceled</asp:ListItem>
                                 </asp:DropDownList>
                             </div>
                         </div>
                         &nbsp
-                            <asp:GridView ID="gvDonationList" runat="server" AutoGenerateColumns="False" CssClass="table table-hover text-nowrap table-bordered" AllowPaging="true" PageSize="10" OnRowDataBound="gvDonationList_RowDataBound" OnRowCommand="gvDonationList_RowCommand" OnPageIndexChanging="gvDonationList_PageIndexChanging">
+                            <asp:GridView ID="gvDonationList" runat="server" AutoGenerateColumns="False" CssClass="table table-hover text-nowrap table-bordered" OnRowCancelingEdit="gvDonationList_RowCancelingEdit" AllowPaging="true" PageSize="10" OnRowDataBound="gvDonationList_RowDataBound" OnRowCommand="gvDonationList_RowCommand" OnPageIndexChanging="gvDonationList_PageIndexChanging">
                                 <Columns>
                                     <asp:TemplateField HeaderText="SupplyID" Visible="false">
                                         <ItemTemplate>
@@ -470,7 +490,7 @@
                                             </asp:LinkButton>
                                             <asp:LinkButton ID="btnReady" runat="server" CssClass="btn btn-success" ToolTip="Donation is Ready" OnClientClick="return ShowDelivery();"><i class="fa fa-check"></i>
                                             </asp:LinkButton>
-                                            <asp:LinkButton ID="btnCancel" runat="server" CssClass="btn btn-danger" ToolTip="Cancel Donation" OnClientClick="ShowDeleteConfirmationPop();"><i class="fa fa-trash"></i>
+                                            <asp:LinkButton ID="btnCancel" runat="server" CssClass="btn btn-danger" ToolTip="Cancel Donation" CommandName="CancelData" CommandArgument="<%# Container.DisplayIndex %>"><i class="fa fa-trash"></i>
                                             </asp:LinkButton>
                                         </ItemTemplate>
                                         <ItemStyle Width="10%" />
@@ -480,7 +500,7 @@
                     </div>
                 </div>
             </div>
-            <asp:Button ID="btnCancel" runat="server" Text="Delete" Style="display: none" OnClick="btnCancel_Click"  />
+            <asp:Button ID="btnCancel" runat="server" Text="Delete" Style="display: none" OnClick="btnCancel_Click" />
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
@@ -503,7 +523,7 @@
         function ShowDeleteConfirmationPop() {
             alertify.confirm("Are you sure you want to Cancel this Donation?", function (e) {
                 if (e) {
-                    jQuery("[ID$=btnDelete]").click();
+                    jQuery("[ID$=btnCancel]").click();
                 } else {
                     alertify.error("OK!");
                 }

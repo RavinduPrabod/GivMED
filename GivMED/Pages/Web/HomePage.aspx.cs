@@ -29,43 +29,43 @@ namespace GivMED.Pages.Web
             {
                 Session["loggedUser"] = null;
                 Session["donorisvalid"] = null;
+                clearfields();
                 PageLoad();
-                LoadReport();
             }
         }
-        private void EmailSender()
-        {
-            try
-            {
-                var random = new Random();
-                var code = random.Next(100000, 999999); // Generate a 6-digit code
+        //private void EmailSender()
+        //{
+        //    try
+        //    {
+        //        var random = new Random();
+        //        var code = random.Next(100000, 999999); // Generate a 6-digit code
 
-                var email = new MimeMessage();
+        //        var email = new MimeMessage();
 
-                email.From.Add(new MailboxAddress("GiveMED", "lucifer98moninstar@gmail.com"));
-                email.To.Add(new MailboxAddress("User", "givemed.donation@gmail.com"));
+        //        email.From.Add(new MailboxAddress("GiveMED", "lucifer98moninstar@gmail.com"));
+        //        email.To.Add(new MailboxAddress("User", "givemed.donation@gmail.com"));
 
-                email.Subject = "Your verification code";
-                email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
-                {
-                    Text = $"Your verification code is {code}"
-                };
+        //        email.Subject = "Your verification code";
+        //        email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+        //        {
+        //            Text = $"Your verification code is {code}"
+        //        };
 
-                using (var smtp = new SmtpClient())
-                {
-                    smtp.Connect("smtp.elasticemail.com", 2525);
+        //        using (var smtp = new SmtpClient())
+        //        {
+        //            smtp.Connect("smtp.elasticemail.com", 2525);
 
-                    smtp.Authenticate("lucifer98moninstar@gmail.com", "AFEF5C9832C1703859A338C87629F8A83BEA");
+        //            smtp.Authenticate("lucifer98moninstar@gmail.com", "AFEF5C9832C1703859A338C87629F8A83BEA");
 
-                    smtp.Send(email);
-                    smtp.Disconnect(true);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //            smtp.Send(email);
+        //            smtp.Disconnect(true);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         private void PageLoad()
         {
@@ -319,81 +319,203 @@ namespace GivMED.Pages.Web
             }
         }
 
-        private void LoadReport()
+        private void LoadDonorReport()
         {
-            List<DonationViewDto> olist = new List<DonationViewDto>();
-            List<ComboDTO> itemlist = new List<ComboDTO>();
-            List<DonationViewDto> lastresult = new List<DonationViewDto>();
+            List<DonorMaster> odonors = oHomeService.GetAllDonors();
 
-            olist = oHomeService.GetDonationView();
+            DataSet dsReprtData2 = new DataSet();
+            dsReprtData2.Merge(CommonService.ToDataTable(odonors));
 
-            string result = string.Empty;
-            foreach(var item in olist)
-            {
-                ComboDTO odata = new ComboDTO();
-                odata.DataTextField = item.ItemName;
-                odata.DataValueField = item.DonatedQty.ToString();
-                itemlist.Add(odata);
-            }
+            ReportViewer2.ProcessingMode = ProcessingMode.Local;
+            ReportViewer2.LocalReport.ReportPath = Server.MapPath("~/Report/RegisteredDonors.rdlc");
 
-            
+            ReportDataSource datasource2 = new ReportDataSource("dsDonor", dsReprtData2.Tables[0]);
 
-            //WebApiResponse response = new WebApiResponse();
-            //response = oHomeService.UseChatGPTReport(result);
-            //string query = response.Result;
-
-
-            //string estimate = response.Result;
-            //foreach (var item in olist)
-            //{
-            //    DonationViewDto odata = new DonationViewDto();
-            //    odata.HospitalName = item.HospitalName;
-            //    odata.DonorFirstName = item.DonorFirstName;
-            //    odata.DonationCreateDate = item.DonationCreateDate;
-            //    //odata.DonatedQty = estimate[]
-            //}
-
-            //DataSet dsReprtData = new DataSet();
-            //dsReprtData.Merge(CommonService.ToDataTable(lastresult));
-
-            //ReportDataSource rds = new ReportDataSource();
-
-            //ds.Name = "DataSet2";
-            //rds.Value = dsReprtData;
-            //ReportViewer1.LocalReport.ReportPath = Server.MapPath("Report.rdlc");
-            //ReportViewer1.LocalReport.DataSources.Clear();
-            //ReportViewer1.LocalReport.DataSources.Add(rds);
-            //string Url = ConvertReportToPDF(ReportViewer1.LocalReport);
-            //System.Diagnostics.Process.Start(Url);
-        }
-
-        private string ConvertReportToPDF(LocalReport rep)
-        {
-            string reportType = "PDF";
-            string mimeType;
-            string encoding;
-
-            string deviceInfo = "<DeviceInfo>" +
-               "  <OutputFormat>PDF</OutputFormat>" +
-               "  <PageWidth>8.27in</PageWidth>" +
-               "  <PageHeight>6.0in</PageHeight>" +
-               "  <MarginTop>0.2in</MarginTop>" +
-               "  <MarginLeft>0.2in</MarginLeft>" +
-               "  <MarginRight>0.2in</MarginRight>" +
-               "  <MarginBottom>0.2in</MarginBottom>" +
-               "</DeviceInfo>";
+            ReportViewer2.LocalReport.DataSources.Clear();
+            ReportViewer2.LocalReport.DataSources.Add(datasource2);
 
             Warning[] warnings;
             string[] streamIds;
-            string extension = string.Empty;
+            string mimeType = string.Empty;
+            string encoding = string.Empty;
+            string fileNameExtension = string.Empty;
+            string deviceInfo =
+                "<DeviceInfo>" +
+                "  <OutputFormat>PDF</OutputFormat>" +
+                "  <PageWidth>8.27in</PageWidth>" +
+                "  <PageHeight>6.0in</PageHeight>" +
+                "  <MarginTop>0in</MarginTop>" +
+                "  <MarginLeft>0in</MarginLeft>" +
+                "  <MarginRight>0in</MarginRight>" +
+                "  <MarginBottom>0in</MarginBottom>" +
+                "</DeviceInfo>";
 
-            byte[] bytes = rep.Render(reportType, deviceInfo, out mimeType, out encoding, out extension, out streamIds, out warnings);
-            //string localPath = System.Configuration.ConfigurationManager.AppSettings["TempFiles"].ToString();  
-            string localPath = AppDomain.CurrentDomain.BaseDirectory;
-            string fileName = Guid.NewGuid().ToString() + ".pdf";
-            localPath = localPath + fileName;
-            System.IO.File.WriteAllBytes(localPath, bytes);
-            return localPath;
+            byte[] bytes1 = ReportViewer2.LocalReport.Render("PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streamIds, out warnings);
+            HttpContext.Current.Response.Clear();
+            HttpContext.Current.Response.ContentType = mimeType;
+            HttpContext.Current.Response.AddHeader("content-disposition", "inline; filename=GiveMEDRegisteredDonors.pdf");
+            HttpContext.Current.Response.AddHeader("content-length", bytes1.Length.ToString());
+            HttpContext.Current.Response.AppendHeader("Pragma", "no-cache");
+            HttpContext.Current.Response.CacheControl = "no-cache";
+            HttpContext.Current.Response.Expires = -1;
+            HttpContext.Current.Response.Buffer = true;
+
+            // Open the PDF in a new tab
+            HttpContext.Current.Response.AddHeader("target", "_blank");
+
+            HttpContext.Current.Response.BinaryWrite(bytes1);
+            HttpContext.Current.Response.End();
+        }
+
+        private void LoadHospitalReport()
+        {
+            List<HospitalMaster> ohospitals = oHomeService.GetAllHospitals();
+
+            DataSet dsReprtData3 = new DataSet();
+            dsReprtData3.Merge(CommonService.ToDataTable(ohospitals));
+
+            ReportDataSource datasource3 = new ReportDataSource("dsHospital", dsReprtData3.Tables[0]);
+
+
+            ReportViewer3.ProcessingMode = ProcessingMode.Local;
+            ReportViewer3.LocalReport.ReportPath = Server.MapPath("~/Report/RegisteredHospitals.rdlc");
+
+            ReportViewer3.LocalReport.DataSources.Add(datasource3);
+
+            ReportViewer3.LocalReport.DataSources.Clear();
+
+            Warning[] warnings;
+            string[] streamIds;
+            string mimeType = string.Empty;
+            string encoding = string.Empty;
+            string fileNameExtension = string.Empty;
+            string deviceInfo =
+                "<DeviceInfo>" +
+                "  <OutputFormat>PDF</OutputFormat>" +
+                "  <PageWidth>8.27in</PageWidth>" +
+                "  <PageHeight>6.0in</PageHeight>" +
+                "  <MarginTop>0in</MarginTop>" +
+                "  <MarginLeft>0in</MarginLeft>" +
+                "  <MarginRight>0in</MarginRight>" +
+                "  <MarginBottom>0in</MarginBottom>" +
+                "</DeviceInfo>";
+
+            byte[] bytes1 = ReportViewer3.LocalReport.Render("PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streamIds, out warnings);
+            HttpContext.Current.Response.Clear();
+            HttpContext.Current.Response.ContentType = mimeType;
+            HttpContext.Current.Response.AddHeader("content-disposition", "inline; filename=GiveMEDRegisteredHospitals.pdf");
+            HttpContext.Current.Response.AddHeader("content-length", bytes1.Length.ToString());
+            HttpContext.Current.Response.AppendHeader("Pragma", "no-cache");
+            HttpContext.Current.Response.CacheControl = "no-cache";
+            HttpContext.Current.Response.Expires = -1;
+            HttpContext.Current.Response.Buffer = true;
+
+            // Open the PDF in a new tab
+            HttpContext.Current.Response.AddHeader("target", "_blank");
+
+            HttpContext.Current.Response.BinaryWrite(bytes1);
+            HttpContext.Current.Response.End();
+        }
+
+        private void LoadAnnualReport()
+        {
+            List<VwAnnualreport> oRequestHeader = oHomeService.GetAllRequestHeader();
+
+            DataSet dsReprtData1 = new DataSet();
+            dsReprtData1.Merge(CommonService.ToDataTable(oRequestHeader));
+
+            ReportViewer1.ProcessingMode = ProcessingMode.Local;
+            ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report/AnnualDonationReport.rdlc");
+
+            ReportDataSource datasource1 = new ReportDataSource("VwAnnualreport", dsReprtData1.Tables[0]);
+
+            ReportViewer1.LocalReport.DataSources.Clear();
+            ReportViewer1.LocalReport.DataSources.Add(datasource1);
+
+            Warning[] warnings;
+            string[] streamIds;
+            string mimeType = string.Empty;
+            string encoding = string.Empty;
+            string fileNameExtension = string.Empty;
+            string deviceInfo =
+                "<DeviceInfo>" +
+                "  <OutputFormat>PDF</OutputFormat>" +
+                "  <PageWidth>8.27in</PageWidth>" +
+                "  <PageHeight>6.0in</PageHeight>" +
+                "  <MarginTop>0in</MarginTop>" +
+                "  <MarginLeft>0in</MarginLeft>" +
+                "  <MarginRight>0in</MarginRight>" +
+                "  <MarginBottom>0in</MarginBottom>" +
+                "</DeviceInfo>";
+
+            byte[] bytes1 = ReportViewer1.LocalReport.Render("PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streamIds, out warnings);
+            HttpContext.Current.Response.Clear();
+            HttpContext.Current.Response.ContentType = mimeType;
+            HttpContext.Current.Response.AddHeader("content-disposition", "inline; filename=GiveMEDAnnualDonationReport.pdf");
+            HttpContext.Current.Response.AddHeader("content-length", bytes1.Length.ToString());
+            HttpContext.Current.Response.AppendHeader("Pragma", "no-cache");
+            HttpContext.Current.Response.CacheControl = "no-cache";
+            HttpContext.Current.Response.Expires = -1;
+            HttpContext.Current.Response.Buffer = true;
+
+            // Open the PDF in a new tab
+            HttpContext.Current.Response.AddHeader("target", "_blank");
+
+            HttpContext.Current.Response.BinaryWrite(bytes1);
+            HttpContext.Current.Response.End();
+        }
+
+
+        protected void btnReport_Click(object sender, EventArgs e)
+        {
+            LoadAnnualReport();
+        }
+
+        protected void btnhospital_Click(object sender, EventArgs e)
+        {
+            LoadHospitalReport();
+        }
+
+        protected void btndonor_Click(object sender, EventArgs e)
+        {
+            LoadDonorReport();
+        }
+
+        private void clearfields()
+        {
+            txtName.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            txtSubject.Text = string.Empty;
+            txtNameofVict.Text = string.Empty;
+            txtFullComplaint.Text = string.Empty;
+        }
+
+        private void PostComplaint()
+        {
+            Complaint result = new Complaint();
+            result.ComplaintCode = "CLN0";
+            result.ComplanerName = txtName.Text.ToString();
+            result.ComplanerEmail = txtEmail.Text.ToString();
+            result.NameofVictim = txtNameofVict.Text.ToString();
+            result.Subject = txtSubject.Text.ToString();
+            result.FullComplaint = txtFullComplaint.ToString();
+
+            WebApiResponse response = new WebApiResponse();
+            oHomeService.PostComplaint(result);
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'success', title: 'Complant successfull!', showConfirmButton: false, timer: 1500});", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Error!', showConfirmButton: false, timer: 1500});", true);
+
+            }
+        }
+
+        protected void btnSend_Click(object sender, EventArgs e)
+        {
+            PostComplaint();
         }
     }
 }

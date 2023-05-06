@@ -30,6 +30,7 @@ namespace GivMED.Pages.App.Hospital
                 PageLoad();
                 mvDonorCont.ActiveViewIndex = 0;
                 pnlContact.Visible = false;
+                pnlNodata.Visible = false;
 
             }
         }
@@ -547,8 +548,15 @@ namespace GivMED.Pages.App.Hospital
             olist = olist.Where(x => x.SupplyStatus == Convert.ToInt32(ddlStatus.SelectedValue)).ToList();
             if (olist.Count > 0)
             {
+                pnlNodata.Visible = false;
                 gvDonorProgress.DataSource = olist;
                 gvDonorProgress.DataBind();
+            }
+            else
+            {
+                gvDonorProgress.DataSource = null;
+                gvDonorProgress.DataBind();
+                pnlNodata.Visible = true;
             }
         }
     }

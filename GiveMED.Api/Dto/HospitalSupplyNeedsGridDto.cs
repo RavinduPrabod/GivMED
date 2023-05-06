@@ -38,5 +38,7 @@ namespace GiveMED.Api.Dto
         public int completecount { get; set; }
 
         public int processcount { get; set; }
+
+        public int Cancelcount { get; set; }
     }
 }

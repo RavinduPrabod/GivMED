@@ -1,5 +1,6 @@
 ﻿using GiveMED.Api.Data;
 using GiveMED.Api.Dto;
+using GiveMED.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -39,7 +40,8 @@ namespace GiveMED.Api.Controllers
                 "INNER JOIN DonorMaster B ON A.DonorID =B.DonorID " +
                 "LEFT OUTER JOIN ProfileImages C ON B.UserName = C.UserName " +
                 "INNER JOIN SupplyRequestHeader D ON A.SupplyID = D.SupplyID " +
-                "INNER JOIN HospitalMaster E ON D.HospitalID = E.HospitalID";
+                "INNER JOIN HospitalMaster E ON D.HospitalID = E.HospitalID " +
+                "INNER JOIN EmailUsers F ON A.UserName = F.UserName WHERE F.Publicity = 1";
             var reader = comm.ExecuteReader();
             while (reader.Read())
             {
@@ -135,7 +137,7 @@ namespace GiveMED.Api.Controllers
         public async Task<IActionResult> UseChatGPTreport([FromBody] string query)
         {
             string OutPutResult = "";
-            var openai = new OpenAIAPI("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");
+            var openai = new OpenAIAPI("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");
             CompletionRequest completionRequest = new CompletionRequest();
             completionRequest.Prompt = "What are these supplies total Estimate Price of LKR " + query + "? (provide me numbers only)";
             completionRequest.Model = OpenAI_API.Models.Model.DavinciText;
@@ -148,6 +150,89 @@ namespace GiveMED.Api.Controllers
             OutPutResult = completion.Text;
 
             return Ok(OutPutResult);
+        }
+
+        [HttpGet()]
+        [ActionName("GetAllDonors")]
+        public List<DonorMaster> GetAllDonors()
+        {
+            return _context.DonorMaster.ToList();
+        }
+
+        [HttpGet()]
+        [ActionName("GetAllHospitals")]
+        public List<HospitalMaster> GetAllHospitals()
+        {
+            return _context.HospitalMaster.ToList();
+        }
+
+        [HttpGet()]
+        [ActionName("GetAllRequestHeader")]
+        public List<VwAnnualreport> GetAllRequestHeader()
+        {
+            List<VwAnnualreport> Records = new List<VwAnnualreport>();
+
+            var conn = _context.Database.GetDbConnection();
+            conn.Open();
+            var comm = conn.CreateCommand();
+            comm.CommandText = "SELECT * FROM VwAnnualreport";
+            var reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                VwAnnualreport supplyRequest = new VwAnnualreport();
+                supplyRequest.HospitalID = (int)reader["HospitalID"];
+                supplyRequest.SupplyID = (string)reader["SupplyID"];
+                supplyRequest.HospitalName = (string)reader["HospitalName"];
+                supplyRequest.City = (string)reader["City"];
+                supplyRequest.ItemCatName = (string)reader["ItemCatName"];
+                supplyRequest.SupplyItemQty = Convert.ToInt32(reader["SupplyItemQty"]);
+                supplyRequest.SupplyItemID = (int)reader["SupplyItemID"];
+                supplyRequest.SupplyItemCat = (int)reader["SupplyItemCat"];
+                supplyRequest.SupplyItemName = (string)reader["SupplyItemName"];
+                supplyRequest.SupplyCreateDate = (DateTime)reader["SupplyCreateDate"];
+                supplyRequest.SupplyExpireDate = (DateTime)reader["SupplyExpireDate"];
+                supplyRequest.SupplyPriorityLevel = (int)reader["SupplyPriorityLevel"];
+                Records.Add(supplyRequest);
+            }
+            conn.Close();
+
+            return Records;
+        }
+
+        //Complaint
+
+
+        [HttpPost]
+        [ActionName("PostComplaint")]
+        public async Task<IActionResult> PostComplaint([FromBody] Complaint result)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                LastDocSerialNo record = _context.LastDocSerialNo.Where(x => x.DocCode == "CLN").FirstOrDefault();
+                record.DocCode = "CLN";
+                record.LastTxnSerialNo = record.LastTxnSerialNo + 1;
+                record.ModifiedBy = "admin";
+                record.ModifiedDateTime = DateTime.Now;
+
+                _context.Entry(record).State = EntityState.Modified;
+
+                string newcode = record.DocCode = "CLN" + record.LastTxnSerialNo.ToString();
+                result.ComplaintCode = record.DocCode = newcode.ToString();
+                _context.Complaint.Add(result);
+
+                await _context.SaveChangesAsync();
+
+                return Ok(newcode); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
         }
 
     }

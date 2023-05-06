@@ -32,6 +32,7 @@ namespace GiveMED.Api.Data
         public DbSet<DonationFeedback> DonationFeedback { get; set; }
         public DbSet<VolunteerMaster> VolunteerMaster { get; set; }
         public DbSet<DonationVolunteer> DonationVolunteer { get; set; }
+        public DbSet<Complaint> Complaint { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region KeyFields
@@ -73,6 +74,8 @@ namespace GiveMED.Api.Data
             modelBuilder.Entity<VolunteerMaster>().HasKey(c => new { c.VolCode });
 
             modelBuilder.Entity<DonationVolunteer>().HasKey(c => new { c.DonationCode, c.SupplyCode, c.VolunteerCode, c.HospitalID, c.DonorID });
+
+            modelBuilder.Entity<Complaint>().HasKey(c => new { c.ComplaintCode });
 
             #endregion KeyFields
 

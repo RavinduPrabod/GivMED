@@ -203,7 +203,7 @@
                                     </div>
                                     &nbsp&nbsp
                                         <div class="card-body table-responsive p-0">
-                                            <asp:GridView ID="gvNeedsList" runat="server" ShowHeader="false" AutoGenerateColumns="False" CssClass="table table-hover text-nowrap" AllowPaging="true" PageSize="10" OnRowDataBound="gvNeedsList_RowDataBound" OnRowCommand="gvNeedsList_RowCommand" OnPageIndexChanging="gvNeedsList_PageIndexChanging">
+                                            <asp:GridView ID="gvNeedsList" runat="server" ShowHeader="false" AutoGenerateColumns="False" CssClass="table table-hover text-nowrap" BackColor="Azure" AllowPaging="true" PageSize="10" OnRowDataBound="gvNeedsList_RowDataBound" OnRowCommand="gvNeedsList_RowCommand" OnPageIndexChanging="gvNeedsList_PageIndexChanging">
                                                 <Columns>
                                                     <asp:TemplateField>
                                                         <ItemTemplate>

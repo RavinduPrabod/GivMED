@@ -69,6 +69,15 @@ namespace GivMED.Pages.App.Hospital
         protected global::System.Web.UI.WebControls.GridView gvDonorProgress;
 
         /// <summary>
+        /// pnlNodata control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNodata;
+
+        /// <summary>
         /// View2 control.
         /// </summary>
         /// <remarks>

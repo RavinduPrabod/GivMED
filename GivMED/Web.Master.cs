@@ -1,9 +1,13 @@
-﻿using System;
+﻿using GivMED.Common;
+using GivMED.Models;
+using GivMED.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using static GivMED.Common.Enums;
 
 namespace GivMED
 {
@@ -11,7 +15,6 @@ namespace GivMED
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

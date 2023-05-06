@@ -9,7 +9,9 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
         <Triggers>
-            <asp:PostBackTrigger ControlID="btnMore4" />
+            <asp:PostBackTrigger ControlID="btnReport" />
+            <asp:PostBackTrigger ControlID="btnSend" />
+            <%--<asp:PostBackTrigger ControlID="btnhospital" /--%>
         </Triggers>
         <ContentTemplate>
             <div class="modal fade" id="modal-join">
@@ -90,6 +92,41 @@
                                     <p>
                                         Total Active Donors
                                     </p>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
                                 </h3>
                             </div>
                             <div class="icon">
@@ -110,6 +147,41 @@
                                     <p>
                                         Registed Hospitals
                                     </p>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
                                 </h3>
                             </div>
                             <div class="icon">
@@ -130,6 +202,41 @@
                                     <p>
                                         Ongoing Supplies Needs
                                     </p>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
                                 </h3>
                             </div>
                             <div class="icon">
@@ -150,22 +257,79 @@
                                     <p>
                                         Annual Donation Report
                                     </p>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
                                 </h3>
 
                             </div>
                             <div class="icon">
                                 <i class="fas fa-chart-line"></i>
                             </div>
-                            <asp:LinkButton ID="btnMore4" runat="server" CssClass="small-box-footer">Download&nbsp<i class="fas fa-download"></i>
+                            <asp:LinkButton ID="btnReport" runat="server" CssClass="small-box-footer" OnClick="btnReport_Click">List of required supplies report&nbsp<i class="fas fa-download"></i>
                             </asp:LinkButton>
+                            <%-- <asp:LinkButton ID="btndonor" runat="server" CssClass="small-box-footer" OnClick="btndonor_Click">Donors Report&nbsp<i class="fas fa-download"></i>
+                            </asp:LinkButton>
+                          <asp:LinkButton ID="btnhospital" runat="server" CssClass="small-box-footer" OnClick="btnhospital_Click">Hospital Report&nbsp<i class="fas fa-download"></i>
+                            </asp:LinkButton>--%>
                         </div>
                         <asp:Panel ID="Panel1" runat="server" Visible="false">
-                            <%--<rsweb:ReportViewer ID="ReportViewer1" runat="server"></rsweb:ReportViewer>--%>
+                            <rsweb:ReportViewer ID="ReportViewer1" runat="server" BackColor="" ClientIDMode="AutoID" HighlightBackgroundColor="" InternalBorderColor="204, 204, 204" InternalBorderStyle="Solid" InternalBorderWidth="1px" LinkActiveColor="" LinkActiveHoverColor="" LinkDisabledColor="" PrimaryButtonBackgroundColor="" PrimaryButtonForegroundColor="" PrimaryButtonHoverBackgroundColor="" PrimaryButtonHoverForegroundColor="" SecondaryButtonBackgroundColor="" SecondaryButtonForegroundColor="" SecondaryButtonHoverBackgroundColor="" SecondaryButtonHoverForegroundColor="" SplitterBackColor="" ToolbarDividerColor="" ToolbarForegroundColor="" ToolbarForegroundDisabledColor="" ToolbarHoverBackgroundColor="" ToolbarHoverForegroundColor="" ToolBarItemBorderColor="" ToolBarItemBorderStyle="Solid" ToolBarItemBorderWidth="1px" ToolBarItemHoverBackColor="" ToolBarItemPressedBorderColor="51, 102, 153" ToolBarItemPressedBorderStyle="Solid" ToolBarItemPressedBorderWidth="1px" ToolBarItemPressedHoverBackColor="153, 187, 226">
+                                <LocalReport ReportPath="Report\AnnualDonationReport.rdlc">
+                                </LocalReport>
+                            </rsweb:ReportViewer>
+                            <asp:EntityDataSource ID="VwAnnualreport1" runat="server">
+                            </asp:EntityDataSource>
+                            <asp:EntityDataSource ID="VwAnnualreport" runat="server">
+                            </asp:EntityDataSource>
+                            <asp:EntityDataSource ID="EntityDataSource1" runat="server">
+                            </asp:EntityDataSource>
+                            <rsweb:ReportViewer ID="ReportViewer2" runat="server" BackColor="" ClientIDMode="AutoID" HighlightBackgroundColor="" InternalBorderColor="204, 204, 204" InternalBorderStyle="Solid" InternalBorderWidth="1px" LinkActiveColor="" LinkActiveHoverColor="" LinkDisabledColor="" PrimaryButtonBackgroundColor="" PrimaryButtonForegroundColor="" PrimaryButtonHoverBackgroundColor="" PrimaryButtonHoverForegroundColor="" SecondaryButtonBackgroundColor="" SecondaryButtonForegroundColor="" SecondaryButtonHoverBackgroundColor="" SecondaryButtonHoverForegroundColor="" SplitterBackColor="" ToolbarDividerColor="" ToolbarForegroundColor="" ToolbarForegroundDisabledColor="" ToolbarHoverBackgroundColor="" ToolbarHoverForegroundColor="" ToolBarItemBorderColor="" ToolBarItemBorderStyle="Solid" ToolBarItemBorderWidth="1px" ToolBarItemHoverBackColor="" ToolBarItemPressedBorderColor="51, 102, 153" ToolBarItemPressedBorderStyle="Solid" ToolBarItemPressedBorderWidth="1px" ToolBarItemPressedHoverBackColor="153, 187, 226">
+                                <LocalReport ReportPath="Report\RegisteredDonors.rdlc">
+                                </LocalReport>
+                            </rsweb:ReportViewer>
+                            <rsweb:ReportViewer ID="ReportViewer3" runat="server" BackColor="" ClientIDMode="AutoID" HighlightBackgroundColor="" InternalBorderColor="204, 204, 204" InternalBorderStyle="Solid" InternalBorderWidth="1px" LinkActiveColor="" LinkActiveHoverColor="" LinkDisabledColor="" PrimaryButtonBackgroundColor="" PrimaryButtonForegroundColor="" PrimaryButtonHoverBackgroundColor="" PrimaryButtonHoverForegroundColor="" SecondaryButtonBackgroundColor="" SecondaryButtonForegroundColor="" SecondaryButtonHoverBackgroundColor="" SecondaryButtonHoverForegroundColor="" SplitterBackColor="" ToolbarDividerColor="" ToolbarForegroundColor="" ToolbarForegroundDisabledColor="" ToolbarHoverBackgroundColor="" ToolbarHoverForegroundColor="" ToolBarItemBorderColor="" ToolBarItemBorderStyle="Solid" ToolBarItemBorderWidth="1px" ToolBarItemHoverBackColor="" ToolBarItemPressedBorderColor="51, 102, 153" ToolBarItemPressedBorderStyle="Solid" ToolBarItemPressedBorderWidth="1px" ToolBarItemPressedHoverBackColor="153, 187, 226">
+                                <LocalReport ReportPath="Report\RegisteredHospitals.rdlc">
+                                </LocalReport>
+                            </rsweb:ReportViewer>
                         </asp:Panel>
                     </div>
                     <!-- ./col -->
                 </div>
                 &nbsp
+
                 <asp:GridView ID="gvDonorProgress" runat="server" ShowHeader="false" AutoGenerateColumns="false" CssClass="table table-striped projects table-bordered table-hover text-nowrap" OnRowDataBound="gvDonorProgress_RowDataBound">
                     <Columns>
                         <asp:TemplateField HeaderText="#">
@@ -502,12 +666,91 @@
                     </Columns>
                 </asp:GridView>
             </div>
+            <div class="container-xxl py-5">
+                <div class="container px-lg-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+                            <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+                                <h6 class="position-relative d-inline text-primary ps-4">Notice Us</h6>
+                                <h2 class="mt-2">Complaint Forum</h2>
+                            </div>
+                            <div class="wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <label for="name">Your Name</label>
+                                                <asp:TextBox ID="txtName" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <label for="email">Your Email</label>
+                                                <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <label for="subject">The complaint is regarding:</label>
+                                                <asp:TextBox ID="txtSubject" Height="100px" runat="server" CssClass="form-control" TextMode="MultiLine" MaxLength="500" placeholder="Leave a text here"></asp:TextBox>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <label for="message">Name of the hospital/donor/oragniation/whom the complaint is filed:</label>
+                                                <asp:TextBox ID="txtNameofVict" runat="server" CssClass="form-control" placeholder="Leave a text here" MaxLength="50"></asp:TextBox>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <label for="message">The specific details of the complaint:</label>
+                                                <asp:TextBox ID="txtFullComplaint" Height="150px" runat="server" CssClass="form-control" placeholder="Leave a text here" TextMode="MultiLine" MaxLength="1000"></asp:TextBox>
+
+                                            </div>
+                                        </div>
+                                        &nbsp
+                                        <div class="col-11">
+                                        </div>
+                                        <div class="col-1">
+                                            <asp:Button ID="btnSend" runat="server" OnClick="btnSend_Click" Text="Send" CssClass="btn btn-primary" OnClientClick="return Validate();" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
         Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
         function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
 
+        function pageLoad() {
+            $(document).ready(function () {
+                Validate = function () {
+                    $('#<% = txtName.ClientID %>').addClass('validate[required]');
+                    $('#<% = txtEmail.ClientID %>').addClass('validate[required]');
+                    $('#<% = txtNameofVict.ClientID %>').addClass('validate[required]');
+                    $('#<% = txtSubject.ClientID %>').addClass('validate[required]');
+                    $('#<% = txtFullComplaint.ClientID %>').addClass('validate[required]');
+                    var valid = $("#form1").validationEngine('validate');
+                    var vars = $("#form1").serialize();
+                    if (valid == true) {
+                        $("#form1").validationEngine('detach');
+                    } else {
+                        $("#form1").validationEngine('attach', { promptPosition: "inline", scroll: false });
+                        return false;
+                    }
+                }
+
+            });
+        }
         function ShowJoinUs() {
 
             $('.modal-backdrop').remove();

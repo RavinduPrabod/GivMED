@@ -557,6 +557,47 @@ namespace GivMED.Pages.App.Hospital
             }
         }
 
+        private void EmailSenderCanceled(DeliveryDataDto Supply)
+        {
+            try
+            {
+                LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+                List<DeliveryDataDto> EmailUserList = oCommonService.GetDoantionEmailUsersbySupplyID(Supply.supplyid.ToString());
+
+                foreach (var item in EmailUserList)
+                {
+                    var email = new MimeMessage();
+                    email.From.Add(new MailboxAddress("GiveMED Cancellation of Supply Request", GlobalData.NoreplyEmail));
+                    email.Subject = "Cancellation of Hospital Supply Request: Supply ID- '" + Supply .supplyid+ "'";
+
+                    email.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+                    {
+                        Text = $"Dear Donor, \n\n We regret to inform you that {loggedUser.FirstName} has decided to cancel their supply request for " +
+                        $"[Insert Reason for Cancellation]. As you may know, you generously donated towards this " +
+                        $"supply request through our platform with donation ID {item.donationid}.\n\n" +
+                        $"Thank you for your continued support and generosity towards our mission to provide aid to those in need.\n\n" +
+                        $"Good luck!"
+                    };
+
+                    email.To.Add(new MailboxAddress("Donor", item.email));
+
+                    using (var smtp = new SmtpClient())
+                    {
+                        smtp.Connect(GlobalData.SmtpAddress, GlobalData.Port);
+
+                        smtp.Authenticate(GlobalData.NoreplyEmail, GlobalData.NoreplyPassword);
+
+                        smtp.Send(email);
+                        smtp.Disconnect(true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         private void ShowSupplyPublishID(string publishID)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowSupplyPublishID('" + publishID + "');", true);
@@ -627,9 +668,15 @@ namespace GivMED.Pages.App.Hospital
                         lblSupplyStatus.Text = "Not Complete";
                         lblSupplyStatus.CssClass = "badge badge-warning";
                         break;
+
                     case "2":
                         lblSupplyStatus.Text = "Complete";
                         lblSupplyStatus.CssClass = "badge badge-success";
+                        break;
+
+                    case "4":
+                        lblSupplyStatus.Text = "Canceled";
+                        lblSupplyStatus.CssClass = "badge badge-danger";
                         break;
                 }
 
@@ -641,6 +688,7 @@ namespace GivMED.Pages.App.Hospital
                         lblSupplyPriorityLevel.Text = "High";
                         lblSupplyPriorityLevel.CssClass = "badge badge-danger";
                         break;
+
                     case "2":
                         lblSupplyPriorityLevel.Text = "Normal";
                         lblSupplyPriorityLevel.CssClass = "badge badge-primary";
@@ -650,6 +698,24 @@ namespace GivMED.Pages.App.Hospital
                         lblSupplyPriorityLevel.Text = "Low";
                         lblSupplyPriorityLevel.CssClass = "badge badge-dark";
                         break;
+                }
+            }
+
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Label lblStatus = (Label)e.Row.FindControl("lblSupplyStatus");
+                LinkButton btnEdit = (LinkButton)e.Row.FindControl("btnEdit");
+                LinkButton btnDelete = (LinkButton)e.Row.FindControl("btnDelete");
+
+                if (lblStatus.Text == "Canceled")
+                {
+                    btnEdit.Visible = false;
+                    btnDelete.Visible = false;
+                }
+                else
+                {
+                    btnEdit.Visible = true;
+                    btnDelete.Visible = true;
                 }
             }
         }
@@ -674,7 +740,7 @@ namespace GivMED.Pages.App.Hospital
 
                     case "DeleteData":
                         ViewState["index"] = e.CommandArgument.ToString();
-                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDeleteConfirmation();", true);
+                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "script", "ShowDeleteConfirmationPop();", true);
                         break;
                 }
             }
@@ -855,5 +921,29 @@ namespace GivMED.Pages.App.Hospital
             }
         }
 
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            GridViewRow oGridViewRow = gvSupplyList.Rows[Convert.ToInt32(ViewState["index"])];
+            Session["lblSupplyID"] = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
+
+            DeliveryDataDto odata = new DeliveryDataDto();
+            odata.supplyid = Session["lblSupplyID"].ToString();
+            odata.Status = 4;
+            WebApiResponse response = new WebApiResponse();
+            response = oSupplyService.PutDonationupdatebysupply(odata);
+
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                PageLoad();
+                EmailSenderCanceled(odata);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Donation ID:'" + odata.donationid.ToString() + "' is Canceled ', text: 'Canceled', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Error!', text: 'Please try again later.', confirmButtonText: 'Ok'});", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideModalBackdrop", "$('.modal-backdrop').removeClass('show');", true);
+            }
+        }
     }
 }
