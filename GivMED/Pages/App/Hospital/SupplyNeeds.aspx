@@ -230,7 +230,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-4">
-                                    <asp:TextBox ID="txtExpireDate" runat="server" autocomplete="off" CssClass="form-control" TabIndex="1" placeholder="Enter Expire Date"></asp:TextBox>
+                                    <asp:TextBox ID="txtExpireDate" runat="server" autocomplete="off" CssClass="form-control" TabIndex="1" placeholder="Enter Closing Date"></asp:TextBox>
                                 </div>
                                 <div class="col-4" style="text-align: left">
                                 </div>

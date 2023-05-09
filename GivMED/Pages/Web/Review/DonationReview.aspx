@@ -413,7 +413,7 @@
         function ShowDonate() {
             Swal.fire({
                 title: 'Welcome to GiveMED',
-                html: 'For Your Support & Contribution. Please <a href="/Pages/Web/Registration/FundraiserRegistration.aspx">register</a> or <a href="/Pages/Login.aspx">log in</a> to continue.',
+                html: 'For Your Support & Contribution. Please <a href="/Pages/Web/Registration/DonorRegistration.aspx">register</a> or <a href="/Pages/Login.aspx">log in</a> to continue.',
                 icon: 'info',
                 showCancelButton: false,
                 confirmButtonColor: '#3085d6',

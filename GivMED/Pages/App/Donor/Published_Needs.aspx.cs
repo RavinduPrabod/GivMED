@@ -729,19 +729,32 @@ namespace GivMED.Pages.App.Donor
             GridViewRow oGridViewRow = gvSupplyList.Rows[Convert.ToInt32(ViewState["index"])];
             string ItemName = ((Label)oGridViewRow.FindControl("lblSupplyItemName")).Text.ToString();
 
-            WebApiResponse response = new WebApiResponse();
-            response = oSupplyService.UseChatGPT(ItemName);
+            WebApiResponse response = oSupplyService.UseChatGPT(ItemName);
 
             if (response.StatusCode == (int)StatusCode.Success)
             {
-                lblhelp.Text = response.Result.ToString();
-                //ShowOpenAIResult(response.Result);
+                string help = response.Result.ToString();
+                lblhelp.Text = help.ToString();
+                //var splitText = help.Split(new string[] { "Description :", "Average Price :" }, StringSplitOptions.RemoveEmptyEntries);
+
+                //// Check if splitText has at least three elements
+                //if (splitText.Length >= 3)
+                //{
+                //    // Concatenate the split text with a new line character
+                //    string outputresult = "Description : " + splitText[1].Trim() + "\n" + "Average Price : " + splitText[2].Trim();
+                    
+                //}
+                //else
+                //{
+                //    lblhelp.Text = "Could not parse OpenAI output.";
+                //}
             }
             else
             {
                 ShowErrorMessage(ResponseMessages.Error);
             }
         }
+
 
         private void ShowOpenAIResult(string result)
         {

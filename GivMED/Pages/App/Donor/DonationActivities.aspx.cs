@@ -429,9 +429,13 @@ namespace GivMED.Pages.App.Donor
         protected void ddlStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             List<DonationActivityDto> oBindList = (List<DonationActivityDto>)Session["DonationActList"];
-            oBindList = oBindList.Where(x => x.Status == Convert.ToInt32(ddlStatus.SelectedValue.ToString())).ToList();
-            gvDonationList.DataSource = oBindList.OrderByDescending(x => x.DonationCreateDate).ToList();
-            gvDonationList.DataBind();
+
+            if (oBindList != null && oBindList.Count > 0)
+            {
+                oBindList = oBindList.Where(x => x.Status == Convert.ToInt32(ddlStatus.SelectedValue.ToString())).ToList();
+                gvDonationList.DataSource = oBindList.OrderByDescending(x => x.DonationCreateDate).ToList();
+                gvDonationList.DataBind();
+            }
         }
 
         protected void btnDeliveryNow_Click(object sender, EventArgs e)

@@ -122,9 +122,23 @@ namespace GivMED.Pages.App.Profile
             WebApiResponse response = new WebApiResponse();
             response = oProfileService.PostDonor(UiToModelCreaterDonor());
 
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+            EmailUsers ouser = new EmailUsers();
+            Session["DonorID"] = Convert.ToInt32(response.Result);
+            ouser.UserId = Convert.ToInt32(response.Result);
+            ouser.UserName = loggedUser.UserName;
+            ouser.Email = txtEmail.Text.ToString();
+            ouser.Publicity = 2;
+            ouser.EmailNotification = 2;
+            ouser.CreatedDateTime = DateTime.Now;
+            ouser.CreatedBy = "admin";
+            ouser.ModifiedDateTime = DateTime.Now;
+            ouser.ModifiedBy = "admin";
+
+            response = oProfileService.PostEmailUser(ouser);
             if (response.StatusCode == (int)StatusCode.Success)
             {
-                Session["DonorID"] = response.Result;
                 Session["donorisvalid"] = true;
                 ShowSuccessMessage(ResponseMessages.InsertSuccess);
                 btnSubmit.Visible = false;
@@ -530,15 +544,15 @@ namespace GivMED.Pages.App.Profile
             ouser.UserId = Convert.ToInt32(Session["DonorID"]);
             ouser.UserName = loggedUser.UserName;
             ouser.Email = txtEmail.Text.ToString();
-            ouser.Publicity = (chkPublicityPop.Checked == true ? 1 : 2);
-            ouser.EmailNotification = (chkEmailPop.Checked == true ? 1 : 2);
+            ouser.Publicity = (chkPublicityPop.Checked == true) ? 1 : 2;
+            ouser.EmailNotification = (chkEmailPop.Checked == true) ? 1 : 2;
             ouser.CreatedDateTime = DateTime.Now;
             ouser.CreatedBy = "admin";
             ouser.ModifiedDateTime = DateTime.Now;
             ouser.ModifiedBy = "admin";
 
             WebApiResponse response = new WebApiResponse();
-            response = oProfileService.PostEmailUser(ouser);
+            response = oProfileService.PutEmailUsers(ouser);
 
             if (response.StatusCode == (int)StatusCode.Success)
             {
@@ -583,8 +597,8 @@ namespace GivMED.Pages.App.Profile
             ouser.UserId = Convert.ToInt32(Session["DonorID"]);
             ouser.UserName = loggedUser.UserName;
             ouser.Email = txtEmail.Text.ToString();
-            ouser.Publicity = (chkPublicity.Checked == true ? 1 : 2);
-            ouser.EmailNotification = (chkEmail.Checked == true ? 1 : 2);
+            ouser.Publicity = (chkPublicity.Checked == true) ? 1 : 2;
+            ouser.EmailNotification = (chkEmail.Checked == true) ? 1 : 2;
             ouser.CreatedDateTime = DateTime.Now;
             ouser.CreatedBy = "admin";
             ouser.ModifiedDateTime = DateTime.Now;

@@ -299,7 +299,7 @@
                                                                             </asp:TemplateField>
                                                                             <asp:TemplateField HeaderText="Action" HeaderStyle-CssClass="text-green" HeaderStyle-HorizontalAlign="Right">
                                                                                 <ItemTemplate>
-                                                                                    <%# Convert.ToInt32(Eval("Status")) == 1 ? "<span class='badge bg-warning'>Processing</span>" : Convert.ToInt32(Eval("Status")) == 3 ? "<span class='badge bg-danger'>Complete</span>" : "" %>
+                                                                                    <%# Convert.ToInt32(Eval("Status")) == 1 ? "<span class='badge bg-warning'>Processing</span>" : Convert.ToInt32(Eval("Status")) == 3 ? "<span class='badge bg-danger'>Complete</span>" : Convert.ToInt32(Eval("Status")) == 4 ? "<span class='badge bg-danger'>Canceled</span>" : "" %>
                                                                                     <asp:LinkButton ID="btnConfirm" runat="server" CssClass="btn btn-sm btn-success" CausesValidation="false" CommandName="ShowConfirm" CommandArgument="<%# Container.DisplayIndex %>"
                                                                                         Enabled='<%# Convert.ToInt32(Eval("Status")) == 2 %>'><i class="fas fa-gift"></i> Confirm
                                                                                     </asp:LinkButton>

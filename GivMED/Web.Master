@@ -67,9 +67,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <li class="nav-item">
                             <a href="/Pages/Web/Benifits.aspx" class="nav-link">Benifits</a>
                         </li>
-                        <%--                        <li class="nav-item">
-                            <a href="/Pages/Web/DonationGuide.aspx" class="nav-link">Fundraising Guide</a>
-                        </li>--%>
+
                         <li class="nav-item">
                             <a href="/Pages/Login.aspx" class="btn btn-danger">Login Donor</a>
                         </li>
@@ -83,10 +81,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</li>
                         <li class="nav-item">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</li>
-                        <li class="nav-item">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</li>
-                        <li class="nav-item"></li>
-                        <li class="nav-item"></li>
+                        <li class="nav-item">
+                            <a href="/Pages/Web/ComplaintForum.aspx" class="nav-link">
+                                <p>
+                                    Complaint &nbsp<span class="right badge badge-warning">Forum</span>
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item align-content-end"></li>
                     </ul>
                 </div>
@@ -124,7 +125,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Footer -->
         <footer class="main-footer">
             <!-- To the right -->
-           
+
             <!-- Default to the left -->
             <strong>&copy; 2023 GivMED. All rights reserved.</strong>
         </footer>
@@ -159,6 +160,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- AdminLTE for demo purposes -->
     <script src='<%=ResolveClientUrl("dist/js/demo.js")%>' type="text/javascript"></script>
+
 
 </body>
 </form>

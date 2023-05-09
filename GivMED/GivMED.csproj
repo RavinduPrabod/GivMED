@@ -375,6 +375,7 @@
     <Content Include="Pages\HLogin.aspx" />
     <Content Include="Pages\Login.aspx" />
     <Content Include="Pages\Web\Benifits.aspx" />
+    <Content Include="Pages\Web\ComplaintForum.aspx" />
     <Content Include="Pages\Web\DonationGuide.aspx" />
     <Content Include="Pages\Web\HomePage.aspx" />
     <Content Include="Pages\Web\Registration\DonorRegistration.aspx" />
@@ -2356,6 +2357,7 @@
     <Compile Include="Dto\DonorGrid.cs" />
     <Compile Include="Dto\GetDonationandSupplyDto.cs" />
     <Compile Include="Dto\HomeDashLineDto.cs" />
+    <Compile Include="Dto\HospitalDashboardDto.cs" />
     <Compile Include="Dto\HospitalSupplyNeedsGridDto.cs" />
     <Compile Include="Dto\LoggedUserDto.cs" />
     <Compile Include="Dto\PublishedNeedsPostDto.cs" />
@@ -2472,6 +2474,13 @@
     </Compile>
     <Compile Include="Pages\Web\Benifits.aspx.designer.cs">
       <DependentUpon>Benifits.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Web\ComplaintForum.aspx.cs">
+      <DependentUpon>ComplaintForum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Web\ComplaintForum.aspx.designer.cs">
+      <DependentUpon>ComplaintForum.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Web\DonationGuide.aspx.cs">
       <DependentUpon>DonationGuide.aspx</DependentUpon>

@@ -52,7 +52,7 @@
                         <!-- /.info-box-content -->
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-2 col-12">
+                <div class="col-md-3 col-sm-3 col-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-primary"><i class="fa fa-donate"></i></span>
                         <div class="info-box-content">

@@ -69,7 +69,14 @@ namespace GiveMED.Api.Controllers
             var conn = _context.Database.GetDbConnection();
             conn.Open();
             var comm = conn.CreateCommand();
-            comm.CommandText = "SELECT C.SupplyID, A.DonationID, C.SupplyPriorityLevel, B.RequestQty, B.DonatedQty, A.DonorID, D.HospitalName, D.City, DonorCounts.DonorCount FROM DonationHeader A INNER JOIN DonationDetails B ON A.DonationID = B.DonationID LEFT OUTER JOIN SupplyRequestHeader C ON A.SupplyID = C.SupplyID INNER JOIN HospitalMaster D ON C.HospitalID = D.HospitalID INNER JOIN ( SELECT SupplyID, COUNT(DISTINCT DonorID) AS DonorCount FROM DonationHeader GROUP BY SupplyID ) DonorCounts ON C.SupplyID = DonorCounts.SupplyID";
+            comm.CommandText = "SELECT C.SupplyID, A.DonationID, C.SupplyPriorityLevel, B.RequestQty, B.DonatedQty, A.DonorID, D.HospitalName, D.City, DonorCounts.DonorCount " +
+                "FROM DonationHeader A " +
+                "INNER JOIN DonationDetails B ON A.DonationID = B.DonationID " +
+                "LEFT OUTER JOIN SupplyRequestHeader C ON A.SupplyID = C.SupplyID " +
+                "INNER JOIN HospitalMaster D ON C.HospitalID = D.HospitalID " +
+                "INNER JOIN ( SELECT SupplyID, COUNT(DISTINCT DonorID) AS DonorCount " +
+                "FROM DonationHeader GROUP BY SupplyID ) DonorCounts ON C.SupplyID = DonorCounts.SupplyID " +
+                "WHERE C.SupplyStatus != 4 ";
             var reader = comm.ExecuteReader();
             while (reader.Read())
             {
@@ -204,7 +211,7 @@ namespace GiveMED.Api.Controllers
 
         [HttpPost]
         [ActionName("PostComplaint")]
-        public async Task<IActionResult> PostComplaint([FromBody] Complaint result)
+        public async Task<IActionResult> PostComplaint([FromBody]  Complaint oData)
         {
             try
             {
@@ -214,6 +221,13 @@ namespace GiveMED.Api.Controllers
                 }
 
                 LastDocSerialNo record = _context.LastDocSerialNo.Where(x => x.DocCode == "CLN").FirstOrDefault();
+
+                if (record == null)
+                {
+                    // Handle the case where the record doesn't exist
+                    return NotFound();
+                }
+
                 record.DocCode = "CLN";
                 record.LastTxnSerialNo = record.LastTxnSerialNo + 1;
                 record.ModifiedBy = "admin";
@@ -221,18 +235,87 @@ namespace GiveMED.Api.Controllers
 
                 _context.Entry(record).State = EntityState.Modified;
 
-                string newcode = record.DocCode = "CLN" + record.LastTxnSerialNo.ToString();
-                result.ComplaintCode = record.DocCode = newcode.ToString();
-                _context.Complaint.Add(result);
+                string NewDonationID = record.DocCode + record.LastTxnSerialNo.ToString("D3");
+                oData.ComplaintCode = NewDonationID;
 
+                _context.Complaint.Add(oData);
                 await _context.SaveChangesAsync();
 
-                return Ok(newcode); // Return the inserted record
+                return Ok(oData); // Return the inserted record
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException?.Message ?? ex.Message);
             }
+        }
+
+
+        //Hospital Dashboard
+
+        [HttpGet("{HospitalID}")]
+        [ActionName("GetHospitalDashboardData")]
+        public HospitalDashboardDto GetHospitalDashboardData(int HospitalID)
+        {
+            HospitalDashboardDto result = new HospitalDashboardDto();
+
+            result.registeredVolunteers = _context.VolunteerMaster.Where(x => x.HospitalID == HospitalID).Count();
+            result.CountofTotalDonation = _context.DonationHeader.Where(x => x.HospitalID == HospitalID).Count();
+
+            result.ContributeOrganization = (from A in _context.DonorMaster
+                                             join B in _context.DonationHeader
+                                             on A.DonorID equals B.DonorID
+                                             where B.HospitalID == HospitalID && A.DonorType == 2
+                                             select A).Count();
+
+            result.NewDonors = (from A in _context.DonorMaster
+                                join B in _context.DonationHeader
+                                on A.DonorID equals B.DonorID
+                                where B.HospitalID == HospitalID
+                                select A).Count();
+
+            result.Urgent = _context.SupplyRequestHeader.Where(x => x.HospitalID == HospitalID && x.SupplyPriorityLevel == 1).Count();
+            result.Normal = _context.SupplyRequestHeader.Where(x => x.HospitalID == HospitalID && x.SupplyPriorityLevel == 2).Count();
+            result.Low = _context.SupplyRequestHeader.Where(x => x.HospitalID == HospitalID && x.SupplyPriorityLevel == 3).Count();
+
+
+            int requestqty1 = (int)(from A in _context.SupplyRequestHeader
+                               join B in _context.SupplyRequestDetails
+                               on A.SupplyID equals B.SupplyID
+                               where A.HospitalID == HospitalID && A.SupplyStatus != 2 && A.SupplyPriorityLevel == 2
+                               select B.SupplyItemQty).Sum();
+
+            int donatedqty1 = (int)(from A in _context.SupplyRequestHeader
+                               join B in _context.DonationDetails
+                               on A.SupplyID equals B.SupplyID
+                               where A.HospitalID == HospitalID && A.SupplyStatus != 2 && A.SupplyPriorityLevel == 2
+                               select B.DonatedQty).Sum();
+
+            int requestqty2 = (int)(from A in _context.SupplyRequestHeader
+                               join B in _context.SupplyRequestDetails
+                               on A.SupplyID equals B.SupplyID
+                               where A.HospitalID == HospitalID && A.SupplyStatus != 2 && A.SupplyPriorityLevel == 1
+                               select B.SupplyItemQty).Sum();
+
+            int donatedqty2 = (int)(from A in _context.SupplyRequestHeader
+                               join B in _context.DonationDetails
+                               on A.SupplyID equals B.SupplyID
+                               where A.HospitalID == HospitalID && A.SupplyStatus != 2 && A.SupplyPriorityLevel == 1
+                               select B.DonatedQty).Sum();
+
+
+            double donatedPercentage1 = (requestqty1 == 0) ? 0 : (double)donatedqty1 / requestqty1 * 100;
+
+            // Round to 2 decimal places
+            donatedPercentage1 = Convert.ToInt32(donatedPercentage1);
+            result.RegularLevel = Convert.ToInt32(donatedPercentage1);
+
+            double donatedPercentage2 = (requestqty2 == 0) ? 0 : (double)donatedqty2 / requestqty2 * 100;
+
+            // Round to 2 decimal places
+            donatedPercentage2 = Convert.ToInt32(donatedPercentage2);
+            result.UrgentLevel = Convert.ToInt32(donatedPercentage2);
+
+            return result;
         }
 
     }

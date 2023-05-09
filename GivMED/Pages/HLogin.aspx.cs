@@ -70,7 +70,7 @@ namespace GivMED.Pages
                             CheckHospitalMaster(loggedUser.UserName);
                             if (Convert.ToBoolean(Session["donorisvalid"]) == true)
                             {
-                                Response.Redirect("~/Pages/App/Hospital/SupplyNeeds.aspx");
+                                Response.Redirect("~/Pages/App/Hospital/Dashboard.aspx");
                             }
                             else
                             {

@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using GivMED.Dto;
+using GivMED.Service;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +13,41 @@ namespace GivMED.Pages.App.Hospital
 {
     public partial class Dashboard : System.Web.UI.Page
     {
+        HomeService oHomeService = new HomeService();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
             {
+                LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+                HospitalDashboardDto result = oHomeService.GetHospitalDashboardData(loggedUser.HospitalID);
+
+                lblregisteredVolunteers.Text = result.registeredVolunteers.ToString();
+                lblCountofTotalDonation.Text = result.CountofTotalDonation.ToString();
+                lblContributeOrganization.Text = result.ContributeOrganization.ToString();
+                lblNewDonors.Text = result.NewDonors.ToString();
+
+                int regularLevel = result.RegularLevel;
+                int urgentLevel =result.UrgentLevel;
+                int monthlyProgress = 50;
+
+                // Create the progress bar HTML for each value
+                string regularLevelHtml = CreateProgressBarHtml("Regular Level", regularLevel, "bg-success");
+                string urgentLevelHtml = CreateProgressBarHtml("Urgent Level", urgentLevel, "bg-danger");
+                //string monthlyProgressHtml = CreateProgressBarHtml("Monthly Progress", monthlyProgress, "bg-primary progress-bar-striped");
+
+                // Add the progress bar HTML to the placeholder control
+                progressBarsPlaceholder.Controls.Add(new LiteralControl(regularLevelHtml));
+                progressBarsPlaceholder.Controls.Add(new LiteralControl(urgentLevelHtml));
+                //progressBarsPlaceholder.Controls.Add(new LiteralControl(monthlyProgressHtml));
+
                 SetFunctionName();
                 //ScriptManager.RegisterStartupScript(this, GetType(), "BindChart", "BindBarChart();", true);s
 
                 List<ChartData> chartData = new List<ChartData>();
-                chartData.Add(new ChartData() { Label = "Urgent", Value = 20 });
-                chartData.Add(new ChartData() { Label = "Normal", Value = 19 });
-                chartData.Add(new ChartData() { Label = "Low", Value = 6 });
+                chartData.Add(new ChartData() { Label = "Urgent", Value = result.Urgent });
+                chartData.Add(new ChartData() { Label = "Normal", Value = result.Normal });
+                chartData.Add(new ChartData() { Label = "Low", Value = result.Low });
 
                 // Convert List object to JSON
                 string jsonData = JsonConvert.SerializeObject(chartData);
@@ -32,6 +58,20 @@ namespace GivMED.Pages.App.Hospital
 
             }
         }
+        private string CreateProgressBarHtml(string label, int value, string colorClass)
+        {
+            int width = value; // Set the progress bar width to the database value
+            return $@"
+        <div class='progress-group'>
+            {label}
+            <span class='float-right'><b>{value}</b>%</span>
+            <div class='progress progress-sm'>
+                <div class='progress-bar {colorClass}' style='width: {width}%'></div>
+            </div>
+        </div>
+    ";
+        }
+
         private void SetFunctionName()
         {
             try

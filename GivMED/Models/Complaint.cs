@@ -18,5 +18,9 @@ namespace GivMED.Models
         public string NameofVictim { get; set; }
 
         public string FullComplaint { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDateTime { get; set; }
     }
 }

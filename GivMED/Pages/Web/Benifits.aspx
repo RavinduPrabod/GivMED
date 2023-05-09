@@ -110,6 +110,8 @@
             return false;
         };
     </script>
-    <script src="../../dist/js/wow/wow.min.js"></script>
+    <script src="../../dist/js/isotope/isotope.pkgd.min.js"></script>
+    <script src="../../dist/js/owlcarousel/owl.carousel.min.js"></script>
+        <script src="../../dist/js/wow/wow.min.js"></script>
     <script src="../../dist/js/main.js"></script>
 </asp:Content>

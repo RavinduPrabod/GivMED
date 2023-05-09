@@ -241,5 +241,32 @@ namespace GivMED.Service
             }
             return webApiResponse;
         }
+
+        public HospitalDashboardDto GetHospitalDashboardData(int HospitalID)
+        {
+            try
+            {
+                HospitalDashboardDto record = new HospitalDashboardDto();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    string path = "Home/GetHospitalDashboardData/" + HospitalID;
+                    client.BaseAddress = new Uri(GlobalData.BaseUri);
+                    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                    HttpResponseMessage response = client.GetAsync(path).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsStringAsync().Result;
+                        record = JsonConvert.DeserializeObject<HospitalDashboardDto>(value);
+                    }
+                }
+                return record;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

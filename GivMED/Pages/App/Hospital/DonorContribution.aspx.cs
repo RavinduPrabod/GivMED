@@ -264,9 +264,9 @@ namespace GivMED.Pages.App.Hospital
                 Label lblStatus = (Label)e.Row.FindControl("lblHeader1Status");
                 LinkButton btnConfirm = (LinkButton)e.Row.FindControl("btnConfirm");
 
-                if (lblStatus.Text == "1")
+                if (lblStatus.Text == "2")
                 {
-                    btnConfirm.Visible = false;
+                    btnConfirm.Visible = true;
                 }
                 else if (lblStatus.Text == "3")
                 {
@@ -274,7 +274,7 @@ namespace GivMED.Pages.App.Hospital
                 }
                 else
                 {
-                    btnConfirm.Visible = true;
+                    btnConfirm.Visible = false;
                 }
             }
         }

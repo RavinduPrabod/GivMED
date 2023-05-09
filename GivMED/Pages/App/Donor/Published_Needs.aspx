@@ -77,7 +77,7 @@
                                                 </ItemTemplate>
                                                 <ItemStyle Width="84%" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Reuest (Qty)">
+                                            <asp:TemplateField HeaderText="Required (Qty)">
                                                 <ItemTemplate>
                                                     <div class="row">
                                                         &nbsp
@@ -433,7 +433,7 @@
                                                                     </div>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Request (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="10%">
+                                                            <asp:TemplateField HeaderText="Request (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="10%" Visible="false">
                                                                 <ItemTemplate>
                                                                     <div class="row">
                                                                         &nbsp
@@ -441,7 +441,7 @@
                                                                     <asp:Label ID="lblRequestQty" ForeColor="Blue" Font-Bold="true" CssClass="form-text right-align" runat="server" Text='<%# Bind("SupplyItemQty") %>'></asp:Label>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Donated (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="10%">
+                                                            <asp:TemplateField HeaderText="Donated (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="10%" Visible="false">
                                                                 <ItemTemplate>
                                                                     <div class="row">
                                                                         &nbsp
@@ -449,7 +449,7 @@
                                                                     <asp:Label ID="lblDonatedQty" Font-Bold="true" ForeColor="Orange" CssClass="form-text right-align" runat="server" Text='<%# Bind("DonatedQty") %>'></asp:Label>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Remaining (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="15%">
+                                                            <asp:TemplateField HeaderText="Required (Qty)" HeaderStyle-CssClass="right-align" ItemStyle-Width="15%">
                                                                 <ItemTemplate>
                                                                     <div class="row">
                                                                         &nbsp

@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="GivMED.Pages.App.Profile.Profile" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:UpdatePanel runat="server">
@@ -62,7 +61,7 @@
                                         <h4 class="modal-title text-center">Choose Optional Settings</h4>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
-                                    <<div class="modal-body">
+                                    <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <asp:CheckBox runat="server" ID="chkPublicityPop" CssClass="icheck-primary" Text="Do you want your donations to be published for publicity?" />

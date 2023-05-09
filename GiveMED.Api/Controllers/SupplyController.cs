@@ -190,8 +190,9 @@ namespace GiveMED.Api.Controllers
             comm.CommandText = "SELECT A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, B.ItemCatName, SUM(C.DonatedQty) as DonatedQty " +
                 "FROM SupplyRequestDetails A " +
                 "INNER JOIN ItemCatMaster B ON A.SupplyItemCat = B.ItemCatID " +
-                "LEFT OUTER JOIN DonationDetails C ON A.SupplyID = C.SupplyID AND A.SupplyItemCat = C.ItemCategory AND A.SupplyItemID = C.ItemID WHERE A.SupplyID = @SupplyID " +
-                "GROUP BY A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, B.ItemCatName;";
+                "LEFT OUTER JOIN DonationDetails C ON A.SupplyID = C.SupplyID AND A.SupplyItemCat = C.ItemCategory AND A.SupplyItemID = C.ItemID " +
+                "WHERE A.SupplyID = @SupplyID AND C.DonationStatus != 3" +
+                "GROUP BY A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, B.ItemCatName";
 
             comm.Parameters.Add(id);
             var reader = comm.ExecuteReader();
@@ -470,10 +471,13 @@ namespace GiveMED.Api.Controllers
         public async Task<IActionResult> UseChatGPT([FromBody] string query)
         {
             string OutPutResult = "";
-            var openai = new OpenAIAPI("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");
+            var openai = new OpenAIAPI("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");
             CompletionRequest completionRequest = new CompletionRequest();
-            completionRequest.Prompt = "What is the " + query + "?";
-            completionRequest.Prompt += "\nAverage Price of LKR " + query + " is:";
+            completionRequest.Prompt = "\nneed the output using below format ";
+            completionRequest.Prompt += "What is the " + query + "?";
+            completionRequest.Prompt += "\nDescription : [output]";
+            completionRequest.Prompt += "\nAverage Price of LKR " + query + "?";
+            completionRequest.Prompt += "\nAverage Price : [output]";
             completionRequest.Model = OpenAI_API.Models.Model.DavinciText;
             completionRequest.MaxTokens = 2048; // Limit the response length to 2048 tokens
 
@@ -483,6 +487,7 @@ namespace GiveMED.Api.Controllers
             var completion = completions.Completions[0];
             OutPutResult = completion.Text;
 
+
             return Ok(OutPutResult);
         }
 
@@ -491,7 +496,7 @@ namespace GiveMED.Api.Controllers
         public async Task<IActionResult> UseChatGPTFeedBack([FromBody] string query)
         {
             string OutPutResult = "";
-            var openai = new OpenAIAPI("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");
+            var openai = new OpenAIAPI("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");
             CompletionRequest completionRequest = new CompletionRequest();
             completionRequest.Prompt = query;
             completionRequest.MaxTokens = 2048; // Limit the response length to 2048 tokens
@@ -808,6 +813,7 @@ namespace GiveMED.Api.Controllers
 
                     _context.Entry(item).State = EntityState.Modified;
                 }
+
                 await _context.SaveChangesAsync();
 
                 return Ok(oData); // Return the inserted record

@@ -10,8 +10,6 @@
     <asp:UpdatePanel runat="server">
         <Triggers>
             <asp:PostBackTrigger ControlID="btnReport" />
-            <asp:PostBackTrigger ControlID="btnSend" />
-            <%--<asp:PostBackTrigger ControlID="btnhospital" /--%>
         </Triggers>
         <ContentTemplate>
             <div class="modal fade" id="modal-join">
@@ -127,6 +125,41 @@
                                     <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
                                 </h3>
                             </div>
                             <div class="icon">
@@ -147,6 +180,41 @@
                                     <p>
                                         Registed Hospitals
                                     </p>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
@@ -237,6 +305,41 @@
                                     <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
                                 </h3>
                             </div>
                             <div class="icon">
@@ -257,6 +360,41 @@
                                     <p>
                                         Annual Donation Report
                                     </p>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
+                                    <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
@@ -389,7 +527,7 @@
                                                         </ul>
                                                     </p>
                                                     <a href="/kendall-lily?form=popup#donate/35">
-                                                        <button class="btn-block mb-3">Contribute Now</button>
+                                                        <button class="btn-block mb-3" onclick="ShowDonate();">Contribute Now</button>
                                                     </a>
                                                 </div>
                                             </div>
@@ -433,7 +571,7 @@
                                                         </ul>
                                                     </p>
                                                     <a href="/kendall-lily?form=popup#donate/35">
-                                                        <button class="btn-block mb-3">Contribute Now</button>
+                                                        <button class="btn-block mb-3" onclick="ShowDonate();">Contribute Now</button>
                                                     </a>
                                                 </div>
                                             </div>
@@ -477,7 +615,7 @@
                                                         </ul>
                                                     </p>
                                                     <a href="/kendall-lily?form=popup#donate/35">
-                                                        <button class="btn-block mb-3">Contribute Now</button>
+                                                        <button class="btn-block mb-3" onclick="ShowDonate();">Contribute Now</button>
                                                     </a>
                                                 </div>
                                             </div>
@@ -666,98 +804,43 @@
                     </Columns>
                 </asp:GridView>
             </div>
-            <div class="container-xxl py-5">
-                <div class="container px-lg-5">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-7">
-                            <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
-                                <h6 class="position-relative d-inline text-primary ps-4">Notice Us</h6>
-                                <h2 class="mt-2">Complaint Forum</h2>
-                            </div>
-                            <div class="wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
-                                <form>
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <label for="name">Your Name</label>
-                                                <asp:TextBox ID="txtName" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <label for="email">Your Email</label>
-                                                <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-floating">
-                                                <label for="subject">The complaint is regarding:</label>
-                                                <asp:TextBox ID="txtSubject" Height="100px" runat="server" CssClass="form-control" TextMode="MultiLine" MaxLength="500" placeholder="Leave a text here"></asp:TextBox>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-floating">
-                                                <label for="message">Name of the hospital/donor/oragniation/whom the complaint is filed:</label>
-                                                <asp:TextBox ID="txtNameofVict" runat="server" CssClass="form-control" placeholder="Leave a text here" MaxLength="50"></asp:TextBox>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-floating">
-                                                <label for="message">The specific details of the complaint:</label>
-                                                <asp:TextBox ID="txtFullComplaint" Height="150px" runat="server" CssClass="form-control" placeholder="Leave a text here" TextMode="MultiLine" MaxLength="1000"></asp:TextBox>
-
-                                            </div>
-                                        </div>
-                                        &nbsp
-                                        <div class="col-11">
-                                        </div>
-                                        <div class="col-1">
-                                            <asp:Button ID="btnSend" runat="server" OnClick="btnSend_Click" Text="Send" CssClass="btn btn-primary" OnClientClick="return Validate();" />
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
         Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
         function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
 
-        function pageLoad() {
-            $(document).ready(function () {
-                Validate = function () {
-                    $('#<% = txtName.ClientID %>').addClass('validate[required]');
-                    $('#<% = txtEmail.ClientID %>').addClass('validate[required]');
-                    $('#<% = txtNameofVict.ClientID %>').addClass('validate[required]');
-                    $('#<% = txtSubject.ClientID %>').addClass('validate[required]');
-                    $('#<% = txtFullComplaint.ClientID %>').addClass('validate[required]');
-                    var valid = $("#form1").validationEngine('validate');
-                    var vars = $("#form1").serialize();
-                    if (valid == true) {
-                        $("#form1").validationEngine('detach');
-                    } else {
-                        $("#form1").validationEngine('attach', { promptPosition: "inline", scroll: false });
-                        return false;
-                    }
-                }
-
-            });
-        }
         function ShowJoinUs() {
 
             $('.modal-backdrop').remove();
             $('#modal-join').modal('show');
             return false;
         };
+        function ShowDonate() {
+            Swal.fire({
+                title: 'Welcome to GiveMED',
+                html: 'For Your Support & Contribution. Please <a href="/Pages/Web/Registration/DonorRegistration.aspx">register</a> or <a href="/Pages/Login.aspx">log in</a> to continue.',
+                icon: 'info',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+        };
+        //function myFunction() {
+        //    var copyText = document.getElementById("Label12");
+        //    if (copyText !== null) {
+        //        copyText.select();
+        //        copyText.setSelectionRange(0, 99999);
+        //        navigator.clipboard.writeText(copyText.value);
+        //        alert("Copied the text: " + copyText.value);
+        //    } else {
+        //        console.log("Element not found.");
+        //    }
+        //}
+
     </script>
-    <script src="../../dist/js/wow/wow.min.js"></script>
+    <script src="../../dist/js/isotope/isotope.pkgd.min.js"></script>
+    <script src="../../dist/js/owlcarousel/owl.carousel.min.js"></script>
+        <script src="../../dist/js/wow/wow.min.js"></script>
     <script src="../../dist/js/main.js"></script>
 </asp:Content>

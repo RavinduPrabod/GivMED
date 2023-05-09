@@ -29,7 +29,6 @@ namespace GivMED.Pages.Web
             {
                 Session["loggedUser"] = null;
                 Session["donorisvalid"] = null;
-                clearfields();
                 PageLoad();
             }
         }
@@ -479,43 +478,6 @@ namespace GivMED.Pages.Web
         protected void btndonor_Click(object sender, EventArgs e)
         {
             LoadDonorReport();
-        }
-
-        private void clearfields()
-        {
-            txtName.Text = string.Empty;
-            txtEmail.Text = string.Empty;
-            txtSubject.Text = string.Empty;
-            txtNameofVict.Text = string.Empty;
-            txtFullComplaint.Text = string.Empty;
-        }
-
-        private void PostComplaint()
-        {
-            Complaint result = new Complaint();
-            result.ComplaintCode = "CLN0";
-            result.ComplanerName = txtName.Text.ToString();
-            result.ComplanerEmail = txtEmail.Text.ToString();
-            result.NameofVictim = txtNameofVict.Text.ToString();
-            result.Subject = txtSubject.Text.ToString();
-            result.FullComplaint = txtFullComplaint.ToString();
-
-            WebApiResponse response = new WebApiResponse();
-            oHomeService.PostComplaint(result);
-            if (response.StatusCode == (int)StatusCode.Success)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'success', title: 'Complant successfull!', showConfirmButton: false, timer: 1500});", true);
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'error', title: 'Error!', showConfirmButton: false, timer: 1500});", true);
-
-            }
-        }
-
-        protected void btnSend_Click(object sender, EventArgs e)
-        {
-            PostComplaint();
         }
     }
 }
