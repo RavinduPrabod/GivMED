@@ -191,7 +191,7 @@ namespace GiveMED.Api.Controllers
                 "FROM SupplyRequestDetails A " +
                 "INNER JOIN ItemCatMaster B ON A.SupplyItemCat = B.ItemCatID " +
                 "LEFT OUTER JOIN DonationDetails C ON A.SupplyID = C.SupplyID AND A.SupplyItemCat = C.ItemCategory AND A.SupplyItemID = C.ItemID " +
-                "WHERE A.SupplyID = @SupplyID AND C.DonationStatus != 3" +
+                "WHERE A.SupplyID = @SupplyID " +
                 "GROUP BY A.SupplyItemID, A.SupplyItemCat, A.SupplyItemName, A.SupplyItemQty, B.ItemCatName";
 
             comm.Parameters.Add(id);
@@ -381,6 +381,42 @@ namespace GiveMED.Api.Controllers
             }
         }
 
+        [HttpPut]
+        [ActionName("PutSupplyNeed")]
+        public async Task<IActionResult> PutSupplyNeed([FromBody] SupplyNeedsDto result)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                SupplyRequestHeader record = _context.SupplyRequestHeader.Where(x => x.SupplyID == result.SupplyRequestHeader.SupplyID.ToString()).FirstOrDefault();
+                record.SupplyExpireDate = result.SupplyRequestHeader.SupplyExpireDate;
+                record.SupplyPriorityLevel = result.SupplyRequestHeader.SupplyPriorityLevel;
+                record.ModifiedBy = "admin";
+                record.ModifiedDateTime = DateTime.Now;
+
+                _context.Entry(record).State = EntityState.Modified;
+
+                List<SupplyRequestDetails> Details = _context.SupplyRequestDetails.Where(x => x.SupplyID == result.SupplyRequestHeader.SupplyID).ToList();
+                foreach (var item in Details)
+                {
+                    _context.Entry(item).State = EntityState.Deleted;
+                }
+                _context.SupplyRequestDetails.AddRange(result.SupplyRequestDetails);
+
+                await _context.SaveChangesAsync();
+
+                return Ok(result.SupplyRequestHeader.SupplyID.ToString()); // Return the inserted record
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); // Return the appropriate error code and message
+            }
+        }
+
         [HttpPost]
         [ActionName("PostTemplate")]
         public async Task<IActionResult> PostTemplate([FromBody] ManageTemplate result)
@@ -471,7 +507,7 @@ namespace GiveMED.Api.Controllers
         public async Task<IActionResult> UseChatGPT([FromBody] string query)
         {
             string OutPutResult = "";
-            var openai = new OpenAIAPI("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");
+            var openai = new OpenAIAPI("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");
             CompletionRequest completionRequest = new CompletionRequest();
             completionRequest.Prompt = "\nneed the output using below format ";
             completionRequest.Prompt += "What is the " + query + "?";
@@ -496,7 +532,7 @@ namespace GiveMED.Api.Controllers
         public async Task<IActionResult> UseChatGPTFeedBack([FromBody] string query)
         {
             string OutPutResult = "";
-            var openai = new OpenAIAPI("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");
+            var openai = new OpenAIAPI("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");
             CompletionRequest completionRequest = new CompletionRequest();
             completionRequest.Prompt = query;
             completionRequest.MaxTokens = 2048; // Limit the response length to 2048 tokens

@@ -90,6 +90,29 @@ namespace GivMED.Service
             return webApiResponse;
         }
 
+        public WebApiResponse PutSupplyNeed(SupplyNeedsDto oData)
+        {
+            WebApiResponse webApiResponse = new WebApiResponse();
+            using (HttpClient client = new HttpClient())
+            {
+                string path = "Supply/PutSupplyNeed";
+                client.BaseAddress = new Uri(GlobalData.BaseUri);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GlobalData.Token);
+                var json = JsonConvert.SerializeObject(oData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PutAsync(path, content).Result;
+                webApiResponse.StatusCode = Convert.ToInt32(response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    webApiResponse.Result = responseContent;
+                }
+            }
+            return webApiResponse;
+        }
+
 
         public WebApiResponse PostDonation(PublishedNeedsPostDto oData)
         {

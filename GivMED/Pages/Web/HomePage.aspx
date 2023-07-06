@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="col-lg-10 wow zoomIn">
                                         <h1 style="font-weight: bold; color: azure">A Little Care Can Change the World.</h1>
-                                        <asp:Button CssClass="btn btn-success" runat="server" Text="Join Us!" OnClientClick="return ShowJoinUs();" />
+                                        <asp:Button CssClass="btn btn-success" runat="server" Text="Join Us Here!" OnClientClick="return ShowJoinUs();" />
                                     </div>
                                     <div class="col-lg-1">
                                     </div>
@@ -90,6 +90,7 @@
                                     <p>
                                         Total Active Donors
                                     </p>
+                                    <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
@@ -250,6 +251,7 @@
                                     <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
+                                    <h3></h3>
                                 </h3>
                             </div>
                             <div class="icon">
@@ -340,6 +342,7 @@
                                     <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
+                                    <h3></h3>
                                 </h3>
                             </div>
                             <div class="icon">
@@ -360,6 +363,7 @@
                                     <p>
                                         Annual Donation Report
                                     </p>
+                                    <h3></h3>
                                     <h3></h3>
                                     <h3></h3>
                                     <h3></h3>

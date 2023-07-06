@@ -179,7 +179,7 @@
                                                 </asp:DropDownList>
                                             </div>
                                             <label for="inputExperience" class="col-sm-1 col-form-label"></label>
-                                            <label for="inputSkills" class="col-sm-1 col-form-label">ZipCode</label>
+                                            <label for="inputSkills" class="col-sm-1 col-form-label">Postal Code</label>
                                             <div class="col-sm-3">
                                                 <asp:TextBox runat="server" CssClass="form-control" ID="txtZipCode"></asp:TextBox>
                                             </div>

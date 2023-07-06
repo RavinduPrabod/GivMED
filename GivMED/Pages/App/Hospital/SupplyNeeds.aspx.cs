@@ -28,6 +28,7 @@ namespace GivMED.Pages.App.Hospital
             {
                 SetFunctionName();
                 PageLoad();
+                Session["SupplyIDpub"] = null;
             }
 
         }
@@ -649,6 +650,54 @@ namespace GivMED.Pages.App.Hospital
             return result;
         }
 
+        private SupplyNeedsDto UiToModelUpdateSupplyNeed()
+        {
+
+            LoggedUserDto loggedUser = (LoggedUserDto)Session["loggedUser"];
+
+            SupplyNeedsDto result = new SupplyNeedsDto();
+            SupplyRequestHeader oHeader = new SupplyRequestHeader();
+            List<SupplyRequestDetails> oDetails = new List<SupplyRequestDetails>();
+
+            oHeader.HospitalID = loggedUser.HospitalID;
+            oHeader.SupplyID = Session["SupplyIDpub"].ToString();
+            oHeader.SupplyCreateDate = DateTime.Now;
+            oHeader.SupplyExpireDate = Convert.ToDateTime(txtExpireDate.Text).Date;
+            //oHeader.SupplyNarration = txtSupplyNarration.Text;
+            oHeader.SupplyPriorityLevel = (chkHigh.Checked == true) ? 1 : (chkNormal.Checked == true) ? 2 : (chkLow.Checked == true) ? 3 : 0;
+            oHeader.SupplyType = 1;
+            oHeader.SupplyStatus = 1;
+            oHeader.CreatedBy = "admin";
+            oHeader.CreatedDateTime = DateTime.Now;
+            oHeader.ModifiedBy = "admin";
+            oHeader.ModifiedDateTime = DateTime.Now;
+
+
+            foreach (GridViewRow row in gvSupplyList.Rows)
+            {
+                // Extract data from each row and create a new SupplyRequestDetails object
+                SupplyRequestDetails oData = new SupplyRequestDetails();
+                oData.SupplyID = Session["SupplyIDpub"].ToString();
+                oData.SupplyItemID = Convert.ToInt32((row.FindControl("lblSupplyItemID") as Label).Text);
+                oData.SupplyItemCat = Convert.ToInt32((row.FindControl("lblSupplyItemCat") as Label).Text);
+                oData.SupplyItemName = (row.FindControl("lblSupplyItemName") as Label).Text.ToString();
+                oData.SupplyItemQty = Convert.ToInt64((row.FindControl("txtQty") as TextBox).Text);
+                oData.CreatedBy = "admin";
+                oData.CreatedDateTime = DateTime.Now;
+                oData.ModifiedBy = "admin";
+                oData.ModifiedDateTime = DateTime.Now;
+
+                // Add the new SupplyRequestDetails object to the list
+                oDetails.Add(oData);
+            }
+
+            result.UserName = loggedUser.UserName.ToString();
+            result.SupplyRequestHeader = oHeader;
+            result.SupplyRequestDetails = oDetails;
+
+            return result;
+        }
+
         private void checboxcontrol(bool result)
         {
             chkHigh.Enabled = result;
@@ -754,12 +803,15 @@ namespace GivMED.Pages.App.Hospital
         {
             try
             {
+                Session["SupplyIDpub"] = null;
                 GridViewRow oGridViewRow = gvSupplyNeeds.Rows[Convert.ToInt32(ViewState["index"])];
                 string SupplyID = ((Label)oGridViewRow.FindControl("lblSupplyID")).Text.ToString();
 
                 SupplyNeedsDto record = oSupplyService.GetSupplyNeedsForID(SupplyID);
 
-                if(record.SupplyRequestHeader.SupplyPriorityLevel == 1)
+                Session["SupplyIDpub"] = SupplyID.ToString();
+
+                if (record.SupplyRequestHeader.SupplyPriorityLevel == 1)
                 {
                     chkHigh.Checked = true;
                 }
@@ -806,7 +858,18 @@ namespace GivMED.Pages.App.Hospital
 
         protected void btnRePublish_Click(object sender, EventArgs e)
         {
+            WebApiResponse response = new WebApiResponse();
+            response = oSupplyService.PutSupplyNeed(UiToModelUpdateSupplyNeed());
 
+            if (response.StatusCode == (int)StatusCode.Success)
+            {
+                PageLoad();
+                ScriptManager.RegisterStartupScript(this, GetType(), "Popup", "Swal.fire({icon: 'success', title: 'Supply ID:'" + response.Result.ToString() + "' is Modified ', text: 'Republish', confirmButtonText: 'Ok'});", true);
+            }
+            else
+            {
+                ShowErrorMessage(ResponseMessages.Error);
+            }
         }
         protected void btnAddtemp_Click(object sender, EventArgs e)
         {
